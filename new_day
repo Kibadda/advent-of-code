@@ -1,42 +1,67 @@
 #!/bin/sh
 
 CURRENT_YEAR=$(date +"%Y")
-read -p "Enter Year [$CURRENT_YEAR]: " YEAR
-YEAR=${YEAR:-$CURRENT_YEAR}
-
-if [[ ${#YEAR} -ne 4 ]];
-then
-  echo "wrong year format. using default $CURRENT_YEAR"
-  YEAR=$CURRENT_YEAR
-fi
-
 CURRENT_DAY=$(date +"%d")
-read -p "Enter Day [$CURRENT_DAY]: " DAY
-DAY=${DAY:-$CURRENT_DAY}
 
-if [[ ${#DAY} -ne 2 ]];
+usage() {
+  echo "$0 usage:"
+  echo "    -y  use default year ($CURRENT_YEAR) and day ($CURRENT_DAY)"
+  echo "    -D  specify year and date as XXXX:XX, e.g. 2023:05"
+  echo "    -h  show this help"
+}
+
+if [[ $# -eq 0 ]];
 then
-  echo "wrong day format. using default $CURRENT_DAY"
-  DAY=$CURRENT_DAY
+  usage
+  exit 0
 fi
 
-FILE_PATH="./lua/advent-of-code/$YEAR/$DAY"
+while getopts ":hyY:D:" arg; do
+  case $arg in
+    y)
+      YEAR=$CURRENT_YEAR
+      DAY=$CURRENT_DAY
+      ;;
+    D)
+      DATE=(${OPTARG//:/ })
+      if [[ ${#DATE} -ne 2 ]];
+      then
+        echo "wrong format"
+        exit 1
+      else
+        YEAR=${DATE[0]}
+        DAY=${DATE[1]}
+        if [[ ${#YEAR} -ne 4 ]];
+        then
+          echo "wrong year format"
+          exit 1
+        fi
+        if [[ ${#DAY} -ne 2 ]];
+        then
+          echo "wrong day format"
+          exit 1
+        fi
+      fi
+      ;;
+    h)
+      usage
+      exit 0
+      ;;
+  esac
+done
 
-echo "generating directory $FILE_PATH"
-if [[ -d "$FILE_PATH/" ]];
+DIR="./lua/advent-of-code/$YEAR/$DAY"
+
+if [[ -d "$DIR/" ]];
 then
-  echo "$FILE_PATH already exists"
+  echo "$DIR already exists. exiting"
   exit 1
 fi
 
-mkdir -p $FILE_PATH
-
-echo "generating input/test files"
-touch "$FILE_PATH/input.txt"
-touch "$FILE_PATH/test.txt"
-
-echo "generating init.lua stub"
-cat > "$FILE_PATH/init.lua" << EOM
+mkdir -p $DIR
+touch "$DIR/input.txt"
+touch "$DIR/test.txt"
+cat > "$DIR/init.lua" << EOM
 local AOCDay = require "advent-of-code.AOCDay"
 
 local M = AOCDay("$YEAR", "$DAY")
