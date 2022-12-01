@@ -24,23 +24,17 @@ while getopts ":hyY:D:" arg; do
       ;;
     D)
       DATE=(${OPTARG//:/ })
-      if [[ ${#DATE} -ne 2 ]];
+      YEAR=${DATE[0]}
+      DAY=${DATE[1]}
+      if [[ ${#YEAR} -ne 4 ]];
       then
-        echo "wrong format"
+        echo "wrong year format"
         exit 1
-      else
-        YEAR=${DATE[0]}
-        DAY=${DATE[1]}
-        if [[ ${#YEAR} -ne 4 ]];
-        then
-          echo "wrong year format"
-          exit 1
-        fi
-        if [[ ${#DAY} -ne 2 ]];
-        then
-          echo "wrong day format"
-          exit 1
-        fi
+      fi
+      if [[ ${#DAY} -ne 2 ]];
+      then
+        echo "wrong day format"
+        exit 1
       fi
       ;;
     h)
@@ -64,7 +58,7 @@ touch "$DIR/test.txt"
 cat > "$DIR/init.lua" << EOM
 local AOCDay = require "advent-of-code.AOCDay"
 
-local M = AOCDay("$YEAR", "$DAY")
+local M = AOCDay:new("$YEAR", "$DAY")
 
 return M
 EOM
