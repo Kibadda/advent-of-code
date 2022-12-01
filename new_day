@@ -1,0 +1,45 @@
+#!/bin/sh
+
+CURRENT_YEAR=$(date +"%Y")
+read -p "Enter Year [$CURRENT_YEAR]: " YEAR
+YEAR=${YEAR:-$CURRENT_YEAR}
+
+if [[ ${#YEAR} -ne 4 ]];
+then
+  echo "wrong year format. using default $CURRENT_YEAR"
+  YEAR=$CURRENT_YEAR
+fi
+
+CURRENT_DAY=$(date +"%d")
+read -p "Enter Day [$CURRENT_DAY]: " DAY
+DAY=${DAY:-$CURRENT_DAY}
+
+if [[ ${#DAY} -ne 2 ]];
+then
+  echo "wrong day format. using default $CURRENT_DAY"
+  DAY=$CURRENT_DAY
+fi
+
+FILE_PATH="./lua/advent-of-code/$YEAR/$DAY"
+
+echo "generating directory $FILE_PATH"
+if [[ -d "$FILE_PATH/" ]];
+then
+  echo "$FILE_PATH already exists"
+  exit 1
+fi
+
+mkdir -p $FILE_PATH
+
+echo "generating input/test files"
+touch "$FILE_PATH/input.txt"
+touch "$FILE_PATH/test.txt"
+
+echo "generating init.lua stub"
+cat > "$FILE_PATH/init.lua" << EOM
+local AOCDay = require "advent-of-code.AOCDay"
+
+local M = AOCDay("$YEAR", "$DAY")
+
+return M
+EOM
