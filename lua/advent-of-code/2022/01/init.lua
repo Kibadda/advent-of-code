@@ -1,6 +1,6 @@
 local AOCDay = require "advent-of-code.AOCDay"
 
-local M = AOCDay("2022", "01")
+local M = AOCDay:new("2022", "01")
 
 local function spairs(t)
   local keys = {}
