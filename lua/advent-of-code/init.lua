@@ -3,7 +3,7 @@ package.loaded[module] = nil
 local ok = pcall(require, module)
 
 if not ok then
-  return
+  vim.fn.system "make"
 end
 
 ---@type AOCDay
