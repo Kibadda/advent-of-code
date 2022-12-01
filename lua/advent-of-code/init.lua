@@ -8,5 +8,4 @@ end
 ---@type AOCDay
 local day = require(package)
 
-print(day.solve1())
-print(day.solve2())
+vim.pretty_print(day:solve(true))
