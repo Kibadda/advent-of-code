@@ -10,17 +10,43 @@ usage() {
   echo "    -h  show this help"
 }
 
+create_directory() {
+  DIR="./lua/advent-of-code/$YEAR/$DAY"
+
+  if [[ -d "$DIR/" ]];
+  then
+    echo "$DIR already exists. exiting"
+    exit 1
+  fi
+
+  mkdir -p $DIR
+  touch "$DIR/input.txt"
+  touch "$DIR/test.txt"
+  cat > "$DIR/init.lua" << EOM
+local AOCDay = require "advent-of-code.AOCDay"
+
+local M = AOCDay:new("$YEAR", "$DAY")
+
+return M
+EOM
+}
+
+open_url() {
+  xdg-open "https://adventofcode.com/$YEAR/day/$(($DAY + 0))"
+}
+
 if [[ $# -eq 0 ]];
 then
   usage
   exit 0
 fi
 
-while getopts ":hyY:D:" arg; do
+while getopts ":hycY:D:" arg; do
   case $arg in
     y)
       YEAR=$CURRENT_YEAR
       DAY=$CURRENT_DAY
+      create_directory
       ;;
     D)
       DATE=(${OPTARG//:/ })
@@ -36,6 +62,13 @@ while getopts ":hyY:D:" arg; do
         echo "wrong day format"
         exit 1
       fi
+      create_directory
+      ;;
+    c)
+      YEAR=$CURRENT_YEAR
+      DAY=$CURRENT_DAY
+      git add "lua/adventofcode/$YEAR/$DAY"
+      git commit -m "📅 $DAY: add solution"
       ;;
     h)
       usage
@@ -44,21 +77,3 @@ while getopts ":hyY:D:" arg; do
   esac
 done
 
-DIR="./lua/advent-of-code/$YEAR/$DAY"
-
-if [[ -d "$DIR/" ]];
-then
-  echo "$DIR already exists. exiting"
-  exit 1
-fi
-
-mkdir -p $DIR
-touch "$DIR/input.txt"
-touch "$DIR/test.txt"
-cat > "$DIR/init.lua" << EOM
-local AOCDay = require "advent-of-code.AOCDay"
-
-local M = AOCDay:new("$YEAR", "$DAY")
-
-return M
-EOM
