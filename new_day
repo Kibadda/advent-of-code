@@ -32,7 +32,7 @@ EOM
 }
 
 open_url() {
-  xdg-open "https://adventofcode.com/$YEAR/day/$(($DAY + 0))"
+  xdg-open "https://adventofcode.com/$YEAR/day/$(($DAY + 0))" &
 }
 
 if [[ $# -eq 0 ]];
@@ -47,6 +47,7 @@ while getopts ":hycY:D:" arg; do
       YEAR=$CURRENT_YEAR
       DAY=$CURRENT_DAY
       create_directory
+      open_url
       ;;
     D)
       DATE=(${OPTARG//:/ })
@@ -67,7 +68,7 @@ while getopts ":hycY:D:" arg; do
     c)
       YEAR=$CURRENT_YEAR
       DAY=$CURRENT_DAY
-      git add "lua/adventofcode/$YEAR/$DAY"
+      git add "lua/advent-of-code/$YEAR/$DAY"
       git commit -m "📅 $DAY: add solution"
       ;;
     h)
