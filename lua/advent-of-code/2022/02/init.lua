@@ -2,14 +2,14 @@ local AOCDay = require "advent-of-code.AOCDay"
 
 local M = AOCDay:new("2022", "02")
 
-function string:split(sep)
-  sep = sep or "%s"
-  local t = {}
-  for str in self:gmatch("([^" .. sep .. "]+)") do
-    table.insert(t, str)
-  end
-  return t
-end
+-- function string:split(sep)
+--   sep = sep or "%s"
+--   local t = {}
+--   for str in self:gmatch("([^" .. sep .. "]+)") do
+--     table.insert(t, str)
+--   end
+--   return t
+-- end
 
 function string:shape_to_score()
   if self == "X" or self == "A" then
