@@ -77,4 +77,3 @@ while getopts ":hycY:D:" arg; do
       ;;
   esac
 done
-
