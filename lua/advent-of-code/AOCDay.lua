@@ -19,10 +19,10 @@ local AOCDay = {
     return self.lines
   end,
   solve1 = function(_)
-    return "problem 1 not solved yet"
+    return "not solved yet"
   end,
   solve2 = function(_)
-    return "problem 2 not solved yet"
+    return "not solved yet"
   end,
   solve = function(self, use_test_data)
     local file_name = use_test_data and "test.txt" or "input.txt"
