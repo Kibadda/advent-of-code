@@ -64,12 +64,13 @@ while getopts ":hycY:D:" arg; do
         exit 1
       fi
       create_directory
+      open_url
       ;;
     c)
       YEAR=$CURRENT_YEAR
       DAY=$CURRENT_DAY
       git add "lua/advent-of-code/$YEAR/$DAY"
-      git commit -m "📅 $DAY: add solution"
+      git commit -m "📅 $YEAR/$DAY: add solution"
       ;;
     h)
       usage
