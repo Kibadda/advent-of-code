@@ -24,14 +24,6 @@ function M:parse_input()
   return section_pairs
 end
 
-function table.count(t)
-  local count = 0
-  for _ in pairs(t) do
-    count = count + 1
-  end
-  return count
-end
-
 function M:solve1()
   local score = 0
 
