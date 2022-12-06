@@ -7,11 +7,7 @@ function table.count_uniques(t)
   for _, v in ipairs(t) do
     tmp[v] = true
   end
-  local count = 0
-  for _ in pairs(tmp) do
-    count = count + 1
-  end
-  return count
+  return table.count(tmp)
 end
 
 function M:solve1()
