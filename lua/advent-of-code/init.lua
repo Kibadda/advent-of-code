@@ -3,6 +3,10 @@ local function main(use_default_input, year, day)
   year = year or os.date "%Y"
   day = day or os.date "%d"
 
+  local helpers = "advent-of-code.helpers"
+  package.loaded[helpers] = nil
+  require(helpers)
+
   local module = ("advent-of-code.%s.%s"):format(year, day)
   package.loaded[module] = nil
   local ok = pcall(require, module)
@@ -19,4 +23,4 @@ local function main(use_default_input, year, day)
   print("solution two: " .. solution.two)
 end
 
-main()
+main(true)
