@@ -20,7 +20,7 @@ create_directory() {
   fi
 
   mkdir -p $DIR
-  touch "$DIR/input.txt"
+  aoc d -i "$DIR/input.txt" -p "$DIR/puzzle.md" -y $YEAR -d $DAY > /dev/null 2>&1
   touch "$DIR/test.txt"
   cat > "$DIR/init.lua" << EOM
 local AOCDay = require "advent-of-code.AOCDay"
@@ -41,13 +41,12 @@ then
   exit 0
 fi
 
-while getopts ":hycY:D:" arg; do
+while getopts ":hycY:D:u" arg; do
   case $arg in
     y)
       YEAR=$CURRENT_YEAR
       DAY=$CURRENT_DAY
       create_directory
-      open_url
       ;;
     D)
       DATE=(${OPTARG//:/ })
@@ -64,13 +63,15 @@ while getopts ":hycY:D:" arg; do
         exit 1
       fi
       create_directory
-      open_url
       ;;
     c)
       YEAR=$CURRENT_YEAR
       DAY=$CURRENT_DAY
       git add "lua/advent-of-code/$YEAR/$DAY"
       git commit -m "📅 $YEAR/$DAY: add solution"
+      ;;
+    u)
+      open_url
       ;;
     h)
       usage
