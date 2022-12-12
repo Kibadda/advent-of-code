@@ -7,6 +7,14 @@ function string:split(sep)
   return t
 end
 
+function string:to_list()
+  local t = {}
+  for c in self:gmatch "." do
+    table.insert(t, c)
+  end
+  return t
+end
+
 function table.count(t)
   local count = 0
   for _ in pairs(t) do
