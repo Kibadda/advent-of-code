@@ -22,3 +22,13 @@ function table.count(t)
   end
   return count
 end
+
+function table.find(t, pos)
+  for i, p in pairs(t) do
+    if p.x == pos.x and p.y == pos.y then
+      return i
+    end
+  end
+
+  return nil
+end
