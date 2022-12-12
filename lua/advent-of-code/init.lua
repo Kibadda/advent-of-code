@@ -23,4 +23,4 @@ local function main(use_default_input, year, day)
   print("solution two: " .. solution.two)
 end
 
-main(true)
+main(false)
