@@ -1,12 +1,13 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2015", "03")
+local M = AOC.create("2015", "03")
 
 function M:solve1()
   local houses = 1
   local pos = { 0, 0 }
   local grid = { ["0"] = { ["0"] = true } }
-  for c in self.lines[1]:gmatch "." do
+  for c in self.input[1]:gmatch "." do
     if c == "^" then
       pos[1] = pos[1] + 1
     elseif c == "v" then
@@ -27,7 +28,7 @@ function M:solve1()
     end
   end
 
-  return houses
+  self.solution:add("one", houses)
 end
 
 function M:solve2()
@@ -36,7 +37,7 @@ function M:solve2()
   local robo_pos = { 0, 0 }
   local grid = { ["0"] = { ["0"] = true } }
   local turn = "santa"
-  for c in self.lines[1]:gmatch "." do
+  for c in self.input[1]:gmatch "." do
     local x, y
     if turn == "santa" then
       if c == "^" then
@@ -74,7 +75,9 @@ function M:solve2()
     end
   end
 
-  return houses
+  self.solution:add("two", houses)
 end
+
+M:run(false)
 
 return M

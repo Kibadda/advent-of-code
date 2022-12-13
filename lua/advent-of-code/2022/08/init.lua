@@ -1,50 +1,45 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "08")
+local M = AOC.create("2022", "08")
 
-function M:parse_input()
-  local grid = {}
-
-  for i, line in ipairs(self.lines) do
-    table.insert(grid, {})
+function M:parse_input(file)
+  for line in file:lines() do
+    table.insert(self.input, {})
     for c in line:gmatch "." do
-      table.insert(grid[i], c)
+      table.insert(self.input[#self.input], c)
     end
   end
-
-  return grid
 end
 
 function M:solve1()
   local visible_trees = 0
 
-  local grid = self:parse_input()
-
-  for i, row in ipairs(grid) do
+  for i, row in ipairs(self.input) do
     for j, col in ipairs(row) do
-      if i == 1 or j == 1 or i == #grid or j == #grid[i] then
+      if i == 1 or j == 1 or i == #self.input or j == #self.input[i] then
         visible_trees = visible_trees + 1
       else
         -- top
         local visible_top = true
         for k = i - 1, 1, -1 do
-          if grid[k][j] >= col then
+          if self.input[k][j] >= col then
             visible_top = false
             break
           end
         end
         -- right
         local visible_right = true
-        for k = j + 1, #grid[i] do
-          if grid[i][k] >= col then
+        for k = j + 1, #self.input[i] do
+          if self.input[i][k] >= col then
             visible_right = false
             break
           end
         end
         -- bottom
         local visible_bottom = true
-        for k = i + 1, #grid do
-          if grid[k][j] >= col then
+        for k = i + 1, #self.input do
+          if self.input[k][j] >= col then
             visible_bottom = false
             break
           end
@@ -52,7 +47,7 @@ function M:solve1()
         -- left
         local visible_left = true
         for k = j - 1, 1, -1 do
-          if grid[i][k] >= col then
+          if self.input[i][k] >= col then
             visible_left = false
             break
           end
@@ -65,37 +60,35 @@ function M:solve1()
     end
   end
 
-  return visible_trees
+  self.solution:add("one", visible_trees)
 end
 
 function M:solve2()
   local max_scenic_score = 0
 
-  local grid = self:parse_input()
-
-  for i, row in ipairs(grid) do
+  for i, row in ipairs(self.input) do
     for j, col in ipairs(row) do
       -- top
       local visible_top = 0
       for k = i - 1, 1, -1 do
         visible_top = visible_top + 1
-        if grid[k][j] >= col then
+        if self.input[k][j] >= col then
           break
         end
       end
       -- right
       local visible_right = 0
-      for k = j + 1, #grid[i] do
+      for k = j + 1, #self.input[i] do
         visible_right = visible_right + 1
-        if grid[i][k] >= col then
+        if self.input[i][k] >= col then
           break
         end
       end
       -- bottom
       local visible_bottom = 0
-      for k = i + 1, #grid do
+      for k = i + 1, #self.input do
         visible_bottom = visible_bottom + 1
-        if grid[k][j] >= col then
+        if self.input[k][j] >= col then
           break
         end
       end
@@ -103,7 +96,7 @@ function M:solve2()
       local visible_left = 0
       for k = j - 1, 1, -1 do
         visible_left = visible_left + 1
-        if grid[i][k] >= col then
+        if self.input[i][k] >= col then
           break
         end
       end
@@ -112,7 +105,9 @@ function M:solve2()
     end
   end
 
-  return max_scenic_score
+  self.solution:add("two", max_scenic_score)
 end
+
+M:run(false)
 
 return M

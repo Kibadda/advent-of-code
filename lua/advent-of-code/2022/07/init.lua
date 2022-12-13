@@ -1,6 +1,7 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "07")
+local M = AOC.create("2022", "07")
 
 local Directory = {
   new = function(self, name, size, parent, is_dir)
@@ -40,11 +41,11 @@ local Directory = {
   end,
 }
 
-function M:parse_input()
-  local root = Directory:new("/", 0, nil, true)
-  local current_directory = root
+function M:parse_input(file)
+  self.input = Directory:new("/", 0, nil, true)
+  local current_directory = self.input
 
-  for _, line in ipairs(self.lines) do
+  for line in file:lines() do
     if line ~= "$ cd /" then
       local split = line:split()
       if split[1] == "$" then
@@ -64,14 +65,10 @@ function M:parse_input()
     end
   end
 
-  return root
+  self.input:calculate_size()
 end
 
 function M:solve1()
-  local root = self:parse_input()
-
-  root:calculate_size()
-
   local function traverse(children)
     local size = 0
     for _, child in ipairs(children) do
@@ -86,17 +83,13 @@ function M:solve1()
     return size
   end
 
-  return traverse(root.children)
+  self.solution:add("one", traverse(self.input.children))
 end
 
 function M:solve2()
-  local root = self:parse_input()
-
-  root:calculate_size()
-
   local limit = 70000000
   local needed_empty_space = 30000000
-  local current_empty_space = limit - root.size
+  local current_empty_space = limit - self.input.size
 
   local deletion = needed_empty_space - current_empty_space
 
@@ -112,9 +105,11 @@ function M:solve2()
     end
   end
 
-  traverse(root.children)
+  traverse(self.input.children)
 
-  return minimum
+  self.solution:add("two", minimum)
 end
+
+M:run(false)
 
 return M

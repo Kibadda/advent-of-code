@@ -1,12 +1,13 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2015", "08")
+local M = AOC.create("2015", "08")
 
 function M:solve1()
   local total_chars_in_string = 0
   local total_chars_in_memory = 0
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local skip = 0
     line = line:to_list()
     for i = 1, #line do
@@ -30,13 +31,13 @@ function M:solve1()
     total_chars_in_string = total_chars_in_string + #line
   end
 
-  return total_chars_in_string - total_chars_in_memory
+  self.solution:add("one", total_chars_in_string - total_chars_in_memory)
 end
 
 function M:solve2()
   local diff = 0
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local skip = 0
     line = line:to_list()
     local extra = 0
@@ -61,7 +62,9 @@ function M:solve2()
     diff = diff + 2 + extra
   end
 
-  return diff
+  self.solution:add("two", diff)
 end
+
+M:run(false)
 
 return M
