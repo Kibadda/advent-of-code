@@ -1,9 +1,10 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "03")
+local M = AOC.create("2022", "03")
 
-function string:to_priority()
-  local byte = self:byte()
+local function to_priority(str)
+  local byte = str:byte()
 
   if byte <= 95 then
     byte = byte - string.byte "A" + 27
@@ -17,7 +18,7 @@ end
 function M:solve1()
   local rucksacks = {}
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local item = {
       one = {},
       two = {},
@@ -53,10 +54,10 @@ function M:solve1()
       end
     end
 
-    total_priority = total_priority + same_c:to_priority()
+    total_priority = total_priority + to_priority(same_c)
   end
 
-  return total_priority
+  self.solution:add("one", total_priority)
 end
 
 function M:solve2()
@@ -64,7 +65,7 @@ function M:solve2()
 
   local i = 0
   local group = {}
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     table.insert(group, line)
     i = i + 1
 
@@ -95,10 +96,12 @@ function M:solve2()
       end
     end
 
-    total_priority = total_priority + same_c:to_priority()
+    total_priority = total_priority + to_priority(same_c)
   end
 
-  return total_priority
+  self.solution:add("two", total_priority)
 end
+
+M:run(false)
 
 return M

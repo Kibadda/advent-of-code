@@ -1,6 +1,7 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2015", "06")
+local M = AOC.create("2015", "06")
 
 local function init()
   local grid = {}
@@ -17,7 +18,7 @@ end
 function M:solve1()
   local grid = init()
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split()
     if split[1] == "turn" then
       local start_coor = split[3]:split ","
@@ -54,13 +55,13 @@ function M:solve1()
     end
   end
 
-  return lights
+  self.solution:add("one", lights)
 end
 
 function M:solve2()
   local grid = init()
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split()
     if split[1] == "turn" then
       local start_coor = split[3]:split ","
@@ -100,7 +101,9 @@ function M:solve2()
     end
   end
 
-  return lights
+  self.solution:add("two", lights)
 end
+
+M:run(false)
 
 return M

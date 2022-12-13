@@ -1,14 +1,13 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "11")
+local M = AOC.create("2022", "11")
 
-function M:parse_input()
-  local monkeys = {}
-
+function M:parse_input(file)
   local monkey = { inspections = 0 }
-  for _, line in ipairs(self.lines) do
+  for line in file:lines() do
     if line == "" then
-      table.insert(monkeys, monkey)
+      table.insert(self.input, monkey)
       monkey = { inspections = 0 }
     else
       local split = line:split ":"
@@ -25,12 +24,10 @@ function M:parse_input()
       end
     end
   end
-
-  return monkeys
 end
 
 function M:solve1()
-  local monkeys = self:parse_input()
+  local monkeys = table.deepcopy(self.input)
 
   for _ = 1, 20 do
     for _, monkey in ipairs(monkeys) do
@@ -39,18 +36,6 @@ function M:solve1()
         local new = math.floor(loadstring(op)() / 3)
 
         local index = new % monkey.test == 0 and monkey.if_true or monkey.if_false
-        -- vim.pretty_print(
-        --   "old: "
-        --     .. item
-        --     .. ", new: "
-        --     .. new
-        --     .. " is divisible by "
-        --     .. monkey.test
-        --     .. "? "
-        --     .. new % monkey.test
-        --     .. " -> "
-        --     .. index
-        -- )
         table.insert(monkeys[index].items, new)
       end
       monkey.inspections = monkey.inspections + #monkey.items
@@ -69,15 +54,11 @@ function M:solve1()
     end
   end
 
-  return max1 * max2
+  self.solution:add("one", max1 * max2)
 end
 
 function M:solve2()
-  local monkeys = self:parse_input()
-
-  for _, monkey in ipairs(monkeys) do
-    vim.pretty_print(monkey.test)
-  end
+  local monkeys = table.deepcopy(self.input)
 
   for _ = 1, 10000 do
     for _, monkey in ipairs(monkeys) do
@@ -104,7 +85,9 @@ function M:solve2()
     end
   end
 
-  return max1 * max2
+  self.solution:add("two", max1 * max2)
 end
+
+M:run(false)
 
 return M

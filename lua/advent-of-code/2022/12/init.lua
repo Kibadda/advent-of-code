@@ -1,31 +1,27 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "12")
+local M = AOC.create("2022", "12")
 
-function M:parse_input()
-  local nodes = {}
-  local start_pos
-  local end_pos
+local start_pos
+local end_pos
 
-  for i, line in ipairs(self.lines) do
+function M:parse_input(file)
+  local i = 0
+  for line in file:lines() do
+    i = i + 1
     for j, c in ipairs(line:to_list()) do
       if c == "S" then
         start_pos = { x = i, y = j, c = "a" }
-        table.insert(nodes, start_pos)
+        table.insert(self.input, start_pos)
       elseif c == "E" then
         end_pos = { x = i, y = j, c = "z" }
-        table.insert(nodes, end_pos)
+        table.insert(self.input, end_pos)
       else
-        table.insert(nodes, { x = i, y = j, c = c })
+        table.insert(self.input, { x = i, y = j, c = c })
       end
     end
   end
-
-  return {
-    nodes = nodes,
-    start_pos = start_pos,
-    end_pos = end_pos,
-  }
 end
 
 local function count_steps(node)
@@ -65,21 +61,21 @@ local function bfs(nodes, start, end_func)
 end
 
 function M:solve1()
-  local parsed = self:parse_input()
-  local current = bfs(parsed.nodes, parsed.end_pos, function(node)
-    return node.x == parsed.start_pos.x and node.y == parsed.start_pos.y
+  local current = bfs(self.input, end_pos, function(node)
+    return node.x == start_pos.x and node.y == start_pos.y
   end)
 
-  return count_steps(current) - 1
+  self.solution:add("one", count_steps(current) - 1)
 end
 
 function M:solve2()
-  local parsed = self:parse_input()
-  local current = bfs(parsed.nodes, parsed.end_pos, function(node)
+  local current = bfs(self.input, end_pos, function(node)
     return node.c == "a"
   end)
 
-  return count_steps(current) - 1
+  self.solution:add("two", count_steps(current) - 1)
 end
+
+M:run(false)
 
 return M

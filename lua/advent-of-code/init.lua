@@ -1,7 +1,16 @@
-local function main(use_default_input, year, day)
+---@deprecated
+local function main(use_default_input, day, year)
   use_default_input = use_default_input == nil and true or use_default_input
-  year = year or os.date "%Y"
   day = day or os.date "%d"
+  year = year or os.date "%Y"
+
+  local solution = "advent-of-code.Solution"
+  package.loaded[solution] = nil
+  require(solution)
+
+  local aoc = "advent-of-code.AOCDay"
+  package.loaded[aoc] = nil
+  require(aoc)
 
   local helpers = "advent-of-code.helpers"
   package.loaded[helpers] = nil
@@ -18,9 +27,7 @@ local function main(use_default_input, year, day)
   ---@type AOCDay
   local aocday = require(module)
 
-  local solution = aocday:solve(use_default_input)
-  print("solution one: " .. solution.one)
-  print("solution two: " .. solution.two)
+  aocday:solve(use_default_input):print()
 end
 
-main(false)
+main(true)

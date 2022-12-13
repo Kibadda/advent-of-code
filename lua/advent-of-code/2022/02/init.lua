@@ -1,30 +1,36 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "02")
+local M = AOC.create("2022", "02")
 
--- function string:split(sep)
---   sep = sep or "%s"
---   local t = {}
---   for str in self:gmatch("([^" .. sep .. "]+)") do
---     table.insert(t, str)
---   end
---   return t
--- end
-
-function string:shape_to_score()
-  if self == "X" or self == "A" then
+local function shape_to_score(str)
+  if str == "X" or str == "A" then
     return 1
-  elseif self == "Y" or self == "B" then
+  elseif str == "Y" or str == "B" then
     return 2
   else
     return 3
   end
 end
 
+local function shape_to_result(str, win)
+  if str == "A" then
+    return win and "Y" or "Z"
+  elseif str == "B" then
+    return win and "Z" or "X"
+  else
+    return win and "X" or "Y"
+  end
+end
+
+function M:parse_input(file)
+  self.__super.parse_input(self, file)
+end
+
 function M:solve1()
   local score = 0
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split()
     if
       (split[1] == "A" and split[2] == "X")
@@ -39,38 +45,30 @@ function M:solve1()
     then
       score = score + 6
     end
-    score = score + split[2]:shape_to_score()
+    score = score + shape_to_score(split[2])
   end
 
-  return score
-end
-
-function string:shape_to_result(win)
-  if self == "A" then
-    return win and "Y" or "Z"
-  elseif self == "B" then
-    return win and "Z" or "X"
-  else
-    return win and "X" or "Y"
-  end
+  self.solution:add("one", score)
 end
 
 function M:solve2()
   local score = 0
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split()
 
     if split[2] == "X" then
-      score = score + split[1]:shape_to_result(false):shape_to_score()
+      score = score + shape_to_score(shape_to_result(split[1], false))
     elseif split[2] == "Y" then
-      score = score + 3 + split[1]:shape_to_score()
+      score = score + 3 + shape_to_score(split[1])
     else
-      score = score + 6 + split[1]:shape_to_result(true):shape_to_score()
+      score = score + 6 + shape_to_score(shape_to_result(split[1], true))
     end
   end
 
-  return score
+  self.solution:add("two", score)
 end
+
+M:run(false)
 
 return M

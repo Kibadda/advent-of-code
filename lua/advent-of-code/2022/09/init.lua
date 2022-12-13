@@ -1,16 +1,7 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "09")
-
-function table.find_pos(t, pos)
-  for _, p in ipairs(t) do
-    if pos.x == p.x and pos.y == p.y then
-      return false
-    end
-  end
-
-  return true
-end
+local M = AOC.create("2022", "09")
 
 local function check_pos(head_pos, tail_pos)
   local diff_x = head_pos.x - tail_pos.x
@@ -33,7 +24,7 @@ function M:solve1()
   local head_pos = { x = 0, y = 0 }
   local tail_pos = { x = 0, y = 0 }
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split()
     local direction = split[1]
     local amount = split[2]
@@ -49,7 +40,7 @@ function M:solve1()
         head_pos = { x = head_pos.x - 1, y = head_pos.y }
       end
       check_pos(head_pos, tail_pos)
-      if table.find_pos(all_tail_pos, tail_pos) then
+      if table.find(all_tail_pos, tail_pos) == nil then
         table.insert(all_tail_pos, {
           x = tail_pos.x,
           y = tail_pos.y,
@@ -58,7 +49,7 @@ function M:solve1()
     end
   end
 
-  return #all_tail_pos
+  self.solution:add("one", #all_tail_pos)
 end
 
 function M:solve2()
@@ -76,7 +67,7 @@ function M:solve2()
     { x = 0, y = 0 },
   }
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split()
     local direction = split[1]
     local amount = split[2]
@@ -94,7 +85,7 @@ function M:solve2()
       for i = 1, #knots - 1 do
         check_pos(knots[i], knots[i + 1])
       end
-      if table.find_pos(all_tail_pos, knots[10]) then
+      if table.find(all_tail_pos, knots[10]) == nil then
         table.insert(all_tail_pos, {
           x = knots[10].x,
           y = knots[10].y,
@@ -103,7 +94,9 @@ function M:solve2()
     end
   end
 
-  return #all_tail_pos
+  self.solution:add("two", #all_tail_pos)
 end
+
+M:run(false)
 
 return M

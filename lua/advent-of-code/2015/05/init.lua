@@ -1,11 +1,12 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2015", "05")
+local M = AOC.create("2015", "05")
 
 function M:solve1()
   local amount = 0
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local count_vowels = 0
     local has_double = false
     local has_no_banned_pairs = true
@@ -33,13 +34,13 @@ function M:solve1()
     end
   end
 
-  return amount
+  self.solution:add("one", amount)
 end
 
 function M:solve2()
   local amount = 0
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local has_double = false
     local has_pair = false
     for i = 1, #line - 1 do
@@ -62,7 +63,9 @@ function M:solve2()
     end
   end
 
-  return amount
+  self.solution:add("two", amount)
 end
+
+M:run(false)
 
 return M

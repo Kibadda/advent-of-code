@@ -1,11 +1,10 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "04")
+local M = AOC.create("2022", "04")
 
-function M:parse_input()
-  local section_pairs = {}
-
-  for _, line in ipairs(self.lines) do
+function M:parse_input(file)
+  for line in file:lines() do
     local parsed_section = {}
     for _, elf_sections in ipairs(line:split ",") do
       local boundaries = elf_sections:split "-"
@@ -18,16 +17,14 @@ function M:parse_input()
       end
       table.insert(parsed_section, sections)
     end
-    table.insert(section_pairs, parsed_section)
+    table.insert(self.input, parsed_section)
   end
-
-  return section_pairs
 end
 
 function M:solve1()
   local score = 0
 
-  for _, section_pair in ipairs(self:parse_input()) do
+  for _, section_pair in ipairs(self.input) do
     local section1_length = #section_pair[1]
     local section2_length = #section_pair[2]
 
@@ -48,13 +45,13 @@ function M:solve1()
     end
   end
 
-  return score
+  self.solution:add("one", score)
 end
 
 function M:solve2()
   local score = 0
 
-  for _, section_pair in ipairs(self:parse_input()) do
+  for _, section_pair in ipairs(self.input) do
     local section1_length = #section_pair[1]
     local section2_length = #section_pair[2]
 
@@ -75,7 +72,9 @@ function M:solve2()
     end
   end
 
-  return score
+  self.solution:add("two", score)
 end
+
+M:run(false)
 
 return M
