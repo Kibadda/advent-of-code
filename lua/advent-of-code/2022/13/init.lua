@@ -1,3 +1,6 @@
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
+
 local AOCDay = require "advent-of-code.AOCDay"
 
 local M = AOCDay:new("2022", "13")
@@ -103,7 +106,7 @@ function M:solve1()
     end
   end
 
-  return solution
+  self.solution:add("one", solution)
 end
 
 function M:solve2()
@@ -131,7 +134,9 @@ function M:solve2()
     end
   end
 
-  return divider_one * divider_two
+  self.solution:add("two", divider_one * divider_two)
 end
+
+M:run(false)
 
 return M

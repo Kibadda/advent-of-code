@@ -1,13 +1,14 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "10")
+local M = AOC.create("2022", "10")
 
 function M:solve1()
   local signal = 0
 
   local x = 1
   local cycle = 1
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split()
     if split[1] == "noop" then
       cycle = cycle + 1
@@ -27,11 +28,11 @@ function M:solve1()
     end
   end
 
-  return signal
+  self.solution:add("one", signal)
 end
 
 function M:solve2()
-  local image = { ["1"] = "" }
+  local image = { "" }
 
   local x = 1
   local cycle = 1
@@ -49,30 +50,30 @@ function M:solve2()
   end
 
   local index = 1
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split()
     if split[1] == "noop" then
       if check_pos() then
-        image["" .. index] = image["" .. index] .. "#"
+        image[index] = image[index] .. "#"
       else
-        image["" .. index] = image["" .. index] .. "."
+        image[index] = image[index] .. "."
       end
       cycle = cycle + 1
       if cycle % 40 == 1 then
         index = index + 1
-        image["" .. index] = ""
+        image[index] = ""
       end
     else
       for i = 1, 2 do
         if check_pos() then
-          image["" .. index] = image["" .. index] .. "#"
+          image[index] = image[index] .. "#"
         else
-          image["" .. index] = image["" .. index] .. "."
+          image[index] = image[index] .. "."
         end
         cycle = cycle + 1
         if cycle % 40 == 1 then
           index = index + 1
-          image["" .. index] = ""
+          image[index] = ""
         end
         if i == 2 then
           x = x + split[2]
@@ -81,8 +82,9 @@ function M:solve2()
     end
   end
 
-  vim.pretty_print(image)
-  return 1
+  self.solution:add("two", image)
 end
+
+M:run(false)
 
 return M

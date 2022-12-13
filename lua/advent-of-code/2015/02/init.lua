@@ -1,11 +1,12 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2015", "02")
+local M = AOC.create("2015", "02")
 
 function M:solve1()
   local total_square_feet = 0
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split "x"
     local length, width, height = tonumber(split[1]), tonumber(split[2]), tonumber(split[3])
 
@@ -16,13 +17,13 @@ function M:solve1()
     total_square_feet = total_square_feet + 2 * one + 2 * two + 2 * three + math.min(one, two, three)
   end
 
-  return total_square_feet
+  self.solution:add("one", total_square_feet)
 end
 
 function M:solve2()
   local total_feet = 0
 
-  for _, line in ipairs(self.lines) do
+  for _, line in ipairs(self.input) do
     local split = line:split "x"
     local length, width, height = tonumber(split[1]), tonumber(split[2]), tonumber(split[3])
 
@@ -31,7 +32,9 @@ function M:solve2()
     total_feet = total_feet + 2 * t[1] + 2 * t[2] + t[1] * t[2] * t[3]
   end
 
-  return total_feet
+  self.solution:add("two", total_feet)
 end
+
+M:run(false)
 
 return M

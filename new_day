@@ -23,9 +23,26 @@ create_directory() {
   aoc d -i "$DIR/input.txt" -p "$DIR/puzzle.md" -y $YEAR -d $DAY > /dev/null 2>&1
   touch "$DIR/test.txt"
   cat > "$DIR/init.lua" << EOM
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
+
 local AOCDay = require "advent-of-code.AOCDay"
 
 local M = AOCDay:new("$YEAR", "$DAY")
+
+function M:parse_input(file)
+  self.__super.parse_input(self, file)
+end
+
+function M:solve1()
+  self.solution:add("one", "not solved yet")
+end
+
+function M:solve2()
+  self.solution:add("two", "not solved yet")
+end
+
+M:run(true)
 
 return M
 EOM

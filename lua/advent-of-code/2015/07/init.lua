@@ -1,6 +1,7 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2015", "07")
+local M = AOC.create("2015", "07")
 
 -- d: 72
 -- e: 507
@@ -12,31 +13,27 @@ local M = AOCDay:new("2015", "07")
 -- y: 456
 local max = 65535
 
-function M:parse_input()
-  local wires = {}
-
-  for _, line in ipairs(self.lines) do
+function M:parse_input(file)
+  for line in file:lines() do
     local split = line:split()
     if #split == 3 then
-      wires[split[3]] = tonumber(split[1]) or {
+      self.input[split[3]] = tonumber(split[1]) or {
         operation = "EQ",
         one = split[1],
       }
     elseif #split == 4 then
-      wires[split[4]] = {
+      self.input[split[4]] = {
         operation = "NOT",
         one = tonumber(split[2]) or split[2],
       }
     elseif #split == 5 then
-      wires[split[5]] = {
+      self.input[split[5]] = {
         operation = split[2],
         one = tonumber(split[1]) or split[1],
         two = tonumber(split[3]) or split[3],
       }
     end
   end
-
-  return wires
 end
 
 local function eval_wires(wires, wire_name)
@@ -69,14 +66,17 @@ local function eval_wires(wires, wire_name)
 end
 
 function M:solve1()
-  return eval_wires(self:parse_input(), "a")
+  local wires = table.deepcopy(self.input)
+  self.solution:add("one", eval_wires(wires, "a"))
 end
 
 function M:solve2()
-  local wires = self:parse_input()
+  local wires = table.deepcopy(self.input)
   wires.b = 956
 
-  return eval_wires(wires, "a")
+  self.solution:add("two", eval_wires(wires, "a"))
 end
+
+M:run(false)
 
 return M

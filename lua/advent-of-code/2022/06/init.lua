@@ -1,19 +1,12 @@
-local AOCDay = require "advent-of-code.AOCDay"
+local AOC = require "advent-of-code.AOC"
+AOC.reload()
 
-local M = AOCDay:new("2022", "06")
-
-function table.count_uniques(t)
-  local tmp = {}
-  for _, v in ipairs(t) do
-    tmp[v] = true
-  end
-  return table.count(tmp)
-end
+local M = AOC.create("2022", "06")
 
 function M:solve1()
   local buffer = {}
   local index = 0
-  for c in self.lines[1]:gmatch "." do
+  for c in self.input[1]:gmatch "." do
     if #buffer >= 4 then
       table.remove(buffer, 1)
     end
@@ -26,13 +19,13 @@ function M:solve1()
     end
   end
 
-  return index
+  self.solution:add("one", index)
 end
 
 function M:solve2()
   local buffer = {}
   local index = 0
-  for c in self.lines[1]:gmatch "." do
+  for c in self.input[1]:gmatch "." do
     if #buffer >= 14 then
       table.remove(buffer, 1)
     end
@@ -45,7 +38,9 @@ function M:solve2()
     end
   end
 
-  return index
+  self.solution:add("two", index)
 end
+
+M:run(false)
 
 return M
