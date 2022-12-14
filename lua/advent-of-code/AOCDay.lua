@@ -26,7 +26,7 @@ local AOCDay = {
   solve1 = function(_) end,
   solve2 = function(_) end,
   solve = function(self, use_test_input)
-    local start = os.clock()
+    local start = Timing.time()
 
     local file_name = use_test_input and "test.txt" or "input.txt"
     local path = ("./lua/advent-of-code/%s/%s/%s"):format(self.year, self.day, file_name)
@@ -34,12 +34,12 @@ local AOCDay = {
 
     if file then
       self:parse_input(file)
-      local parsing = os.clock()
+      local parsing = Timing.time()
 
       self:solve1()
-      local one = os.clock()
+      local one = Timing.time()
       self:solve2()
-      local two = os.clock()
+      local two = Timing.time()
 
       self.solution.took = Timing:new(start, parsing, one, two)
 
@@ -47,8 +47,8 @@ local AOCDay = {
     end
 
     local error = Solution:new()
-    error:add("one", "file error")
-    error:add("two", "file error")
+    error:add("1", "file error")
+    error:add("2", "file error")
 
     return error
   end,

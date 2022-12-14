@@ -34,7 +34,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", amount)
+  self.solution:add("1", amount)
 end
 
 function M:solve2()
@@ -63,7 +63,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", amount)
+  self.solution:add("2", amount)
 end
 
 M:run(false)

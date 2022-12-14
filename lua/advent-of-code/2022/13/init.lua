@@ -106,7 +106,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", solution)
+  self.solution:add("1", solution)
 end
 
 function M:solve2()
@@ -134,7 +134,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", divider_one * divider_two)
+  self.solution:add("2", divider_one * divider_two)
 end
 
 M:run(false)

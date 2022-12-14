@@ -54,7 +54,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", max1 * max2)
+  self.solution:add("1", max1 * max2)
 end
 
 function M:solve2()
@@ -85,7 +85,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", max1 * max2)
+  self.solution:add("2", max1 * max2)
 end
 
 M:run(false)

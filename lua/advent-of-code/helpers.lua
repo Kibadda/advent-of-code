@@ -19,17 +19,23 @@ function table.to_string(t, level)
   level = level ~= nil and level or 1
 
   local s = "{\n"
+  local test = {}
   for k, v in pairs(t) do
-    s = s .. (" "):rep(level * 2)
+    local test_string = (" "):rep(level * 2)
     if type(k) ~= "number" then
-      s = s .. k .. " = "
+      test_string = test_string .. k .. " = "
     end
     if type(v) == "table" then
-      s = s .. table.to_string(v, level + 1) .. ",\n"
+      test_string = test_string .. table.to_string(v, level + 1) .. ",\n"
     else
-      s = s .. v .. ",\n"
+      test_string = test_string .. v .. ",\n"
     end
+    table.insert(test, test_string)
   end
+
+  table.sort(test)
+
+  s = s .. table.concat(test, "\n")
 
   s = s .. (" "):rep((level - 1) * 2) .. "}"
 

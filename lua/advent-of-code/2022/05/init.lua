@@ -61,7 +61,7 @@ function M:solve1()
     top_crates = top_crates .. stack[#stack]
   end
 
-  self.solution:add("one", top_crates)
+  self.solution:add("1", top_crates)
 end
 
 function M:solve2()
@@ -81,7 +81,7 @@ function M:solve2()
     top_crates = top_crates .. stack[#stack]
   end
 
-  self.solution:add("two", top_crates)
+  self.solution:add("2", top_crates)
 end
 
 M:run(false)

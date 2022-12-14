@@ -1,9 +1,7 @@
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
-local AOCDay = require "advent-of-code.AOCDay"
-
-local M = AOCDay:new("2022", "14")
+local M = AOC.create("2022", "14")
 
 local min, max = math.huge, 0
 
@@ -98,7 +96,7 @@ function M:solve1()
     current = get_rest_pos(start)
   end
 
-  self.solution:add("one", steps_till_nirvana)
+  self.solution:add("1", steps_till_nirvana)
 end
 
 function M:solve2()
@@ -159,7 +157,7 @@ function M:solve2()
     current = get_rest_pos(start)
   end
 
-  self.solution:add("two", steps_till_stop + 1)
+  self.solution:add("2", steps_till_stop + 1)
 end
 
 M:run(false)

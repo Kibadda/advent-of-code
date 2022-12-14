@@ -83,7 +83,7 @@ function M:solve1()
     return size
   end
 
-  self.solution:add("one", traverse(self.input.children))
+  self.solution:add("1", traverse(self.input.children))
 end
 
 function M:solve2()
@@ -107,7 +107,7 @@ function M:solve2()
 
   traverse(self.input.children)
 
-  self.solution:add("two", minimum)
+  self.solution:add("2", minimum)
 end
 
 M:run(false)

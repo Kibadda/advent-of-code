@@ -28,7 +28,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", houses)
+  self.solution:add("1", houses)
 end
 
 function M:solve2()
@@ -75,7 +75,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", houses)
+  self.solution:add("2", houses)
 end
 
 M:run(false)
