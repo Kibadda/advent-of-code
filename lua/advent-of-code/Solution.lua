@@ -4,11 +4,18 @@
 ---@field print (fun(self: Solution))
 ---@field one any solution of first problem
 ---@field two any solution of second problem
+---@field took Timing
 local Solution = {
   new = function(self)
     return setmetatable({
       one = "not solved yet",
       two = "not solved yet",
+      took = {
+        parsing = 0,
+        one = 0,
+        two = 0,
+        sum = 0,
+      },
     }, {
       __index = self,
     })

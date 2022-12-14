@@ -5,6 +5,10 @@ local AOCDay = require "advent-of-code.AOCDay"
 ---@field create (fun(year: string, day: string): AOCDay)
 local AOC = {
   reload = function()
+    local timing = "advent-of-code.Timing"
+    package.loaded[timing] = nil
+    require(timing)
+
     local solution = "advent-of-code.Solution"
     package.loaded[solution] = nil
     require(solution)
