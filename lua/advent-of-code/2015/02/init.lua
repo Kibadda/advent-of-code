@@ -17,7 +17,7 @@ function M:solve1()
     total_square_feet = total_square_feet + 2 * one + 2 * two + 2 * three + math.min(one, two, three)
   end
 
-  self.solution:add("one", total_square_feet)
+  self.solution:add("1", total_square_feet)
 end
 
 function M:solve2()
@@ -32,7 +32,7 @@ function M:solve2()
     total_feet = total_feet + 2 * t[1] + 2 * t[2] + t[1] * t[2] * t[3]
   end
 
-  self.solution:add("two", total_feet)
+  self.solution:add("2", total_feet)
 end
 
 M:run(false)

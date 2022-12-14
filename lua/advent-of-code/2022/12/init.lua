@@ -65,7 +65,7 @@ function M:solve1()
     return node.x == start_pos.x and node.y == start_pos.y
   end)
 
-  self.solution:add("one", count_steps(current) - 1)
+  self.solution:add("1", count_steps(current) - 1)
 end
 
 function M:solve2()
@@ -73,7 +73,7 @@ function M:solve2()
     return node.c == "a"
   end)
 
-  self.solution:add("two", count_steps(current) - 1)
+  self.solution:add("2", count_steps(current) - 1)
 end
 
 M:run(false)

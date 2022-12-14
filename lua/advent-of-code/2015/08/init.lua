@@ -31,7 +31,7 @@ function M:solve1()
     total_chars_in_string = total_chars_in_string + #line
   end
 
-  self.solution:add("one", total_chars_in_string - total_chars_in_memory)
+  self.solution:add("1", total_chars_in_string - total_chars_in_memory)
 end
 
 function M:solve2()
@@ -62,7 +62,7 @@ function M:solve2()
     diff = diff + 2 + extra
   end
 
-  self.solution:add("two", diff)
+  self.solution:add("2", diff)
 end
 
 M:run(false)

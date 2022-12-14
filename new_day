@@ -26,20 +26,18 @@ create_directory() {
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
-local AOCDay = require "advent-of-code.AOCDay"
-
-local M = AOCDay:new("$YEAR", "$DAY")
+local M = AOC.create("$YEAR", "$DAY")
 
 function M:parse_input(file)
   self.__super.parse_input(self, file)
 end
 
 function M:solve1()
-  self.solution:add("one", "not solved yet")
+  self.solution:add("1", "not solved yet")
 end
 
 function M:solve2()
-  self.solution:add("two", "not solved yet")
+  self.solution:add("2", "not solved yet")
 end
 
 M:run(true)

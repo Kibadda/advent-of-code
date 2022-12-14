@@ -49,7 +49,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", #all_tail_pos)
+  self.solution:add("1", #all_tail_pos)
 end
 
 function M:solve2()
@@ -94,7 +94,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", #all_tail_pos)
+  self.solution:add("2", #all_tail_pos)
 end
 
 M:run(false)

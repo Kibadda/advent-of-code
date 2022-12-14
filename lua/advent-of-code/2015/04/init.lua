@@ -15,7 +15,7 @@ function M:solve1()
     hash = md5.sumhexa(secret .. i)
   until hash:sub(1, 5) == "00000"
 
-  self.solution:add("one", i)
+  self.solution:add("1", i)
 end
 
 function M:solve2()
@@ -28,7 +28,7 @@ function M:solve2()
     hash = md5.sumhexa(secret .. i)
   until hash:sub(1, 6) == "000000"
 
-  self.solution:add("two", i)
+  self.solution:add("2", i)
 end
 
 M:run(false)

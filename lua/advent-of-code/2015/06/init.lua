@@ -55,7 +55,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", lights)
+  self.solution:add("1", lights)
 end
 
 function M:solve2()
@@ -101,7 +101,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", lights)
+  self.solution:add("2", lights)
 end
 
 M:run(false)

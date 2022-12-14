@@ -22,14 +22,14 @@ function M:solve1()
   table.sort(self.input, function(a, b)
     return b < a
   end)
-  self.solution:add("one", self.input[1])
+  self.solution:add("1", self.input[1])
 end
 
 function M:solve2()
   table.sort(self.input, function(a, b)
     return b < a
   end)
-  self.solution:add("two", self.input[1] + self.input[2] + self.input[3])
+  self.solution:add("2", self.input[1] + self.input[2] + self.input[3])
 end
 
 M:run(false)

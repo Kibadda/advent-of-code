@@ -67,14 +67,14 @@ end
 
 function M:solve1()
   local wires = table.deepcopy(self.input)
-  self.solution:add("one", eval_wires(wires, "a"))
+  self.solution:add("1", eval_wires(wires, "a"))
 end
 
 function M:solve2()
   local wires = table.deepcopy(self.input)
   wires.b = 956
 
-  self.solution:add("two", eval_wires(wires, "a"))
+  self.solution:add("2", eval_wires(wires, "a"))
 end
 
 M:run(false)

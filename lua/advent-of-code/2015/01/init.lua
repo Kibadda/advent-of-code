@@ -12,7 +12,7 @@ function M:solve1()
       floor = floor - 1
     end
   end
-  self.solution:add("one", floor)
+  self.solution:add("1", floor)
 end
 
 function M:solve2()
@@ -29,7 +29,7 @@ function M:solve2()
       break
     end
   end
-  self.solution:add("two", index)
+  self.solution:add("2", index)
 end
 
 M:run(false)
