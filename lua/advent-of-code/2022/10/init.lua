@@ -28,7 +28,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", signal)
+  self.solution:add("1", signal)
 end
 
 function M:solve2()
@@ -82,7 +82,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", image)
+  self.solution:add("2", image)
 end
 
 M:run(false)

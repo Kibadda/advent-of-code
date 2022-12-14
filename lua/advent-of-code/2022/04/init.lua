@@ -45,7 +45,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", score)
+  self.solution:add("1", score)
 end
 
 function M:solve2()
@@ -72,7 +72,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", score)
+  self.solution:add("2", score)
 end
 
 M:run(false)

@@ -19,7 +19,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", index)
+  self.solution:add("1", index)
 end
 
 function M:solve2()
@@ -38,7 +38,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", index)
+  self.solution:add("2", index)
 end
 
 M:run(false)

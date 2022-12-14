@@ -57,7 +57,7 @@ function M:solve1()
     total_priority = total_priority + to_priority(same_c)
   end
 
-  self.solution:add("one", total_priority)
+  self.solution:add("1", total_priority)
 end
 
 function M:solve2()
@@ -99,7 +99,7 @@ function M:solve2()
     total_priority = total_priority + to_priority(same_c)
   end
 
-  self.solution:add("two", total_priority)
+  self.solution:add("2", total_priority)
 end
 
 M:run(false)

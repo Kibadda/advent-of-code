@@ -60,7 +60,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("one", visible_trees)
+  self.solution:add("1", visible_trees)
 end
 
 function M:solve2()
@@ -105,7 +105,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("two", max_scenic_score)
+  self.solution:add("2", max_scenic_score)
 end
 
 M:run(false)
