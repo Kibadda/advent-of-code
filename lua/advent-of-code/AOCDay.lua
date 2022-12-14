@@ -1,4 +1,5 @@
 local Solution = require "advent-of-code.Solution"
+local Timing = require "advent-of-code.Timing"
 
 ---@class AOCDay
 ---@field year string
@@ -25,14 +26,22 @@ local AOCDay = {
   solve1 = function(_) end,
   solve2 = function(_) end,
   solve = function(self, use_test_input)
+    local start = os.clock()
+
     local file_name = use_test_input and "test.txt" or "input.txt"
     local path = ("./lua/advent-of-code/%s/%s/%s"):format(self.year, self.day, file_name)
     local file = io.open(path, "r")
 
     if file then
       self:parse_input(file)
+      local parsing = os.clock()
+
       self:solve1()
+      local one = os.clock()
       self:solve2()
+      local two = os.clock()
+
+      self.solution.took = Timing:new(start, parsing, one, two)
 
       return self.solution
     end
