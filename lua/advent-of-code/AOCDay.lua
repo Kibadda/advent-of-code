@@ -7,11 +7,11 @@ local Timing = require "advent-of-code.Timing"
 ---@field input table
 ---@field solution Solution
 ---@field parse_input (fun(self: AOCDay, file: file*)) parses input
----@field solve1 (fun(self: AOCDay)) solves first problem
----@field solve2 (fun(self: AOCDay)) solves second problem
----@field solve (fun(self: AOCDay, use_test_input: boolean): Solution) solves all problems
+---@field solve1 (fun(self: AOCDay, input: any)) solves first problem
+---@field solve2 (fun(self: AOCDay, input: any)) solves second problem
+---@field solve (fun(self: AOCDay, use_test_input: boolean, input1: any, input2: any): Solution) solves all problems
 ---@field new (fun(self: AOCDay, year: string, day: string): AOCDay) create new AOCDay
----@field run (fun(self: AOCDay, use_test_input: boolean)) run
+---@field run (fun(self: AOCDay, use_test_input: boolean, input1: any, input2: any)) run
 ---@field __super AOCDay
 local AOCDay = {
   year = "",
@@ -25,7 +25,7 @@ local AOCDay = {
   end,
   solve1 = function(_) end,
   solve2 = function(_) end,
-  solve = function(self, use_test_input)
+  solve = function(self, use_test_input, input1, input2)
     local start = Timing.time()
 
     local file_name = use_test_input and "test.txt" or "input.txt"
@@ -36,9 +36,9 @@ local AOCDay = {
       self:parse_input(file)
       local parsing = Timing.time()
 
-      self:solve1()
+      self:solve1(input1)
       local one = Timing.time()
-      self:solve2()
+      self:solve2(input2)
       local two = Timing.time()
 
       self.solution.took = Timing:new(start, parsing, one, two)
@@ -63,8 +63,8 @@ local AOCDay = {
       __index = self,
     })
   end,
-  run = function(self, use_test_input)
-    self:solve(use_test_input):print()
+  run = function(self, use_test_input, input1, input2)
+    self:solve(use_test_input, input1, input2):print()
   end,
 }
 
