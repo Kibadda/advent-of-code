@@ -1,28 +1,20 @@
-local AOCDay = require "advent-of-code.AOCDay"
-
 ---@class AOC
 ---@field reload function
 ---@field create (fun(year: string, day: string): AOCDay)
 local AOC = {
   reload = function()
-    local timing = "advent-of-code.Timing"
-    package.loaded[timing] = nil
-    require(timing)
-
-    local solution = "advent-of-code.Solution"
-    package.loaded[solution] = nil
-    require(solution)
-
-    local aoc = "advent-of-code.AOCDay"
-    package.loaded[aoc] = nil
-    require(aoc)
-
-    local helpers = "advent-of-code.helpers"
-    package.loaded[helpers] = nil
-    require(helpers)
+    for _, p in ipairs {
+      "advent-of-code.Timing",
+      "advent-of-code.Solution",
+      "advent-of-code.AOCDay",
+      "advent-of-code.helpers",
+    } do
+      package.loaded[p] = nil
+    end
   end,
   create = function(year, day)
-    return AOCDay:new(year, day)
+    require "advent-of-code.helpers"
+    return require("advent-of-code.AOCDay"):new(year, day)
   end,
 }
 
