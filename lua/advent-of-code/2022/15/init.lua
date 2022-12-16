@@ -94,7 +94,7 @@ function M:solve2(bound)
   end
 end
 
-local use_test_data = true
+local use_test_data = false
 M:run(use_test_data, use_test_data and 10 or 2000000, use_test_data and 20 or 4000000)
 
 return M

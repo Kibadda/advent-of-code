@@ -27,13 +27,13 @@ function table.to_string(t, level)
     end
     if type(v) == "table" then
       test_string = test_string .. table.to_string(v, level + 1) .. ",\n"
+    elseif type(v) == "boolean" then
+      test_string = test_string .. (v and "true" or "false") .. ",\n"
     else
       test_string = test_string .. v .. ",\n"
     end
     table.insert(test, test_string)
   end
-
-  table.sort(test)
 
   s = s .. table.concat(test, "\n")
 
@@ -50,10 +50,25 @@ function table.count(t)
   return count
 end
 
-function table.find(t, pos)
-  for i, p in pairs(t) do
-    if p.x == pos.x and p.y == pos.y then
-      return i
+function table.find(t, needle, keys)
+  keys = keys or { "x", "y" }
+  if type(keys) ~= "table" then
+    keys = { keys }
+  end
+
+  for i, item in pairs(t) do
+    if type(item) == "table" then
+      local check = true
+      for _, key in ipairs(keys) do
+        check = check and item[key] == needle[key]
+      end
+      if check then
+        return i
+      end
+    else
+      if needle == item then
+        return i
+      end
     end
   end
 
@@ -81,4 +96,14 @@ function table.deepcopy(t)
     copy = t
   end
   return copy
+end
+
+function table.filter(t, func)
+  local tmp = {}
+  for k, v in pairs(t) do
+    if func(v, k) then
+      tmp[k] = v
+    end
+  end
+  return tmp
 end
