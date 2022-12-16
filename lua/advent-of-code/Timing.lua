@@ -23,7 +23,7 @@ local Timing = {
   all = "",
   new = function(self, start, parsing, one, two)
     local function format_string(diff)
-      return ("%.3fms"):format(diff / 1000000)
+      return ("%.3fs"):format(diff / 1000000)
     end
     return setmetatable({
       all = format_string(two - start),
