@@ -107,3 +107,14 @@ function table.filter(t, func)
   end
   return tmp
 end
+
+function table.reduce(t, func, start_value, iter)
+  local current = start_value or 0
+  iter = iter or ipairs
+
+  for k, v in iter(t) do
+    current = func(current, v, k)
+  end
+
+  return current
+end
