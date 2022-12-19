@@ -7,6 +7,10 @@ function string:split(sep)
   return t
 end
 
+function string:trim()
+  return self:gsub("^%s+", ""):gsub("%s+$", "")
+end
+
 function string:to_list()
   local t = {}
   for c in self:gmatch "." do
@@ -125,4 +129,15 @@ function table.reduce(t, func, start_value, iter)
   end
 
   return current
+end
+
+function table.map(t, func, iter)
+  iter = iter or ipairs
+
+  local tmp = {}
+  for k, v in iter(t) do
+    tmp[k] = func(v, k)
+  end
+
+  return tmp
 end
