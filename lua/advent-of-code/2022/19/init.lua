@@ -5,33 +5,33 @@ local M = AOC.create("2022", "19")
 
 function M:parse_input(file)
   for line in file:lines() do
-    local split = line:split()
+    local split = line:only_ints()
     table.insert(self.input, {
       plans = {
         ore = {
-          ore = tonumber(split[7]),
+          ore = tonumber(split[2]),
         },
         clay = {
-          ore = tonumber(split[13]),
+          ore = tonumber(split[3]),
         },
         obsidian = {
-          ore = tonumber(split[19]),
-          clay = tonumber(split[22]),
+          ore = tonumber(split[4]),
+          clay = tonumber(split[5]),
         },
         geode = {
-          ore = tonumber(split[28]),
-          obsidian = tonumber(split[31]),
+          ore = tonumber(split[6]),
+          obsidian = tonumber(split[7]),
         },
       },
       max = {
         ore = math.max(
-          tonumber(split[7]) or 0,
-          tonumber(split[13]) or 0,
-          tonumber(split[19]) or 0,
-          tonumber(split[28]) or 0
+          tonumber(split[2]) or 0,
+          tonumber(split[3]) or 0,
+          tonumber(split[4]) or 0,
+          tonumber(split[6]) or 0
         ),
-        clay = tonumber(split[22]),
-        obsidian = tonumber(split[31]),
+        clay = tonumber(split[5]),
+        obsidian = tonumber(split[7]),
         geode = math.huge,
       },
     })
