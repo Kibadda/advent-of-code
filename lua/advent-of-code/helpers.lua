@@ -15,6 +15,14 @@ function string:to_list()
   return t
 end
 
+function string:only_ints()
+  local t = {}
+  for num in self:gmatch "%d+" do
+    table.insert(t, tonumber(num))
+  end
+  return t
+end
+
 function table.to_string(t, level)
   level = level ~= nil and level or 1
 
