@@ -27,6 +27,13 @@ function string:only_ints()
   return t
 end
 
+function string:fill(n)
+  while #self < n do
+    self = " " .. self
+  end
+  return self
+end
+
 function table.to_string(t, level)
   level = level ~= nil and level or 1
 
