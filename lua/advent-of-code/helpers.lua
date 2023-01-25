@@ -34,6 +34,10 @@ function string:fill(n)
   return self
 end
 
+function string:at(pos)
+  return pos <= #self and self:sub(pos, pos) or nil
+end
+
 function table.to_string(t, level)
   level = level ~= nil and level or 1
 
@@ -117,8 +121,10 @@ function table.deepcopy(t)
   return copy
 end
 
-function table.filter(t, func)
+function table.filter(t, func, iter)
   local tmp = {}
+  iter = iter or ipairs
+
   for k, v in pairs(t) do
     if func(v, k) then
       tmp[k] = v
@@ -147,4 +153,45 @@ function table.map(t, func, iter)
   end
 
   return tmp
+end
+
+function table.keys(t, iter)
+  iter = iter or pairs
+
+  local tmp = {}
+  for k in iter(t) do
+    table.insert(tmp, k)
+  end
+
+  return tmp
+end
+
+function table.values(t, iter)
+  iter = iter or pairs
+
+  local tmp = {}
+  for _, v in iter(t) do
+    table.insert(tmp, v)
+  end
+
+  return tmp
+end
+
+function table.map_to_groups(t, func, iter)
+  iter = iter or ipairs
+
+  local tmp = {}
+  for k, v in iter(t) do
+    local s = func(v, k)
+    tmp[s[1]] = tmp[s[1]] or {}
+    table.insert(tmp[s[1]], s[2])
+  end
+
+  return tmp
+end
+
+function table.frequencies(t, func, iter)
+  return table.map(table.map_to_groups(t, func, iter or ipairs), function(s)
+    return table.count(s)
+  end, pairs)
 end

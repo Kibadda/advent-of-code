@@ -67,9 +67,9 @@ function M:solve1()
 end
 
 function M:solve2()
-  self.solution:add("2", "not solved yet")
+  self.solution:add("2", nil)
 end
 
-M:run(false)
+M:run(true)
 
 return M

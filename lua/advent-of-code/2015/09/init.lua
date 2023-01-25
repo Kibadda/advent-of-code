@@ -37,11 +37,11 @@ end
 
 function M:solve1()
   vim.pretty_print(self.input)
-  self.solution:add("1", "not solved yet")
+  self.solution:add("1", nil)
 end
 
 function M:solve2()
-  self.solution:add("2", "not solved yet")
+  self.solution:add("2", nil)
 end
 
 M:run(true)
