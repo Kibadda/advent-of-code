@@ -29,7 +29,8 @@ local AOCDay = {
     local start = Timing.time()
 
     local file_name = use_test_input and "test.txt" or "input.txt"
-    local path = ("./lua/advent-of-code/%s/%s/%s"):format(self.year, self.day, file_name)
+    local dir = debug.getinfo(2, "S").source:sub(2, 2) == "." and "" or "/lua"
+    local path = (".%s/advent-of-code/%s/%s/%s"):format(dir, self.year, self.day, file_name)
     local file = io.open(path, "r")
 
     if file then
