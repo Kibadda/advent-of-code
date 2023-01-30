@@ -25,10 +25,12 @@ function string:trim()
   return self:gsub("^%s+", ""):gsub("%s+$", "")
 end
 
-function string:to_list()
+function string:to_list(func)
   local t = {}
   for c in self:gmatch "." do
-    table.insert(t, c)
+    if func == nil or func(c) then
+      table.insert(t, c)
+    end
   end
   return t
 end
@@ -133,13 +135,18 @@ function table.deepcopy(t)
   return copy
 end
 
-function table.filter(t, func, iter)
+function table.filter(t, func, keep_index, iter)
   local tmp = {}
+  keep_index = keep_index == false
   iter = iter or ipairs
 
-  for k, v in pairs(t) do
+  for k, v in iter(t) do
     if func(v, k) then
-      tmp[k] = v
+      if keep_index then
+        tmp[k] = v
+      else
+        table.insert(tmp, v)
+      end
     end
   end
   return tmp
