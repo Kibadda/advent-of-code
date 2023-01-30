@@ -1,3 +1,5 @@
+article \*[title]{border-bottom:1px dotted #ffff66;}
+
 \--- Day 21: Monkey Math ---
 ----------
 
@@ -48,8 +50,6 @@ However, your actual situation involves considerably more monkeys. *What number 
 
 Your puzzle answer was `286698846151845`.
 
-The first half of this puzzle is complete! It provides one gold star: \*
-
 \--- Part Two ---
 ----------
 
@@ -63,8 +63,12 @@ In the above example, the number you need to yell to pass `root`'s equality test
 
 *What number do you yell to pass `root`'s equality test?*
 
-Answer:
+Your puzzle answer was `3759566892641`.
 
-Although it hasn't changed, you can still [get your puzzle input](21/input).
+Both parts of this puzzle are complete! They provide two gold stars: \*\*
 
-You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+Part+One+of+%22Monkey+Math%22+%2D+Day+21+%2D+Advent+of+Code+2022&url=https%3A%2F%2Fadventofcode%2Ecom%2F2022%2Fday%2F21&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.
+At this point, all that is left is for you to [admire your Advent calendar](/2022).
+
+If you still want to see it, you can [get your puzzle input](21/input).
+
+You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+%22Monkey+Math%22+%2D+Day+21+%2D+Advent+of+Code+2022&url=https%3A%2F%2Fadventofcode%2Ecom%2F2022%2Fday%2F21&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.
