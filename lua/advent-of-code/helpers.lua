@@ -1,3 +1,17 @@
+---@param value integer|string
+function _G.match(value)
+  return function(cases)
+    for k, v in pairs(cases) do
+      if k == value then
+        return type(v) == "function" and v() or v
+      end
+    end
+    if cases[1] or cases["_"] then
+      return cases[1] or cases["_"]
+    end
+  end
+end
+
 function string:split(sep)
   sep = sep or "%s"
   local t = {}
@@ -45,9 +59,7 @@ function table.to_string(t, level)
   local test = {}
   for k, v in pairs(t) do
     local test_string = (" "):rep(level * 2)
-    if type(k) ~= "number" then
-      test_string = test_string .. k .. " = "
-    end
+    test_string = test_string .. k .. " = "
     if type(v) == "table" then
       test_string = test_string .. table.to_string(v, level + 1) .. ",\n"
     elseif type(v) == "boolean" then
@@ -58,7 +70,7 @@ function table.to_string(t, level)
     table.insert(test, test_string)
   end
 
-  s = s .. table.concat(test, "\n")
+  s = s .. table.concat(test, "")
 
   s = s .. (" "):rep((level - 1) * 2) .. "}"
 
@@ -194,4 +206,14 @@ function table.frequencies(t, func, iter)
   return table.map(table.map_to_groups(t, func, iter or ipairs), function(s)
     return table.count(s)
   end, pairs)
+end
+
+function table.reverse(t)
+  local tmp = {}
+
+  for _, v in ipairs(t) do
+    table.insert(tmp, 1, v)
+  end
+
+  return tmp
 end
