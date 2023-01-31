@@ -152,7 +152,6 @@ end
 
 function table.filter(t, func, keep_index, iter)
   local tmp = {}
-  keep_index = keep_index == false
   iter = iter or ipairs
 
   for k, v in iter(t) do
