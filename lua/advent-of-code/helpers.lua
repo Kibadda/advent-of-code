@@ -12,6 +12,17 @@ function _G.match(value)
   end
 end
 
+local old_print = print
+function _G.print(...)
+  old_print(unpack(table.map({ ... }, function(arg)
+    if type(arg) == "table" then
+      return table.to_string(arg)
+    else
+      return arg
+    end
+  end)))
+end
+
 function string:split(sep)
   sep = sep or "%s"
   local t = {}
@@ -35,9 +46,13 @@ function string:to_list(func)
   return t
 end
 
-function string:only_ints()
+function string:only_ints(with_negatives)
   local t = {}
-  for num in self:gmatch "%d+" do
+  local pattern = "%d+"
+  if with_negatives then
+    pattern = "-?%d+"
+  end
+  for num in self:gmatch(pattern) do
     table.insert(t, tonumber(num))
   end
   return t
