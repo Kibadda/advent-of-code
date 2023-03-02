@@ -1,13 +1,29 @@
 ---@param value integer|string
 function _G.match(value)
+  local function re(v)
+    if type(v) == "function" then
+      return v(value)
+    else
+      return v
+    end
+  end
+
   return function(cases)
     for k, v in pairs(cases) do
-      if k == value then
-        return type(v) == "function" and v() or v
+      if type(k) == "table" then
+        for _, key in ipairs(k) do
+          if key == value then
+            return re(v)
+          end
+        end
+      else
+        if k == value then
+          return re(v)
+        end
       end
     end
-    if cases[1] or cases["_"] then
-      return cases[1] or cases["_"]
+    if cases._ then
+      return re(cases._)
     end
   end
 end
