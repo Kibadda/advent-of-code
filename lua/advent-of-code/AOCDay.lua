@@ -9,6 +9,7 @@ local Timing = require "advent-of-code.Timing"
 ---@field parse_input (fun(self: AOCDay, file: file*)) parses input
 ---@field solve1 (fun(self: AOCDay, input: any)) solves first problem
 ---@field solve2 (fun(self: AOCDay, input: any)) solves second problem
+---@field solver (fun(self: AOCDay, input: any): any) placeholder function
 ---@field solve (fun(self: AOCDay, use_test_input: boolean, input1: any, input2: any): Solution) solves all problems
 ---@field new (fun(self: AOCDay, year: string, day: string): AOCDay) create new AOCDay
 ---@field run (fun(self: AOCDay, use_test_input: boolean, input1: any, input2: any)) run
@@ -53,6 +54,7 @@ local AOCDay = {
 
     return error
   end,
+  solver = function(_, _) end,
   new = function(self, year, day)
     return setmetatable({
       year = year,

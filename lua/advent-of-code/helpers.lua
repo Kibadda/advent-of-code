@@ -1,4 +1,4 @@
----@param value integer|string
+---@param value integer|string|boolean
 function _G.match(value)
   local function re(v)
     if type(v) == "function" then
@@ -28,9 +28,9 @@ function _G.match(value)
   end
 end
 
-local old_print = print
-function _G.print(...)
-  old_print(unpack(table.map({ ... }, function(arg)
+local old_tostring = tostring
+function _G.tostring(...)
+  return old_tostring(unpack(table.map({ ... }, function(arg)
     if type(arg) == "table" then
       return table.to_string(arg)
     else
