@@ -29,14 +29,12 @@ function _G.match(value)
 end
 
 local old_tostring = tostring
-function _G.tostring(...)
-  return old_tostring(unpack(table.map({ ... }, function(arg)
-    if type(arg) == "table" then
-      return table.to_string(arg)
-    else
-      return arg
-    end
-  end)))
+function _G.tostring(v)
+  if type(v) == "table" then
+    return old_tostring(table.to_string(v))
+  else
+    return old_tostring(v)
+  end
 end
 
 function string:split(sep)
