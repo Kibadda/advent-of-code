@@ -1,7 +1,7 @@
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
-local md5 = require "advent-of-code.2015.04.md5"
+local md5 = require "advent-of-code.helpers.md5"
 
 local M = AOC.create("2015", "04")
 
