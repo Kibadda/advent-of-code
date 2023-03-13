@@ -73,7 +73,6 @@ function M:solve2(steps)
   self.solution:add("2", self:solver(steps, true))
 end
 
-local use_test_data = false
-M:run(use_test_data, use_test_data and 4 or 100, use_test_data and 5 or 100)
+M:run(false, { 4, 100 }, { 5 or 100 })
 
 return M
