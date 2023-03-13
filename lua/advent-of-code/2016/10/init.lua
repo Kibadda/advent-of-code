@@ -88,7 +88,6 @@ function M:solve2(compareValues)
   self.solution:add("2", outputs["0"] * outputs["1"] * outputs["2"])
 end
 
-local use_test_data = false
-M:run(use_test_data, use_test_data and { 5, 2 } or { 61, 17 }, { math.huge, math.huge })
+M:run(false, { { 5, 2 }, { 61, 17 } }, { { math.huge, math.huge } })
 
 return M

@@ -83,7 +83,6 @@ function M:solve2(time)
   )
 end
 
-local use_test_data = false
-M:run(use_test_data, use_test_data and 1000 or 2503, use_test_data and 1000 or 2503)
+M:run(false, { 1000, 2503 })
 
 return M

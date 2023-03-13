@@ -77,7 +77,6 @@ function M:solve2(dimensions)
   self.solution:add("2", str)
 end
 
-local use_test_data = false
-M:run(use_test_data, use_test_data and { 3, 7 } or { 6, 50 }, use_test_data and { 3, 7 } or { 6, 50 })
+M:run(false, { { 3, 7 }, { 6, 50 } })
 
 return M
