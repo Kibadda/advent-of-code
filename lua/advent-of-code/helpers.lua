@@ -50,6 +50,14 @@ function string:trim()
   return self:gsub("^%s+", ""):gsub("%s+$", "")
 end
 
+function string:to_chunks(length)
+  local t = {}
+  for c in self:gmatch(("."):rep(length)) do
+    table.insert(t, c)
+  end
+  return t
+end
+
 function string:to_list(func)
   local t = {}
   for c in self:gmatch "." do
