@@ -4,7 +4,7 @@ local Timing = require "advent-of-code.Timing"
 ---@class AOCDay
 ---@field year string
 ---@field day string
----@field input table
+---@field input any
 ---@field solution Solution
 ---@field parse_input (fun(self: AOCDay, file: file*)) parses input
 ---@field solve1 (fun(self: AOCDay, input: any)) solves first problem
