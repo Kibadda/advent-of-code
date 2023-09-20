@@ -260,3 +260,18 @@ function table.reverse(t)
 
   return tmp
 end
+
+function table.to_chunks(t, size)
+  local tmp = {}
+  local chunk = {}
+
+  for _, v in ipairs(t) do
+    table.insert(chunk, v)
+    if #chunk == size then
+      table.insert(tmp, chunk)
+      chunk = {}
+    end
+  end
+
+  return tmp
+end
