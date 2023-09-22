@@ -36,7 +36,7 @@ function M:parse_input(file)
 end
 
 function M:solve1()
-  vim.pretty_print(self.input)
+  print(self.input)
   self.solution:add("1", nil)
 end
 
