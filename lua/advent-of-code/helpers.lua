@@ -237,6 +237,11 @@ function table.reduce(t, start_value, func, iter)
   return current
 end
 
+---@generic K, V, T
+---@param t table<K, V>
+---@param func fun(v: V, k: K): T
+---@param iter? function
+---@return T[]
 function table.map(t, func, iter)
   iter = iter or ipairs
 
@@ -248,6 +253,10 @@ function table.map(t, func, iter)
   return tmp
 end
 
+---@generic K
+---@param t table<K, any>
+---@param iter? function
+---@return K[]
 function table.keys(t, iter)
   iter = iter or pairs
 
@@ -259,6 +268,10 @@ function table.keys(t, iter)
   return tmp
 end
 
+---@generic V
+---@param t V[]
+---@param iter? function
+---@return V[]
 function table.values(t, iter)
   iter = iter or pairs
 
@@ -270,6 +283,11 @@ function table.values(t, iter)
   return tmp
 end
 
+---@generic K, V, H, J
+---@param t table<K, V>
+---@param func fun(v: V, k: K): { [1]: H, [2]: J }
+---@param iter? function
+---@return table<H, J>
 function table.map_to_groups(t, func, iter)
   iter = iter or ipairs
 
@@ -289,6 +307,9 @@ function table.frequencies(t, func, iter)
   end, pairs)
 end
 
+---@generic K, V
+---@param t table<K, V>
+---@return table<K, V>
 function table.reverse(t)
   local tmp = {}
 
@@ -299,6 +320,10 @@ function table.reverse(t)
   return tmp
 end
 
+---@generic V
+---@param t V[]
+---@param size integer
+---@return V[][]
 function table.to_chunks(t, size)
   local tmp = {}
   local chunk = {}
