@@ -37,30 +37,38 @@ function _G.tostring(v)
   end
 end
 
-function string:split(sep)
+---@param str string
+---@param sep string
+function string.split(str, sep)
   sep = sep or "%s"
   local t = {}
-  for str in self:gmatch("([^" .. sep .. "]+)") do
-    table.insert(t, str)
+  for s in str:gmatch("([^" .. sep .. "]+)") do
+    table.insert(t, s)
   end
   return t
 end
 
-function string:trim()
-  return self:gsub("^%s+", ""):gsub("%s+$", "")
+---@param str string
+function string.trim(str)
+  str = str:gsub("^%s+", ""):gsub("%s+$", "")
+  return str
 end
 
-function string:to_chunks(length)
+---@param str string
+---@param length integer
+function string.to_chunks(str, length)
   local t = {}
-  for c in self:gmatch(("."):rep(length)) do
+  for c in str:gmatch(("."):rep(length)) do
     table.insert(t, c)
   end
   return t
 end
 
-function string:to_list(func)
+---@param str string
+---@param func? fun(c: string): boolean
+function string.to_list(str, func)
   local t = {}
-  for c in self:gmatch "." do
+  for c in str:gmatch "." do
     if func == nil or func(c) then
       table.insert(t, c)
     end
@@ -68,29 +76,37 @@ function string:to_list(func)
   return t
 end
 
-function string:only_ints(with_negatives)
+---@param str string
+---@param with_negatives boolean
+function string.only_ints(str, with_negatives)
   local t = {}
   local pattern = "%d+"
   if with_negatives then
     pattern = "-?%d+"
   end
-  for num in self:gmatch(pattern) do
+  for num in str:gmatch(pattern) do
     table.insert(t, tonumber(num))
   end
   return t
 end
 
-function string:fill(n)
-  while #self < n do
-    self = " " .. self
+---@param str string
+---@param n integer
+function string.fill(str, n)
+  while #str < n do
+    str = " " .. str
   end
-  return self
+  return str
 end
 
-function string:at(pos)
-  return pos <= #self and self:sub(pos, pos) or nil
+---@param str string
+---@param pos integer
+function string.at(str, pos)
+  return pos <= #str and str:sub(pos, pos) or nil
 end
 
+---@param t table
+---@param level? integer
 function table.to_string(t, level)
   level = level ~= nil and level or 1
 
@@ -103,6 +119,8 @@ function table.to_string(t, level)
       test_string = test_string .. table.to_string(v, level + 1) .. ",\n"
     elseif type(v) == "boolean" then
       test_string = test_string .. (v and "true" or "false") .. ",\n"
+    elseif type(v) == "function" then
+      test_string = test_string .. "function,\n"
     else
       test_string = test_string .. v .. ",\n"
     end
@@ -116,6 +134,8 @@ function table.to_string(t, level)
   return s
 end
 
+---@param t table
+---@return integer
 function table.count(t)
   local count = 0
   for _ in pairs(t) do
@@ -124,6 +144,11 @@ function table.count(t)
   return count
 end
 
+---@generic T
+---@param t T[]
+---@param needle T
+---@param keys? table
+---@return T?
 function table.find(t, needle, keys)
   keys = keys or { "x", "y" }
   if type(keys) ~= "table" then
@@ -149,6 +174,7 @@ function table.find(t, needle, keys)
   return nil
 end
 
+---@param t table
 function table.count_uniques(t)
   local tmp = {}
   for _, v in ipairs(t) do
@@ -172,6 +198,12 @@ function table.deepcopy(t)
   return copy
 end
 
+---@generic K
+---@generic V
+---@param t table<K, V>
+---@param func fun(v: V, k: K): boolean
+---@param keep_index? boolean
+---@param iter? function
 function table.filter(t, func, keep_index, iter)
   local tmp = {}
   iter = iter or ipairs
@@ -188,7 +220,13 @@ function table.filter(t, func, keep_index, iter)
   return tmp
 end
 
-function table.reduce(t, func, start_value, iter)
+---@generic K, V, T
+---@param t table<K, V>
+---@param func fun(carry: T, v: V, k: K): T
+---@param start_value T
+---@param iter? function
+---@return T
+function table.reduce(t, start_value, func, iter)
   local current = start_value or 0
   iter = iter or ipairs
 
