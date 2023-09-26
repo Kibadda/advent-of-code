@@ -66,6 +66,6 @@ function M:solve2()
   self.solution:add("2", valid_ips)
 end
 
-M:run(false)
+M:run()
 
 return M

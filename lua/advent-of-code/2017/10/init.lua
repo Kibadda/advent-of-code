@@ -72,6 +72,6 @@ function M:solve2(max)
   self.solution:add("2", table.concat(dense))
 end
 
-M:run(false, { 5, 256 }, { 256, 256 })
+M:run({ 5, 256 }, { 256, 256 })
 
 return M

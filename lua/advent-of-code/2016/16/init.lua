@@ -41,6 +41,6 @@ function M:solve2(length)
   self.solution:add("2", self:solver(length))
 end
 
-M:run(false, { 20, 272 }, { 20, 35651584 })
+M:run({ 20, 272 }, { 20, 35651584 })
 
 return M

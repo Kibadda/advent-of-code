@@ -88,6 +88,6 @@ function M:solve2(compareValues)
   self.solution:add("2", outputs["0"] * outputs["1"] * outputs["2"])
 end
 
-M:run(false, { { 5, 2 }, { 61, 17 } }, { { math.huge, math.huge } })
+M:run({ { 5, 2 }, { 61, 17 } }, { { math.huge, math.huge } })
 
 return M

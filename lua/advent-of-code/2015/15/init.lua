@@ -24,10 +24,11 @@ local function score(check_calories, input, ...)
   end
   return table.reduce(
     table.map(types, function(type)
-      return table.reduce(numbers, function(carry, number, index)
+      return table.reduce(numbers, 0, function(carry, number, index)
         return carry + number * input[index][type]
-      end, 0)
+      end)
     end),
+    1,
     function(carry, number, k)
       if check_calories then
         if k == 1 then
@@ -42,8 +43,7 @@ local function score(check_calories, input, ...)
       else
         return (number < 0 and 0 or number) * carry
       end
-    end,
-    1
+    end
   )
 end
 
@@ -82,6 +82,6 @@ function M:solve2()
   self.solution:add("2", self:solver(true))
 end
 
-M:run(false)
+M:run()
 
 return M

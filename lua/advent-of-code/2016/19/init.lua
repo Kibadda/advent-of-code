@@ -68,6 +68,6 @@ function M:solve2()
   self.solution:add("2", presents[1])
 end
 
-M:run(false)
+M:run()
 
 return M

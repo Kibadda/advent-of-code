@@ -76,16 +76,16 @@ local function eight_adjacent(v)
 end
 
 local function propose(v, directions, input)
-  local alone = table.reduce(eight_adjacent(v), function(carry, ve)
+  local alone = table.reduce(eight_adjacent(v), true, function(carry, ve)
     return carry and not find(ve, input)
-  end, true)
+  end)
   if alone then
     return nil
   end
   for _, dir in ipairs(directions) do
-    local free = table.reduce(splayed(v, dir), function(carry2, ve)
+    local free = table.reduce(splayed(v, dir), true, function(carry2, ve)
       return carry2 and not find(ve, input)
-    end, true)
+    end)
     if free then
       return v + dir
     end
@@ -99,13 +99,13 @@ local function solve(input, stop_func)
   while true do
     i = i + 1
     local proposals = table.frequencies(
-      table.reduce(input, function(carry, v)
+      table.reduce(input, {}, function(carry, v)
         local p = propose(v, directions, input)
         if p then
           table.insert(carry, p)
         end
         return carry
-      end, {}),
+      end),
       function(s)
         return { ("%d|%d"):format(s.x, s.y), s }
       end
@@ -154,6 +154,6 @@ function M:solve2()
   self.solution:add("2", i)
 end
 
-M:run(true)
+M:run()
 
 return M

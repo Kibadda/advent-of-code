@@ -172,6 +172,6 @@ function M:solve2(initial_word)
   )
 end
 
-M:run(false, { "abcde", "abcdefgh" }, { "decab", "fbgdceah" })
+M:run({ "abcde", "abcdefgh" }, { "decab", "fbgdceah" })
 
 return M

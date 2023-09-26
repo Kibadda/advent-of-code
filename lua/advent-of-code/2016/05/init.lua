@@ -45,6 +45,6 @@ function M:solve2()
   self.solution:add("2", table.concat(pass, ""))
 end
 
-M:run(false)
+M:run()
 
 return M

@@ -160,6 +160,6 @@ function M:solve2()
   self.solution:add("2", steps_till_stop + 1)
 end
 
-M:run(false)
+M:run()
 
 return M

@@ -15,18 +15,22 @@ end
 
 function M:solver(steps, corners_broken)
   local function count_lights(v, grid)
-    return table.reduce({
-      v + V(-1, 0),
-      v + V(-1, 1),
-      v + V(0, 1),
-      v + V(1, 1),
-      v + V(1, 0),
-      v + V(1, -1),
-      v + V(0, -1),
-      v + V(-1, -1),
-    }, function(carry, p)
-      return carry + ((grid[p.x] and grid[p.x][p.y] and grid[p.x][p.y] == "#") and 1 or 0)
-    end, 0)
+    return table.reduce(
+      {
+        v + V(-1, 0),
+        v + V(-1, 1),
+        v + V(0, 1),
+        v + V(1, 1),
+        v + V(1, 0),
+        v + V(1, -1),
+        v + V(0, -1),
+        v + V(-1, -1),
+      },
+      0,
+      function(carry, p)
+        return carry + ((grid[p.x] and grid[p.x][p.y] and grid[p.x][p.y] == "#") and 1 or 0)
+      end
+    )
   end
 
   local grid = table.deepcopy(self.input)
@@ -54,11 +58,11 @@ function M:solver(steps, corners_broken)
     grid = new
   end
 
-  return table.reduce(grid, function(carry_1, row)
-    return carry_1 + table.reduce(row, function(carry_2, c)
+  return table.reduce(grid, 0, function(carry_1, row)
+    return carry_1 + table.reduce(row, 0, function(carry_2, c)
       return carry_2 + (c == "#" and 1 or 0)
-    end, 0)
-  end, 0)
+    end)
+  end)
 end
 
 function M:solve1(steps)
@@ -73,6 +77,6 @@ function M:solve2(steps)
   self.solution:add("2", self:solver(steps, true))
 end
 
-M:run(false, { 4, 100 }, { 5 or 100 })
+M:run({ 4, 100 }, { 5, 100 })
 
 return M

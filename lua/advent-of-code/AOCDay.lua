@@ -6,19 +6,21 @@ local Timing = require "advent-of-code.Timing"
 ---@field day string
 ---@field input any
 ---@field solution Solution
+---@field test boolean
 ---@field parse_input (fun(self: AOCDay, file: file*)) parses input
 ---@field solve1 (fun(self: AOCDay, input: any)) solves first problem
 ---@field solve2 (fun(self: AOCDay, input: any)) solves second problem
 ---@field solver (fun(self: AOCDay, ...): any) placeholder function
 ---@field solve (fun(self: AOCDay, use_test_input: boolean, input1: any, input2: any): Solution) solves all problems
 ---@field new (fun(self: AOCDay, year: string, day: string): AOCDay) create new AOCDay
----@field run (fun(self: AOCDay, use_test_input: boolean, input1: any, input2: any)) run
+---@field run (fun(self: AOCDay, input1: any, input2: any)) run
 ---@field __super AOCDay
 local AOCDay = {
   year = "",
   day = "",
   input = {},
   solution = {},
+  test = false,
   parse_input = function(self, file)
     for line in file:lines() do
       table.insert(self.input, line)
@@ -87,13 +89,14 @@ local AOCDay = {
       day = day,
       input = {},
       solution = Solution:new(),
+      test = arg[1] == "1",
       __super = self,
     }, {
       __index = self,
     })
   end,
-  run = function(self, use_test_input, input1, input2)
-    self:solve(use_test_input, input1, input2):print()
+  run = function(self, input1, input2)
+    self:solve(self.test, input1, input2):print()
   end,
 }
 

@@ -88,6 +88,6 @@ function M:solve2()
   self.solution:add("2", table.count(seen))
 end
 
-M:run(false, { V(4, 7), V(39, 31) })
+M:run { V(4, 7), V(39, 31) }
 
 return M

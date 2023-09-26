@@ -14,9 +14,9 @@ end
 function M:solve1()
   self.solution:add(
     "1",
-    table.reduce(self.input:only_ints(true), function(carry, num)
+    table.reduce(self.input:only_ints(true), 0, function(carry, num)
       return carry + num
-    end, 0)
+    end)
   )
 end
 
@@ -37,6 +37,6 @@ function M:solve2()
   self.solution:add("2", sum(json.parse(self.input)))
 end
 
-M:run(false)
+M:run()
 
 return M

@@ -94,6 +94,6 @@ function M:solve2(bound)
   end
 end
 
-M:run(false, { 10, 2000000 }, { 20, 4000000 })
+M:run({ 10, 2000000 }, { 20, 4000000 })
 
 return M
