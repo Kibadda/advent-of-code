@@ -77,6 +77,6 @@ function M:solve2(registers)
   self.solution:add("2", self:solver(registers).a)
 end
 
-M:run(false, { { a = 0 }, { a = 7, b = 0, c = 0, d = 0 } }, { { a = 0 }, { a = 12, b = 0, c = 0, d = 0 } })
+M:run({ { a = 0 }, { a = 7, b = 0, c = 0, d = 0 } }, { { a = 0 }, { a = 12, b = 0, c = 0, d = 0 } })
 
 return M

@@ -44,6 +44,6 @@ function M:solve2()
   self.solution:add("2", decompress(self.input[1], true))
 end
 
-M:run(false)
+M:run()
 
 return M

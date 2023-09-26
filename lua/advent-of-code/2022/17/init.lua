@@ -59,9 +59,9 @@ local function tetris(rock_count, input)
     return v.y >= 0 and v.y < 7 and v.x < 0 and table.find(occupied, v) == nil
   end
   local function shape_in_bounds(shape)
-    return table.reduce(shape, function(curr, v)
+    return table.reduce(shape, true, function(curr, v)
       return curr and in_bounds(v)
-    end, true)
+    end)
   end
   local seen = {}
   local bonus = 0
@@ -72,10 +72,10 @@ local function tetris(rock_count, input)
       table.map(shape, function(v)
         return v.x
       end),
+      -math.huge,
       function(curr, x)
         return math.max(curr, x)
-      end,
-      -math.huge
+      end
     )
     shape = table.map(shape, function(v)
       return v + V(-r_max - 4 + occupied_r_min, 2)
@@ -114,7 +114,7 @@ local function tetris(rock_count, input)
           .. ","
           .. drift_i
           .. table.reduce(
-            table.reduce(r_mins, function(curr, val, i)
+            table.reduce(r_mins, {}, function(curr, val, i)
               if r_mins[i - 1] ~= nil then
                 if #r_mins - i <= 5 then
                   table.insert(curr, r_mins[i - 1] - val)
@@ -122,11 +122,11 @@ local function tetris(rock_count, input)
                 end
               end
               return curr
-            end, {}),
+            end),
+            "",
             function(curr, val)
               return curr .. "," .. val
-            end,
-            ""
+            end
           )
         if seen[memkey] == nil then
           seen[memkey] = { shape_i, r_mins[#r_mins] }
@@ -151,6 +151,6 @@ function M:solve2()
   self.solution:add("2", tetris(1000000000000, self.input))
 end
 
-M:run(false)
+M:run()
 
 return M

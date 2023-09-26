@@ -89,6 +89,6 @@ function M:solve2(total)
   self.solution:add("2", count)
 end
 
-M:run(false, { 25, 150 }, { 25, 150 })
+M:run({ 25, 150 }, { 25, 150 })
 
 return M

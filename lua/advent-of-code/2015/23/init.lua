@@ -82,6 +82,6 @@ function M:solve2()
   self.solution:add("2", self:solver({ a = 1, b = 0 }).b)
 end
 
-M:run(false)
+M:run()
 
 return M

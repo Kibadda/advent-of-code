@@ -81,6 +81,6 @@ function M:solve2()
   self.solution:add("2", next_password(next_password(self.input.password)))
 end
 
-M:run(false)
+M:run()
 
 return M

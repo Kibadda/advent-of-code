@@ -77,6 +77,6 @@ function M:solve2(dimensions)
   self.solution:add("2", str)
 end
 
-M:run(false, { { 3, 7 }, { 6, 50 } })
+M:run { { 3, 7 }, { 6, 50 } }
 
 return M

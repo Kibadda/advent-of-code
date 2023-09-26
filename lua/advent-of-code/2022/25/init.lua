@@ -43,9 +43,9 @@ function M:parse_input(file)
 end
 
 function M:solve1()
-  local sum = table.reduce(self.input, function(carry, v)
+  local sum = table.reduce(self.input, 0, function(carry, v)
     return carry + v
-  end, 0, pairs)
+  end, pairs)
   print(sum)
   local snafu = to_snafu(sum)
   print(from_snafu(snafu))
@@ -56,6 +56,6 @@ function M:solve2()
   self.solution:add("2", nil)
 end
 
-M:run(false)
+M:run()
 
 return M

@@ -95,6 +95,6 @@ function M:solve2()
   self.solution:add("2", dfs(V(1, 1), V(4, 4), self.input))
 end
 
-M:run(false)
+M:run()
 
 return M

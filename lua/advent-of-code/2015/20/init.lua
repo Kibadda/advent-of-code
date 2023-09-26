@@ -41,6 +41,6 @@ function M:solve2()
   self.solution:add("2", self:solver(50, 11))
 end
 
-M:run(false)
+M:run()
 
 return M

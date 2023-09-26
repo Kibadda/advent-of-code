@@ -90,6 +90,6 @@ function M:solve2()
   self.solution:add("2", self:dfs2(self.input.start, self.input.flows, 26))
 end
 
-M:run(false)
+M:run()
 
 return M

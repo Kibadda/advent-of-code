@@ -137,6 +137,6 @@ function M:solve2()
   self.solution:add("2", divider_one * divider_two)
 end
 
-M:run(false)
+M:run()
 
 return M

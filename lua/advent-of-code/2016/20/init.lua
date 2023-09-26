@@ -59,6 +59,6 @@ function M:solve2(fin)
   self.solution:add("2", #ips)
 end
 
-M:run(false, { 9, 4294967295 }, { 9, 4294967295 })
+M:run({ 9, 4294967295 }, { 9, 4294967295 })
 
 return M

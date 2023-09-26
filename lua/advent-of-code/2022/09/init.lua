@@ -97,6 +97,6 @@ function M:solve2()
   self.solution:add("2", #all_tail_pos)
 end
 
-M:run(false)
+M:run()
 
 return M

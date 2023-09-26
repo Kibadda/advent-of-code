@@ -102,6 +102,6 @@ function M:solve2()
   vim.pretty_print(evaluate2(monkeys, monkeys[next], number))
 end
 
-M:run(true)
+M:run()
 
 return M

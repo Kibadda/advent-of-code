@@ -321,6 +321,6 @@ function M:solve2()
   self.solution:add("2", self:walk "cube")
 end
 
-M:run(false)
+M:run()
 
 return M

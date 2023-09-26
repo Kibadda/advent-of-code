@@ -111,6 +111,6 @@ function M:solve2()
   self.solution:add("2", self:solver(true).steps)
 end
 
-M:run(false)
+M:run()
 
 return M

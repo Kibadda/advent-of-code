@@ -32,6 +32,6 @@ function M:solve2()
   self.solution:add("2", self.input[1] + self.input[2] + self.input[3])
 end
 
-M:run(false)
+M:run()
 
 return M

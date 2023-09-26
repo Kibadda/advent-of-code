@@ -67,6 +67,6 @@ function M:solve2(length)
   self.solution:add("2", history[1000000000 % i + 1])
 end
 
-M:run(false, { 5, 16 }, { 5, 16 })
+M:run({ 5, 16 }, { 5, 16 })
 
 return M

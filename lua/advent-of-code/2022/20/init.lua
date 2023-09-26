@@ -70,6 +70,6 @@ function M:solve2()
   self.solution:add("2", nil)
 end
 
-M:run(true)
+M:run()
 
 return M

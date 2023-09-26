@@ -133,21 +133,21 @@ end
 function M:solve1()
   self.solution:add(
     "1",
-    table.reduce(self.input, function(val, blueprint, i)
+    table.reduce(self.input, 0, function(val, blueprint, i)
       return val + i * dfs(State:new(24, blueprint))
-    end, 0)
+    end)
   )
 end
 
 function M:solve2()
   self.solution:add(
     "2",
-    table.reduce(self.input, function(val, blueprint, i)
+    table.reduce(self.input, 1, function(val, blueprint, i)
       return i > 3 and val or val * dfs(State:new(32, blueprint))
-    end, 1)
+    end)
   )
 end
 
-M:run(false)
+M:run()
 
 return M

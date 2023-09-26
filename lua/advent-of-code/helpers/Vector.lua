@@ -35,6 +35,8 @@ local mt = {
 }
 
 Vector = {
+  x = 0,
+  y = 0,
   ---@param x number
   ---@param y number
   new = function(x, y)
@@ -57,8 +59,9 @@ function _G.V(x, y)
 end
 
 ---@param v1 Vector
----@param v2 Vector
+---@param v2? Vector
 function _G.Vdistance(v1, v2)
+  v2 = v2 or V(0, 0)
   return Vector.distance(v1, v2)
 end
 

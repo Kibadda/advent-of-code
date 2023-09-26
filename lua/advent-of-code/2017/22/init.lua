@@ -85,6 +85,6 @@ function M:solve2()
   )
 end
 
-M:run(false)
+M:run()
 
 return M

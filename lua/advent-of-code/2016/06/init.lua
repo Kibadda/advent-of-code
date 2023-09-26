@@ -33,6 +33,6 @@ function M:solve2()
   self.solution:add("2", self:solver "first")
 end
 
-M:run(false)
+M:run()
 
 return M

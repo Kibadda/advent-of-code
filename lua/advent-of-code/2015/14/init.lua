@@ -40,9 +40,9 @@ function M:solve1(time)
   end
   self.solution:add(
     "1",
-    table.reduce(deers, function(carry, deer)
+    table.reduce(deers, -math.huge, function(carry, deer)
       return math.max(carry, deer.distance)
-    end, -math.huge)
+    end)
   )
 end
 
@@ -65,9 +65,9 @@ function M:solve2(time)
         end
       end
     end
-    local max = table.reduce(deers, function(carry, deer)
+    local max = table.reduce(deers, -math.huge, function(carry, deer)
       return math.max(carry, deer.distance)
-    end, -math.huge)
+    end)
 
     for _, deer in ipairs(deers) do
       if deer.distance == max then
@@ -77,12 +77,12 @@ function M:solve2(time)
   end
   self.solution:add(
     "2",
-    table.reduce(deers, function(carry, deer)
+    table.reduce(deers, -math.huge, function(carry, deer)
       return math.max(carry, deer.points)
-    end, -math.huge)
+    end)
   )
 end
 
-M:run(false, { 1000, 2503 })
+M:run { 1000, 2503 }
 
 return M
