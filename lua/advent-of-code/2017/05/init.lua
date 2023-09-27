@@ -10,34 +10,35 @@ function M:parse_input(file)
   end
 end
 
-function M:solve1()
+function M:solver(fun)
   local jumps = table.deepcopy(self.input)
   local index = 1
   local steps = 0
   while jumps[index] do
     local new = index + jumps[index]
-    jumps[index] = jumps[index] + 1
+    jumps[index] = fun(jumps[index])
     index = new
     steps = steps + 1
   end
-  self.solution:add("1", steps)
+  return steps
+end
+
+function M:solve1()
+  self.solution:add(
+    "1",
+    self:solver(function(jump)
+      return jump + 1
+    end)
+  )
 end
 
 function M:solve2()
-  local jumps = table.deepcopy(self.input)
-  local index = 1
-  local steps = 0
-  while jumps[index] do
-    local new = index + jumps[index]
-    if jumps[index] >= 3 then
-      jumps[index] = jumps[index] - 1
-    else
-      jumps[index] = jumps[index] + 1
-    end
-    index = new
-    steps = steps + 1
-  end
-  self.solution:add("2", steps)
+  self.solution:add(
+    "2",
+    self:solver(function(jump)
+      return jump >= 3 and jump - 1 or jump + 1
+    end)
+  )
 end
 
 M:run()

@@ -3,22 +3,24 @@ AOC.reload()
 
 local M = AOC.create("2022", "12")
 
-local start_pos
-local end_pos
-
 function M:parse_input(file)
+  self.input = {
+    nodes = {},
+    s = nil,
+    e = nil,
+  }
   local i = 0
   for line in file:lines() do
     i = i + 1
     for j, c in ipairs(line:to_list()) do
       if c == "S" then
-        start_pos = { x = i, y = j, c = "a" }
-        table.insert(self.input, start_pos)
+        self.input.s = { x = i, y = j, c = "a" }
+        table.insert(self.input.nodes, self.input.s)
       elseif c == "E" then
-        end_pos = { x = i, y = j, c = "z" }
-        table.insert(self.input, end_pos)
+        self.input.e = { x = i, y = j, c = "z" }
+        table.insert(self.input.nodes, self.input.e)
       else
-        table.insert(self.input, { x = i, y = j, c = c })
+        table.insert(self.input.nodes, { x = i, y = j, c = c })
       end
     end
   end
@@ -32,16 +34,16 @@ local function count_steps(node)
   end
 end
 
-local function bfs(nodes, start, end_func)
-  local queue = { start }
-  local seen = { start }
+function M:solver(end_func)
+  local queue = { self.input.e }
+  local seen = { self.input.e }
 
   while #queue > 0 do
     local current = table.remove(queue, 1)
     if end_func(current) then
       return current
     end
-    for _, node in ipairs(nodes) do
+    for _, node in ipairs(self.input.nodes) do
       if
         current.c:byte() - node.c:byte() < 2
         and (node.x == current.x or node.y == current.y)
@@ -61,15 +63,15 @@ local function bfs(nodes, start, end_func)
 end
 
 function M:solve1()
-  local current = bfs(self.input, end_pos, function(node)
-    return node.x == start_pos.x and node.y == start_pos.y
+  local current = self:solver(function(node)
+    return node.x == self.input.s.x and node.y == self.input.s.y
   end)
 
   self.solution:add("1", count_steps(current) - 1)
 end
 
 function M:solve2()
-  local current = bfs(self.input, end_pos, function(node)
+  local current = self:solver(function(node)
     return node.c == "a"
   end)
 

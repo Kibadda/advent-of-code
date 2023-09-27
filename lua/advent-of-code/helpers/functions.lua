@@ -27,3 +27,18 @@ function _G.match(value)
     end
   end
 end
+
+---@param a number
+---@param b number
+function _G.gcd(a, b)
+  while b > 0 do
+    a, b = b, a % b
+  end
+  return a
+end
+
+---@param a number
+---@param b number
+function _G.lcm(a, b)
+  return a * b / gcd(a, b)
+end

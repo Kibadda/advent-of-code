@@ -3,16 +3,6 @@ AOC.reload()
 
 local M = AOC.create("2022", "24")
 
-local function gcd(a, b)
-  if a == b then
-    return a
-  elseif a < b then
-    return gcd(a, b - a)
-  elseif a > b then
-    return gcd(a - b, b)
-  end
-end
-
 function M:parse_input(file)
   self.input = {
     grid = {},
@@ -113,114 +103,78 @@ function M:parse_input(file)
   })
 end
 
-function M:enc(position, minute, reverse)
-  return ("%d-%d-%d-%s"):format(minute % self.input.minutes, position.x, position.y, reverse and "r" or "s")
-end
-
-local results = {}
-function M:next_moves(current_position, minute, reverse)
-  local k = self:enc(current_position, minute, reverse)
-  if results[k] then
-    if reverse then
-      return table.reverse(results[k])
-    else
-      return results[k]
-    end
-  else
-    local positions
-    if reverse then
-      positions = {
-        current_position + V(-1, 0),
-        current_position + V(0, -1),
-        current_position + V(1, 0),
-        current_position + V(0, 1),
-        current_position,
-      }
-    else
-      positions = {
-        current_position + V(1, 0),
-        current_position + V(0, 1),
-        current_position + V(-1, 0),
-        current_position + V(0, -1),
-        current_position,
-      }
-    end
-
-    local moves = {}
-    for _, position in ipairs(positions) do
-      if
-        position.x >= 1
-        and position.x <= #self.input.grid
-        and position.y >= 1
-        and position.y <= #self.input.grid[position.x]
-        and self.input.grid[position.x]:at(position.y) ~= "#"
-        and not (self.input.winds[minute].up[position.x] and self.input.winds[minute].up[position.x][position.y])
-        and not (self.input.winds[minute].down[position.x] and self.input.winds[minute].down[position.x][position.y])
-        and not (self.input.winds[minute].right[position.x] and self.input.winds[minute].right[position.x][position.y])
-        and not (self.input.winds[minute].left[position.x] and self.input.winds[minute].left[position.x][position.y])
-      then
-        table.insert(moves, position)
-      end
-    end
-    results[k] = moves
-    return moves
-  end
-end
-
-function M:bfs(minute, reverse, start_pos, end_pos)
-  local queue = {
-    {
-      pos = start_pos,
-      minute = minute,
-    },
-  }
-
-  local seen = {}
-
-  while #queue > 0 do
-    local current = table.remove(queue, 1)
-
-    if not seen[self:enc(current.pos, current.minute, reverse)] then
-      local next_minute = current.minute + 1
-
-      seen[self:enc(current.pos, current.minute, reverse)] = true
-
-      local moves = self:next_moves(current.pos, next_minute, reverse)
-      for _, move in ipairs(moves) do
-        if move == end_pos then
-          return {
-            pos = move,
-            minute = next_minute,
-          }
-        end
-
-        table.insert(queue, {
-          pos = move,
-          minute = next_minute,
-        })
-      end
+---@param current_position Vector
+local function next_moves(input, current_position, minute)
+  local moves = {}
+  for _, position in ipairs(current_position:adjacent(5)) do
+    if
+      position.x >= 1
+      and position.x <= #input.grid
+      and position.y >= 1
+      and position.y <= #input.grid[position.x]
+      and input.grid[position.x]:at(position.y) ~= "#"
+      and not (input.winds[minute].up[position.x] and input.winds[minute].up[position.x][position.y])
+      and not (input.winds[minute].down[position.x] and input.winds[minute].down[position.x][position.y])
+      and not (input.winds[minute].right[position.x] and input.winds[minute].right[position.x][position.y])
+      and not (input.winds[minute].left[position.x] and input.winds[minute].left[position.x][position.y])
+    then
+      table.insert(moves, position)
     end
   end
+  return moves
 end
 
 function M:solver(amount)
+  local start_pos = self.input.start_pos
+  local end_pos = self.input.end_pos
   local solution = {
     minute = 0,
   }
-
-  local start_pos, end_pos = self.input.start_pos, self.input.end_pos
-
   for i = 1, amount do
-    solution = self:bfs(solution.minute, i % 2 == 0, start_pos, end_pos)
+    local reverse = i % 2 == 0
+    local queue = {
+      { pos = start_pos, minute = solution.minute },
+    }
+
+    local seen = {}
+
+    while #queue > 0 do
+      local current = table.remove(queue, 1)
+
+      local key = ("%d-%d-%d-%s"):format(
+        current.minute % self.input.minutes,
+        current.pos.x,
+        current.pos.y,
+        reverse and "r" or "s"
+      )
+      if not seen[key] then
+        seen[key] = true
+
+        local moves = next_moves(self.input, current.pos, current.minute + 1)
+        local stop = false
+        for _, move in ipairs(moves) do
+          if move == end_pos then
+            solution = { pos = move, minute = current.minute + 1 }
+            stop = true
+            break
+          end
+
+          table.insert(queue, { pos = move, minute = current.minute + 1 })
+        end
+
+        if stop then
+          break
+        end
+      end
+    end
+
     start_pos, end_pos = end_pos, start_pos
-    print(table.to_string(solution))
   end
 
   return solution.minute
 end
 
 function M:solve1()
-  -- 301
   self.solution:add("1", self:solver(1))
 end
 

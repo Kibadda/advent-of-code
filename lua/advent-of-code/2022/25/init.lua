@@ -46,9 +46,6 @@ function M:solve1()
   local sum = table.reduce(self.input, 0, function(carry, v)
     return carry + v
   end, pairs)
-  print(sum)
-  local snafu = to_snafu(sum)
-  print(from_snafu(snafu))
   self.solution:add("1", to_snafu(sum))
 end
 

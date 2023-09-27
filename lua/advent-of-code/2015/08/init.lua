@@ -21,8 +21,7 @@ function M:solve1()
           else
             skip = 3
           end
-        elseif line[i] == '"' then
-        else
+        elseif line[i] ~= '"' then
           total_chars_in_memory = total_chars_in_memory + 1
         end
       end
@@ -55,7 +54,6 @@ function M:solve2()
           end
         elseif line[i] == '"' then
           extra = extra + 1
-        else
         end
       end
     end

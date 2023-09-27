@@ -26,8 +26,10 @@ local function check(t1, t2)
   return true
 end
 
-local function bfs(state, total)
-  local queue = { state }
+function M:solver(total)
+  local queue = {
+    { avail = self.input, used = {}, capacity = 0 },
+  }
 
   local valid = {}
   while #queue > 0 do
@@ -70,12 +72,11 @@ local function bfs(state, total)
 end
 
 function M:solve1(total)
-  local valid = bfs({ avail = self.input, used = {}, capacity = 0 }, total)
-  self.solution:add("1", #valid)
+  self.solution:add("1", #self:solver(total))
 end
 
 function M:solve2(total)
-  local valid = bfs({ avail = self.input, used = {}, capacity = 0 }, total)
+  local valid = self:solver(total)
   local min_container = math.huge
   local count = 0
   for _, val in ipairs(valid) do

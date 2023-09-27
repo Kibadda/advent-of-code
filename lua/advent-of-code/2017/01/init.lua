@@ -9,32 +9,33 @@ function M:parse_input(file)
   end
 end
 
-function M:solve1()
+function M:solver(fun)
   local sum = 0
   for i = 1, #self.input do
-    local next = i + 1
-    if next > #self.input then
-      next = 1
-    end
-    if self.input:at(i) == self.input:at(next) then
+    if self.input:at(i) == self.input:at(fun(i)) then
       sum = sum + tonumber(self.input:at(i))
     end
   end
-  self.solution:add("1", sum)
+  return sum
+end
+
+function M:solve1()
+  self.solution:add(
+    "1",
+    self:solver(function(i)
+      return i + 1 > #self.input and 1 or i + 1
+    end)
+  )
 end
 
 function M:solve2()
-  local sum = 0
-  for i = 1, #self.input do
-    local next = i + #self.input / 2
-    if next > #self.input then
-      next = next - #self.input
-    end
-    if self.input:at(i) == self.input:at(next) then
-      sum = sum + tonumber(self.input:at(i))
-    end
-  end
-  self.solution:add("2", sum)
+  self.solution:add(
+    "2",
+    self:solver(function(i)
+      local next = i + #self.input / 2
+      return next > #self.input and next - #self.input or next
+    end)
+  )
 end
 
 M:run()

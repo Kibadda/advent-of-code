@@ -3,57 +3,6 @@ AOC.reload()
 
 local M = AOC.create("2022", "22")
 
-local Vector = {}
-
-local function V(x, y)
-  return Vector.new(x, y)
-end
-
-local mt = {
-  __add = function(v1, v2)
-    return V(v1.x + v2.x, v1.y + v2.y)
-  end,
-  __mul = function(v1, dir)
-    local x_new, y_new
-    if dir == "L" then
-      x_new = v1.x == 0 and -v1.y or v1.y
-      y_new = v1.y == 0 and v1.x or -v1.x
-    else
-      x_new = v1.x == 0 and v1.y or -v1.y
-      y_new = v1.y == 0 and -v1.x or v1.x
-    end
-    return V(x_new, y_new)
-  end,
-  __eq = function(v1, v2)
-    return v1.x == v2.x and v1.y == v2.y
-  end,
-  __tostring = function(self)
-    return self.x .. " " .. self.y
-  end,
-}
-Vector = {
-  new = function(x, y)
-    return setmetatable({
-      x = x,
-      y = y,
-      dir = function(self)
-        if self.x == 0 then
-          return "h"
-        else
-          return "v"
-        end
-      end,
-      value = function(self)
-        if self:dir() == "h" then
-          return self.y < 0 and 2 or 0
-        else
-          return self.x < 0 and 3 or 1
-        end
-      end,
-    }, mt)
-  end,
-}
-
 function M:parse_input(file)
   self.input = {
     grid = {},
@@ -88,7 +37,7 @@ end
 
 function M:wrap(next, dir, version)
   if version == "map" then
-    if dir:dir() == "v" then
+    if dir.y == 0 then
       -- vertical wrap
       if dir.x > 0 then
         for i = 1, #self.input.grid do
@@ -280,7 +229,7 @@ function M:wrap(next, dir, version)
   return next, dir
 end
 
-function M:walk(version)
+function M:solver(version)
   local pos = V(1, self.input.grid[1]:find "[^%s#]")
   local dir = V(0, 1)
 
@@ -310,15 +259,18 @@ function M:walk(version)
     end
   end
 
-  return 1000 * pos.x + 4 * pos.y + dir:value()
+  return 1000 * pos.x + 4 * pos.y + match(dir.x) {
+    [0] = dir.y < 0 and 2 or 0,
+    _ = dir.x < 0 and 3 or 1,
+  }
 end
 
 function M:solve1()
-  self.solution:add("1", self:walk "map")
+  self.solution:add("1", self:solver "map")
 end
 
 function M:solve2()
-  self.solution:add("2", self:walk "cube")
+  self.solution:add("2", self:solver "cube")
 end
 
 M:run()

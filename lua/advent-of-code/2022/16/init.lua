@@ -52,30 +52,15 @@ function M:parse_input(file)
   self.input.start = table.find(self.input.names, "AA")
 end
 
-function M:dfs(current, rest, time)
-  local max = 0
+function M:solver(puzzle, current, rest, time)
+  local max = puzzle == 1 and 0 or self:solver(1, self.input.start, rest, 26)
 
   for i in pairs(rest) do
     if self.input.dist[current][i] < time then
       local rflows = table.deepcopy(rest)
       rflows[i] = nil
       local rtime = time - self.input.dist[current][i] - 1
-      max = math.max(max, self.input.flows[i] * rtime + self:dfs(i, rflows, rtime))
-    end
-  end
-
-  return max
-end
-
-function M:dfs2(current, rest, time)
-  local max = self:dfs(self.input.start, rest, 26)
-
-  for i in pairs(rest) do
-    if self.input.dist[current][i] < time then
-      local rflows = table.deepcopy(rest)
-      rflows[i] = nil
-      local rtime = time - self.input.dist[current][i] - 1
-      max = math.max(max, self.input.flows[i] * rtime + self:dfs2(i, rflows, rtime))
+      max = math.max(max, self.input.flows[i] * rtime + self:solver(puzzle, i, rflows, rtime))
     end
   end
 
@@ -83,11 +68,11 @@ function M:dfs2(current, rest, time)
 end
 
 function M:solve1()
-  self.solution:add("1", self:dfs(self.input.start, self.input.flows, 30))
+  self.solution:add("1", self:solver(1, self.input.start, self.input.flows, 30))
 end
 
 function M:solve2()
-  self.solution:add("2", self:dfs2(self.input.start, self.input.flows, 26))
+  self.solution:add("2", self:solver(2, self.input.start, self.input.flows, 26))
 end
 
 M:run()

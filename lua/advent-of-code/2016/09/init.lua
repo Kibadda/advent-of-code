@@ -5,7 +5,7 @@ local M = AOC.create("2016", "09")
 
 ---@param str string
 ---@param recursive boolean
-local function decompress(str, recursive)
+function M:solver(str, recursive)
   local size = 0
   if str:find "%(" then
     local init = 1
@@ -18,7 +18,7 @@ local function decompress(str, recursive)
         end
 
         if recursive then
-          size = size + decompress(str:sub(end_pos + 1, end_pos + length), recursive) * times
+          size = size + self:solver(str:sub(end_pos + 1, end_pos + length), recursive) * times
         else
           size = size + length * times
         end
@@ -37,11 +37,11 @@ local function decompress(str, recursive)
 end
 
 function M:solve1()
-  self.solution:add("1", decompress(self.input[1], false))
+  self.solution:add("1", self:solver(self.input[1], false))
 end
 
 function M:solve2()
-  self.solution:add("2", decompress(self.input[1], true))
+  self.solution:add("2", self:solver(self.input[1], true))
 end
 
 M:run()

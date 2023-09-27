@@ -1,7 +1,7 @@
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
-local json = require "advent-of-code.2015.12.json"
+local json = require "advent-of-code.helpers.json"
 
 local M = AOC.create("2015", "12")
 
