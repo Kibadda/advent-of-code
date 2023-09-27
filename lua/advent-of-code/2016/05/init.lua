@@ -18,7 +18,6 @@ function M:solve1()
     local hash
     repeat
       i = i + 1
-      print(i)
       hash = md5.sumhexa(self.input .. i)
     until hash:sub(1, 5) == "00000"
     pass = pass .. hash:at(6)

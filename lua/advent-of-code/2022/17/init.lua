@@ -3,25 +3,6 @@ AOC.reload()
 
 local M = AOC.create("2022", "17")
 
-local Vector = {}
-
-local function V(x, y)
-  return Vector.new(x, y)
-end
-
-Vector = {
-  new = function(x, y)
-    return setmetatable({
-      x = x,
-      y = y,
-    }, {
-      __add = function(v1, v2)
-        return V(v1.x + v2.x, v1.y + v2.y)
-      end,
-    })
-  end,
-}
-
 local function cycle(t)
   local function iter(ta, i)
     i = i + 1
@@ -51,7 +32,7 @@ function M:parse_input(file)
   }
 end
 
-local function tetris(rock_count, input)
+function M:solver(rock_count)
   local occupied = {}
   local r_mins = {}
   local drift_i = 0
@@ -67,7 +48,7 @@ local function tetris(rock_count, input)
   local bonus = 0
   local occupied_r_min = 0
   local shape_i_target = rock_count
-  for shape_i, shape in cycle(input.shapes) do
+  for shape_i, shape in cycle(self.input.shapes) do
     local r_max = table.reduce(
       table.map(shape, function(v)
         return v.x
@@ -82,9 +63,9 @@ local function tetris(rock_count, input)
     end)
     while true do
       local drift
-      if input.drift:sub(drift_i + 1, drift_i + 1) == "<" then
+      if self.input.drift:sub(drift_i + 1, drift_i + 1) == "<" then
         drift = V(0, -1)
-      elseif input.drift:sub(drift_i + 1, drift_i + 1) == ">" then
+      elseif self.input.drift:sub(drift_i + 1, drift_i + 1) == ">" then
         drift = V(0, 1)
       end
       if shape_in_bounds(table.map(shape, function(v)
@@ -94,7 +75,7 @@ local function tetris(rock_count, input)
           return v + drift
         end)
       end
-      drift_i = (drift_i + 1) % #input.drift
+      drift_i = (drift_i + 1) % #self.input.drift
       if shape_in_bounds(table.map(shape, function(v)
         return v + V(1, 0)
       end)) then
@@ -110,7 +91,7 @@ local function tetris(rock_count, input)
         if shape_i == shape_i_target then
           return bonus - occupied_r_min
         end
-        local memkey = ((shape_i - 1) % #input.shapes + 1)
+        local memkey = ((shape_i - 1) % #self.input.shapes + 1)
           .. ","
           .. drift_i
           .. table.reduce(
@@ -144,11 +125,11 @@ local function tetris(rock_count, input)
 end
 
 function M:solve1()
-  self.solution:add("1", tetris(2022, self.input))
+  self.solution:add("1", self:solver(2022))
 end
 
 function M:solve2()
-  self.solution:add("2", tetris(1000000000000, self.input))
+  self.solution:add("2", self:solver(1000000000000))
 end
 
 M:run()

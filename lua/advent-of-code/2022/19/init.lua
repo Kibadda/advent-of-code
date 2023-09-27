@@ -38,14 +38,14 @@ function M:parse_input(file)
   end
 end
 
----@class State
----@field next (fun(self: State): table)
----@field new (fun(self: State, time: number, blueprint: table): State)
+---@class GeodeState
+---@field next (fun(self: GeodeState): table)
+---@field new (fun(self: GeodeState, time: number, blueprint: table): GeodeState)
 ---@field robots table
 ---@field resources table
 ---@field blueprint table
 ---@field time number
-local State = {
+local GeodeState = {
   next = function(self)
     local next_states = {}
 
@@ -103,14 +103,14 @@ local State = {
   end,
 }
 
----@param state State
-local function dfs(state)
+---@param state GeodeState
+function M:solver(state)
   local queue = { state }
 
   local max = 0
 
   while #queue > 0 do
-    ---@type State
+    ---@type GeodeState
     local current = table.remove(queue, #queue)
     local next_states = current:next()
     if #next_states == 0 then
@@ -134,7 +134,7 @@ function M:solve1()
   self.solution:add(
     "1",
     table.reduce(self.input, 0, function(val, blueprint, i)
-      return val + i * dfs(State:new(24, blueprint))
+      return val + i * self:solver(GeodeState:new(24, blueprint))
     end)
   )
 end
@@ -143,7 +143,7 @@ function M:solve2()
   self.solution:add(
     "2",
     table.reduce(self.input, 1, function(val, blueprint, i)
-      return i > 3 and val or val * dfs(State:new(32, blueprint))
+      return i > 3 and val or val * self:solver(GeodeState:new(32, blueprint))
     end)
   )
 end

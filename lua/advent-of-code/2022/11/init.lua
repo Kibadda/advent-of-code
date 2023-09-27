@@ -26,14 +26,14 @@ function M:parse_input(file)
   end
 end
 
-function M:solve1()
+function M:solver(rounds, fun)
   local monkeys = table.deepcopy(self.input)
 
-  for _ = 1, 20 do
+  for _ = 1, rounds do
     for _, monkey in ipairs(monkeys) do
       for _, item in ipairs(monkey.items) do
         local op = ("local%s; return new"):format(monkey.operation):gsub("old", item)
-        local new = math.floor(loadstring(op)() / 3)
+        local new = fun(op)
 
         local index = new % monkey.test == 0 and monkey.if_true or monkey.if_false
         table.insert(monkeys[index].items, new)
@@ -54,38 +54,25 @@ function M:solve1()
     end
   end
 
-  self.solution:add("1", max1 * max2)
+  return max1 * max2
+end
+
+function M:solve1()
+  self.solution:add(
+    "1",
+    self:solver(20, function(op)
+      return math.floor(loadstring(op)() / 3)
+    end)
+  )
 end
 
 function M:solve2()
-  local monkeys = table.deepcopy(self.input)
-
-  for _ = 1, 10000 do
-    for _, monkey in ipairs(monkeys) do
-      for _, item in ipairs(monkey.items) do
-        local op = ("local%s; return new"):format(monkey.operation):gsub("old", item)
-        local new = loadstring(op)() % 9699690
-
-        local index = new % monkey.test == 0 and monkey.if_true or monkey.if_false
-        table.insert(monkeys[index].items, new)
-      end
-      monkey.inspections = monkey.inspections + #monkey.items
-      monkey.items = {}
-    end
-  end
-
-  local max1, max2 = 0, 0
-  for _, monkey in ipairs(monkeys) do
-    if monkey.inspections > max1 then
-      if monkey.inspections > max2 then
-        max1, max2 = max2, monkey.inspections
-      else
-        max1, max2 = monkey.inspections, max2
-      end
-    end
-  end
-
-  self.solution:add("2", max1 * max2)
+  self.solution:add(
+    "2",
+    self:solver(10000, function(op)
+      return loadstring(op)() % 9699690
+    end)
+  )
 end
 
 M:run()

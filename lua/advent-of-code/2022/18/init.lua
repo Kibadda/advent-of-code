@@ -8,10 +8,10 @@ local max_x, max_y, max_z = -math.huge, -math.huge, -math.huge
 
 function M:parse_input(file)
   for line in file:lines() do
-    local split = line:split ","
-    local x = tonumber(split[1])
-    local y = tonumber(split[2])
-    local z = tonumber(split[3])
+    local split = line:only_ints()
+    local x = split[1]
+    local y = split[2]
+    local z = split[3]
     self.input[x] = self.input[x] or {}
     self.input[x][y] = self.input[x][y] or {}
     self.input[x][y][z] = true
@@ -24,7 +24,7 @@ function M:parse_input(file)
   end
 end
 
-function M:calculate_surface()
+function M:solver()
   local sides = 0
   for x = min_x, max_x do
     for y = min_y, max_y do
@@ -95,7 +95,7 @@ function M:calculate_surface()
 end
 
 function M:solve1()
-  self.solution:add("1", self:calculate_surface())
+  self.solution:add("1", self:solver())
 end
 
 function M:solve2()
@@ -203,7 +203,7 @@ function M:solve2()
     end
   end
 
-  local sides = self:calculate_surface()
+  local sides = self:solver()
   for x = min_x, max_x do
     for y = min_y, max_y do
       for z = min_z, max_z do

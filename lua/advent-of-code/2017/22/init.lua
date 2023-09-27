@@ -41,16 +41,17 @@ function M:solve1()
   self.solution:add(
     "1",
     self:solver(10000, function(grid, pos, direction, infections)
-      if grid[pos.x][pos.y] == "#" then
-        direction = direction * "R"
-
-        grid[pos.x][pos.y] = "."
-      else
-        direction = direction * "L"
-
-        grid[pos.x][pos.y] = "#"
-        infections = infections + 1
-      end
+      match(grid[pos.x][pos.y]) {
+        ["."] = function()
+          grid[pos.x][pos.y] = "#"
+          direction = direction * "L"
+          infections = infections + 1
+        end,
+        ["#"] = function()
+          grid[pos.x][pos.y] = "."
+          direction = direction * "R"
+        end,
+      }
 
       return direction, infections
     end)

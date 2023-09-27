@@ -18,7 +18,7 @@ function M:parse_input(file)
   end
 end
 
-function M:solve1(time)
+function M:solver(time, field)
   local deers = table.deepcopy(self.input)
   for _ = 1, time do
     for _, deer in ipairs(deers) do
@@ -37,34 +37,7 @@ function M:solve1(time)
         end
       end
     end
-  end
-  self.solution:add(
-    "1",
-    table.reduce(deers, -math.huge, function(carry, deer)
-      return math.max(carry, deer.distance)
-    end)
-  )
-end
 
-function M:solve2(time)
-  local deers = table.deepcopy(self.input)
-  for _ = 1, time do
-    for _, deer in ipairs(deers) do
-      if deer.flying > 0 then
-        deer.flying = deer.flying - 1
-        deer.distance = deer.distance + deer.speed
-
-        if deer.flying == 0 then
-          deer.resting = deer.rest
-        end
-      elseif deer.resting > 0 then
-        deer.resting = deer.resting - 1
-
-        if deer.resting == 0 then
-          deer.flying = deer.duration
-        end
-      end
-    end
     local max = table.reduce(deers, -math.huge, function(carry, deer)
       return math.max(carry, deer.distance)
     end)
@@ -75,12 +48,18 @@ function M:solve2(time)
       end
     end
   end
-  self.solution:add(
-    "2",
-    table.reduce(deers, -math.huge, function(carry, deer)
-      return math.max(carry, deer.points)
-    end)
-  )
+
+  return table.reduce(deers, -math.huge, function(carry, deer)
+    return math.max(carry, deer[field])
+  end)
+end
+
+function M:solve1(time)
+  self.solution:add("1", self:solver(time, "distance"))
+end
+
+function M:solve2(time)
+  self.solution:add("2", self:solver(time, "points"))
 end
 
 M:run { 1000, 2503 }

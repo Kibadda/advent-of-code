@@ -5,7 +5,7 @@ local M = AOC.create("2016", "13")
 
 function M:parse_input(file)
   for line in file:lines() do
-    self.input = line
+    self.input = tonumber(line)
   end
 end
 
@@ -46,46 +46,49 @@ local function neighbors(vector)
   return positions
 end
 
-local function bfs(start, end_func, input)
-  start.length = 0
+function M:solver(end_func)
+  local start = { pos = V(1, 1), length = 0 }
   local queue = { start }
 
   local seen = {}
-  seen[("%d|%d"):format(start.x, start.y)] = true
+  seen[("%d|%d"):format(start.pos.x, start.pos.y)] = true
   while #queue > 0 do
     local current = table.remove(queue, 1)
 
     if end_func(current) then
-      return current, seen
+      return { current = current, seen = seen }
     end
 
-    for _, pos in ipairs(neighbors(current)) do
+    for _, pos in ipairs(neighbors(current.pos)) do
       local name = ("%d|%d"):format(pos.x, pos.y)
-      if not seen[name] and not is_wall(pos, input) then
+      if not seen[name] and not is_wall(pos, self.input) then
         seen[name] = true
 
-        pos.length = current.length + 1
-        table.insert(queue, pos)
+        table.insert(queue, {
+          pos = pos,
+          length = current.length + 1,
+        })
       end
     end
   end
 end
 
 function M:solve1(fin)
-  local finish = bfs(V(1, 1), function(current)
-    return current == fin
-  end, tonumber(self.input))
-  if not finish then
-    return
-  end
-  self.solution:add("1", finish.length)
+  self.solution:add(
+    "1",
+    self:solver(function(current)
+      return current == fin
+    end).current.length
+  )
 end
 
 function M:solve2()
-  local _, seen = bfs(V(1, 1), function(current)
-    return current.length == 50
-  end, tonumber(self.input))
-  self.solution:add("2", table.count(seen))
+  self.solution:add(
+    "2",
+    table.count(self:solver(function(current)
+      return current.length == 50
+    end).seen)
+  )
 end
 
 M:run { V(4, 7), V(39, 31) }

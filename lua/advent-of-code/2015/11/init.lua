@@ -43,7 +43,7 @@ local function check(str)
   return no_i_o_l and has_2_chars and has_3_consecutive
 end
 
-local function next_password(str)
+function M:solver(str)
   repeat
     local t = table.map(str:to_list(), function(c)
       return c:byte()
@@ -74,11 +74,11 @@ local function next_password(str)
 end
 
 function M:solve1()
-  self.solution:add("1", next_password(self.input.password))
+  self.solution:add("1", self:solver(self.input.password))
 end
 
 function M:solve2()
-  self.solution:add("2", next_password(next_password(self.input.password)))
+  self.solution:add("2", self:solver(self.solution["1"]))
 end
 
 M:run()

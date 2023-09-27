@@ -9,48 +9,54 @@ function M:parse_input(file)
   end
 end
 
-function M:solve1()
+function M:solver(fun)
   local current = V(0, 0)
   local dir = V(-1, 0)
-  for _, i in ipairs(self.input) do
-    match(i) {
-      [{ "L", "R" }] = function(d)
-        dir = dir * d
-      end,
-      _ = function(n)
-        current = current + dir * tonumber(n)
-      end,
-    }
-  end
-  self.solution:add("1", math.abs(current.x) + math.abs(current.y))
-end
-
-function M:solve2()
-  local seen = {}
-  local current = V(0, 0)
-  local dir = V(-1, 0)
+  local stop = false
   for _, i in ipairs(self.input) do
     local value = match(i) {
-      [{ "L", "R" }] = function(d)
-        dir = dir * d
+      [{ "L", "R" }] = function()
+        dir = dir * i
       end,
-      _ = function(n)
-        for _ = 1, n do
-          current = current + dir
-          local s = ("%d|%d"):format(current.x, current.y)
-          if seen[s] then
-            return math.abs(current.x) + math.abs(current.y)
-          end
-          seen[s] = true
+      _ = function()
+        current, stop = fun(i, current, dir)
+
+        if stop then
+          return stop
         end
       end,
     }
 
     if value then
-      self.solution:add("2", value)
-      break
+      return current
     end
   end
+  return current
+end
+
+function M:solve1()
+  ---@type Vector
+  local result = self:solver(function(n, current, dir)
+    return current + dir * tonumber(n)
+  end)
+  self.solution:add("1", result:distance())
+end
+
+function M:solve2()
+  local seen = {}
+  ---@type Vector
+  local result = self:solver(function(n, current, dir)
+    for _ = 1, tonumber(n) do
+      current = current + dir
+      local s = ("%d|%d"):format(current.x, current.y)
+      if seen[s] then
+        return current, true
+      end
+      seen[s] = true
+    end
+    return current, false
+  end)
+  self.solution:add("2", result:distance())
 end
 
 M:run()

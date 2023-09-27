@@ -1,30 +1,6 @@
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
-local function V(x, y)
-  return Vector.new(x, y)
-end
-
-local mt = {
-  __add = function(v1, v2)
-    return V(v1.x + v2.x, v1.y + v2.y)
-  end,
-  __eq = function(v1, v2)
-    return v1.x == v2.x and v1.y == v2.y
-  end,
-}
-Vector = {
-  new = function(x, y)
-    return setmetatable({
-      x = x,
-      y = y,
-    }, mt)
-  end,
-  distance = function(v1, v2)
-    return math.max(math.abs(v1.x - v2.x), math.abs(v1.y - v2.y))
-  end,
-}
-
 local M = AOC.create("2022", "23")
 
 function M:parse_input(file)
@@ -93,9 +69,10 @@ local function propose(v, directions, input)
   return nil
 end
 
-local function solve(input, stop_func)
+function M:solver(stop_func)
   local directions = { V(-1, 0), V(1, 0), V(0, -1), V(0, 1) }
   local i = 0
+  local input = table.deepcopy(self.input)
   while true do
     i = i + 1
     local proposals = table.frequencies(
@@ -137,21 +114,25 @@ local function solve(input, stop_func)
     min_y, max_y = math.min(min_y, v.y), math.max(max_y, v.y)
   end
 
-  return i, (max_x - min_x + 1) * (max_y - min_y + 1) - table.count(input)
+  return { i = i, rectangle = (max_x - min_x + 1) * (max_y - min_y + 1) - table.count(input) }
 end
 
 function M:solve1()
-  local _, rectangle = solve(table.deepcopy(self.input), function(i)
-    return i == 10
-  end)
-  self.solution:add("1", rectangle)
+  self.solution:add(
+    "1",
+    self:solver(function(i)
+      return i == 10
+    end).rectangle
+  )
 end
 
 function M:solve2()
-  local i = solve(table.deepcopy(self.input), function(_, moved)
-    return not moved
-  end)
-  self.solution:add("2", i)
+  self.solution:add(
+    "2",
+    self:solver(function(_, moved)
+      return not moved
+    end).i
+  )
 end
 
 M:run()

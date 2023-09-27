@@ -21,7 +21,7 @@ function M:parse_input(file)
   end
 end
 
-function M:solve1()
+function M:solver(fun)
   local score = 0
 
   for _, section_pair in ipairs(self.input) do
@@ -40,39 +40,30 @@ function M:solve1()
       turned[v] = true
     end
 
-    if table.count(turned) == table.count(section_pair[mergee]) then
+    if fun(table.count(turned), table.count(section_pair[mergee]), table.count(section_pair[merger])) then
       score = score + 1
     end
   end
 
-  self.solution:add("1", score)
+  return score
+end
+
+function M:solve1()
+  self.solution:add(
+    "1",
+    self:solver(function(turned, mergee)
+      return turned == mergee
+    end)
+  )
 end
 
 function M:solve2()
-  local score = 0
-
-  for _, section_pair in ipairs(self.input) do
-    local section1_length = #section_pair[1]
-    local section2_length = #section_pair[2]
-
-    local mergee = section1_length > section2_length and 1 or 2
-    local merger = section1_length > section2_length and 2 or 1
-
-    local turned = {}
-    for _, v in ipairs(section_pair[mergee]) do
-      turned[v] = true
-    end
-
-    for _, v in ipairs(section_pair[merger]) do
-      turned[v] = true
-    end
-
-    if table.count(turned) < table.count(section_pair[mergee]) + table.count(section_pair[merger]) then
-      score = score + 1
-    end
-  end
-
-  self.solution:add("2", score)
+  self.solution:add(
+    "2",
+    self:solver(function(turned, mergee, merger)
+      return turned < mergee + merger
+    end)
+  )
 end
 
 M:run()

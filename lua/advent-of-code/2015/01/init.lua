@@ -3,33 +3,32 @@ AOC.reload()
 
 local M = AOC.create("2015", "01")
 
-function M:solve1()
+function M:solver(fun)
   local floor = 0
-  for c in self.input[1]:gmatch "." do
+  for i, c in ipairs(self.input[1]:to_list()) do
     if c == "(" then
       floor = floor + 1
     elseif c == ")" then
       floor = floor - 1
     end
+    if fun and fun(floor) then
+      return i
+    end
   end
-  self.solution:add("1", floor)
+  return floor
+end
+
+function M:solve1()
+  self.solution:add("1", self:solver())
 end
 
 function M:solve2()
-  local floor = 0
-  local index = 0
-  for c in self.input[1]:gmatch "." do
-    index = index + 1
-    if c == "(" then
-      floor = floor + 1
-    elseif c == ")" then
-      floor = floor - 1
-    end
-    if floor < 0 then
-      break
-    end
-  end
-  self.solution:add("2", index)
+  self.solution:add(
+    "2",
+    self:solver(function(floor)
+      return floor < 0
+    end)
+  )
 end
 
 M:run()

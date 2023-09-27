@@ -24,9 +24,6 @@ end
 function M:solve1()
   local numbers = table.deepcopy(self.input)
   for _, val in ipairs(self.input) do
-    -- vim.pretty_print(table.map(numbers, function(v)
-    --   return v:split("|")[2]
-    -- end))
     local cur = table.find(numbers, val)
     local num = tonumber(val:split("|")[2])
     local new
@@ -60,8 +57,6 @@ function M:solve1()
   local one = numbers[(zero_index + 1000) % table.count(numbers)]:split("|")[2]
   local two = numbers[(zero_index + 2000) % table.count(numbers)]:split("|")[2]
   local three = numbers[(zero_index + 3000) % table.count(numbers)]:split("|")[2]
-
-  vim.pretty_print(one, two, three)
 
   self.solution:add("1", one + two + three)
 end

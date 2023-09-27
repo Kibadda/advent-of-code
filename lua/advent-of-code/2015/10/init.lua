@@ -12,7 +12,6 @@ end
 function M:solver(iterations)
   local str = self.input.number
   for _ = 1, iterations do
-    print(#str)
     local num = nil
     local count = 0
     local next_str = ""

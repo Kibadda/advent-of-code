@@ -36,28 +36,28 @@ function M:parse_input(file)
   end
 end
 
-local function eval_wires(wires, wire_name)
+function M:solver(wires, wire_name)
   local wire = wires[wire_name]
   if type(wire) == "table" then
     if wire.operation == "EQ" then
-      wires[wire_name] = eval_wires(wires, wire.one)
+      wires[wire_name] = self:solver(wires, wire.one)
     elseif wire.operation == "NOT" then
-      wires[wire_name] = max - (type(wire.one) == "string" and eval_wires(wires, wire.one) or wire.one)
+      wires[wire_name] = max - (type(wire.one) == "string" and self:solver(wires, wire.one) or wire.one)
     elseif wire.operation == "AND" then
-      local one = type(wire.one) == "string" and eval_wires(wires, wire.one) or wire.one
-      local two = type(wire.two) == "string" and eval_wires(wires, wire.two) or wire.two
+      local one = type(wire.one) == "string" and self:solver(wires, wire.one) or wire.one
+      local two = type(wire.two) == "string" and self:solver(wires, wire.two) or wire.two
       wires[wire_name] = bit.band(one, two)
     elseif wire.operation == "OR" then
-      local one = type(wire.one) == "string" and eval_wires(wires, wire.one) or wire.one
-      local two = type(wire.two) == "string" and eval_wires(wires, wire.two) or wire.two
+      local one = type(wire.one) == "string" and self:solver(wires, wire.one) or wire.one
+      local two = type(wire.two) == "string" and self:solver(wires, wire.two) or wire.two
       wires[wire_name] = bit.bor(one, two)
     elseif wire.operation == "LSHIFT" then
-      local one = type(wire.one) == "string" and eval_wires(wires, wire.one) or wire.one
-      local two = type(wire.two) == "string" and eval_wires(wires, wire.two) or wire.two
+      local one = type(wire.one) == "string" and self:solver(wires, wire.one) or wire.one
+      local two = type(wire.two) == "string" and self:solver(wires, wire.two) or wire.two
       wires[wire_name] = bit.lshift(one, two)
     elseif wire.operation == "RSHIFT" then
-      local one = type(wire.one) == "string" and eval_wires(wires, wire.one) or wire.one
-      local two = type(wire.two) == "string" and eval_wires(wires, wire.two) or wire.two
+      local one = type(wire.one) == "string" and self:solver(wires, wire.one) or wire.one
+      local two = type(wire.two) == "string" and self:solver(wires, wire.two) or wire.two
       wires[wire_name] = bit.rshift(one, two)
     end
   end
@@ -67,14 +67,14 @@ end
 
 function M:solve1()
   local wires = table.deepcopy(self.input)
-  self.solution:add("1", eval_wires(wires, "a"))
+  self.solution:add("1", self:solver(wires, "a"))
 end
 
 function M:solve2()
   local wires = table.deepcopy(self.input)
   wires.b = 956
 
-  self.solution:add("2", eval_wires(wires, "a"))
+  self.solution:add("2", self:solver(wires, "a"))
 end
 
 M:run()

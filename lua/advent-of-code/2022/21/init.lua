@@ -99,7 +99,7 @@ function M:solve2()
     next = root_monkey.two
   end
 
-  vim.pretty_print(evaluate2(monkeys, monkeys[next], number))
+  self.solution:add("2", evaluate2(monkeys, monkeys[next], number))
 end
 
 M:run()

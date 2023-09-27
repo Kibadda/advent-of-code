@@ -45,15 +45,11 @@ function M:parse_input(file)
   }
 end
 
-function M:solve1()
-  local stacks = self.input.stacks
+function M:solver(fun)
+  local stacks = table.deepcopy(self.input.stacks)
 
   for _, procedure in ipairs(self.input.procedures) do
-    for _ = 1, procedure.move do
-      local from = stacks[procedure.from]
-      table.insert(stacks[procedure.to], from[#from])
-      from[#from] = nil
-    end
+    fun(procedure, stacks)
   end
 
   local top_crates = ""
@@ -61,27 +57,30 @@ function M:solve1()
     top_crates = top_crates .. stack[#stack]
   end
 
-  self.solution:add("1", top_crates)
+  return top_crates
+end
+
+function M:solve1()
+  self.solution:add(
+    "1",
+    self:solver(function(procedure, stacks)
+      for _ = 1, procedure.move do
+        table.insert(stacks[procedure.to], table.remove(stacks[procedure.from]))
+      end
+    end)
+  )
 end
 
 function M:solve2()
-  local stacks = self.input.stacks
-
-  for _, procedure in ipairs(self.input.procedures) do
-    local from = stacks[procedure.from]
-    local pos = #from - procedure.move + 1
-    for _ = 1, procedure.move do
-      table.insert(stacks[procedure.to], from[pos])
-      table.remove(from, pos)
-    end
-  end
-
-  local top_crates = ""
-  for _, stack in ipairs(stacks) do
-    top_crates = top_crates .. stack[#stack]
-  end
-
-  self.solution:add("2", top_crates)
+  self.solution:add(
+    "2",
+    self:solver(function(procedure, stacks)
+      local pos = #stacks[procedure.from] - procedure.move + 1
+      for _ = 1, procedure.move do
+        table.insert(stacks[procedure.to], table.remove(stacks[procedure.from], pos))
+      end
+    end)
+  )
 end
 
 M:run()
