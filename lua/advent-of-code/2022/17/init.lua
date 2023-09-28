@@ -3,18 +3,6 @@ AOC.reload()
 
 local M = AOC.create("2022", "17")
 
-local function cycle(t)
-  local function iter(ta, i)
-    i = i + 1
-    local v = ta[(i - 1) % table.count(ta) + 1]
-    if v then
-      return i, v
-    end
-  end
-
-  return iter, t, 0
-end
-
 function M:parse_input(file)
   self.input = {
     drift = file:read(),
