@@ -42,3 +42,15 @@ end
 function _G.lcm(a, b)
   return a * b / gcd(a, b)
 end
+
+function _G.cycle(t)
+  local function iter(ta, i)
+    i = i + 1
+    local v = ta[(i - 1) % table.count(ta) + 1]
+    if v then
+      return i, v
+    end
+  end
+
+  return iter, t, 0
+end
