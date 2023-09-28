@@ -52,11 +52,10 @@ function M:parse_input(file)
   end
 end
 
----@param initial_word string
-function M:solve1(initial_word)
+function M:solve1()
   self.solution:add(
     "1",
-    table.reduce(self.input, initial_word, function(word, instruction)
+    table.reduce(self.input, self.test and "abcde" or "abcdefgh", function(word, instruction)
       return match(instruction.cmd) {
         swap = match(instruction.what) {
           position = function()
@@ -108,7 +107,7 @@ function M:solve1(initial_word)
   )
 end
 
-function M:solve2(initial_word)
+function M:solve2()
   local function ripairs(t)
     local function iter(ta, i)
       i = i - 1
@@ -120,7 +119,7 @@ function M:solve2(initial_word)
   end
   self.solution:add(
     "2",
-    table.reduce(self.input, initial_word, function(word, instruction)
+    table.reduce(self.input, self.test and "decab" or "fbgdceah", function(word, instruction)
       return match(instruction.cmd) {
         swap = match(instruction.what) {
           position = function()
@@ -172,6 +171,6 @@ function M:solve2(initial_word)
   )
 end
 
-M:run({ "abcde", "abcdefgh" }, { "decab", "fbgdceah" })
+M:run()
 
 return M

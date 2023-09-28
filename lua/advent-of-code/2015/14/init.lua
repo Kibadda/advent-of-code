@@ -18,9 +18,9 @@ function M:parse_input(file)
   end
 end
 
-function M:solver(time, field)
+function M:solver(field)
   local deers = table.deepcopy(self.input)
-  for _ = 1, time do
+  for _ = 1, self.test and 1000 or 2503 do
     for _, deer in ipairs(deers) do
       if deer.flying > 0 then
         deer.flying = deer.flying - 1
@@ -54,14 +54,14 @@ function M:solver(time, field)
   end)
 end
 
-function M:solve1(time)
-  self.solution:add("1", self:solver(time, "distance"))
+function M:solve1()
+  self.solution:add("1", self:solver "distance")
 end
 
-function M:solve2(time)
-  self.solution:add("2", self:solver(time, "points"))
+function M:solve2()
+  self.solution:add("2", self:solver "points")
 end
 
-M:run { 1000, 2503 }
+M:run()
 
 return M

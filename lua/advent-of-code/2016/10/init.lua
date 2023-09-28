@@ -79,15 +79,15 @@ function M:solver(compareValues)
   }
 end
 
-function M:solve1(compareValues)
-  self.solution:add("1", self:solver(compareValues)[1])
+function M:solve1()
+  self.solution:add("1", self:solver(self.test and { 5, 2 } or { 61, 17 })[1])
 end
 
-function M:solve2(compareValues)
-  local outputs = self:solver(compareValues)[2]
+function M:solve2()
+  local outputs = self:solver({ math.huge, math.huge })[2]
   self.solution:add("2", outputs["0"] * outputs["1"] * outputs["2"])
 end
 
-M:run({ { 5, 2 }, { 61, 17 } }, { { math.huge, math.huge } })
+M:run()
 
 return M

@@ -26,7 +26,8 @@ local function check(t1, t2)
   return true
 end
 
-function M:solver(total)
+function M:solver()
+  local total = self.test and 25 or 150
   local queue = {
     { avail = self.input, used = {}, capacity = 0 },
   }
@@ -71,12 +72,12 @@ function M:solver(total)
   return valid
 end
 
-function M:solve1(total)
-  self.solution:add("1", #self:solver(total))
+function M:solve1()
+  self.solution:add("1", #self:solver())
 end
 
-function M:solve2(total)
-  local valid = self:solver(total)
+function M:solve2()
+  local valid = self:solver()
   local min_container = math.huge
   local count = 0
   for _, val in ipairs(valid) do
@@ -90,6 +91,6 @@ function M:solve2(total)
   self.solution:add("2", count)
 end
 
-M:run({ 25, 150 }, { 25, 150 })
+M:run()
 
 return M

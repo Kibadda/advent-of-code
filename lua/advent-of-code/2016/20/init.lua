@@ -15,10 +15,10 @@ function M:parse_input(file)
   end
 end
 
-function M:solve1(fin)
+function M:solve1()
   local lowest = 0
 
-  while lowest < fin do
+  while lowest < (self.test and 9 or 4294967295) do
     local found = false
     for _, range in ipairs(self.input) do
       if lowest >= range.s and lowest <= range.e then
@@ -36,12 +36,12 @@ function M:solve1(fin)
   self.solution:add("1", lowest)
 end
 
-function M:solve2(fin)
+function M:solve2()
   local ips = {}
 
   local lowest = 0
 
-  while lowest <= fin do
+  while lowest <= (self.test and 9 or 4294967295) do
     local found = false
     for _, range in ipairs(self.input) do
       if lowest >= range.s and lowest <= range.e then
@@ -59,6 +59,6 @@ function M:solve2(fin)
   self.solution:add("2", #ips)
 end
 
-M:run({ 9, 4294967295 }, { 9, 4294967295 })
+M:run()
 
 return M

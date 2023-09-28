@@ -36,18 +36,18 @@ function M:solver(str)
   return str
 end
 
-function M:solve1(length)
+function M:solve1()
   local programs = ""
-  for i = 1, length do
+  for i = 1, self.test and 5 or 16 do
     programs = programs .. string.char(96 + i)
   end
 
   self.solution:add("1", self:solver(programs, 60))
 end
 
-function M:solve2(length)
+function M:solve2()
   local programs = ""
-  for i = 1, length do
+  for i = 1, self.test and 5 or 16 do
     programs = programs .. string.char(96 + i)
   end
 
@@ -67,6 +67,6 @@ function M:solve2(length)
   self.solution:add("2", history[1000000000 % i + 1])
 end
 
-M:run({ 5, 16 }, { 5, 16 })
+M:run()
 
 return M

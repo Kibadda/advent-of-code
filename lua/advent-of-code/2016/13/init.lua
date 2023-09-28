@@ -73,11 +73,11 @@ function M:solver(end_func)
   end
 end
 
-function M:solve1(fin)
+function M:solve1()
   self.solution:add(
     "1",
     self:solver(function(current)
-      return current == fin
+      return current.pos == (self.test and V(4, 7) or V(39, 31))
     end).current.length
   )
 end
@@ -91,6 +91,6 @@ function M:solve2()
   )
 end
 
-M:run { V(4, 7), V(39, 31) }
+M:run()
 
 return M
