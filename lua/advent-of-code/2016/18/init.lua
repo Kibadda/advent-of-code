@@ -34,14 +34,14 @@ function M:solver(length)
   return traps
 end
 
-function M:solve1(length)
-  self.solution:add("1", self:solver(length))
+function M:solve1()
+  self.solution:add("1", self:solver(self.test and 10 or 40))
 end
 
-function M:solve2(length)
-  self.solution:add("2", self:solver(length))
+function M:solve2()
+  self.solution:add("2", self:solver(self.test and 10 or 400000))
 end
 
-M:run({ 10, 40 }, { 10, 400000 })
+M:run()
 
 return M

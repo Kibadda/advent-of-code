@@ -21,7 +21,7 @@ function M:parse_input(file)
   end
 end
 
-function M:solver(dimensions)
+function M:solver()
   local grid = {}
   for _, instruction in ipairs(self.input) do
     match(instruction.cmd) {
@@ -37,14 +37,14 @@ function M:solver(dimensions)
       column = function()
         for _, pos in ipairs(grid) do
           if pos.y == instruction.a then
-            pos.x = (pos.x + instruction.b) % dimensions[1]
+            pos.x = (pos.x + instruction.b) % (self.test and 3 or 6)
           end
         end
       end,
       row = function()
         for _, pos in ipairs(grid) do
           if pos.x == instruction.a then
-            pos.y = (pos.y + instruction.b) % dimensions[2]
+            pos.y = (pos.y + instruction.b) % (self.test and 7 or 50)
           end
         end
       end,
@@ -53,20 +53,20 @@ function M:solver(dimensions)
   return grid
 end
 
-function M:solve1(dimensions)
-  self.solution:add("1", #self:solver(dimensions))
+function M:solve1()
+  self.solution:add("1", #self:solver())
 end
 
-function M:solve2(dimensions)
+function M:solve2()
   local str = {}
-  for i = 1, dimensions[1] do
+  for i = 1, self.test and 3 or 6 do
     str[i] = {}
-    for j = 1, dimensions[2] do
+    for j = 1, self.test and 7 or 50 do
       str[i][j] = " "
     end
   end
 
-  for _, pos in ipairs(self:solver(dimensions)) do
+  for _, pos in ipairs(self:solver()) do
     str[pos.x + 1][pos.y + 1] = "#"
   end
 
@@ -77,6 +77,6 @@ function M:solve2(dimensions)
   self.solution:add("2", str)
 end
 
-M:run { { 3, 7 }, { 6, 50 } }
+M:run()
 
 return M

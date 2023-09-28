@@ -44,12 +44,12 @@ function M:solver(max, lengths, rounds)
   return chain
 end
 
-function M:solve1(max)
-  local chain = self:solver(max, self.input:only_ints(), 1)
+function M:solve1()
+  local chain = self:solver(self.test and 5 or 256, self.input:only_ints(), 1)
   self.solution:add("1", chain[1] * chain[2])
 end
 
-function M:solve2(max)
+function M:solve2()
   local lengths = {}
   for i, c in ipairs(self.input:to_list()) do
     lengths[i] = string.byte(c)
@@ -58,7 +58,7 @@ function M:solve2(max)
     lengths[#lengths + 1] = c
   end
 
-  local sparse = self:solver(max, lengths, 64)
+  local sparse = self:solver(256, lengths, 64)
 
   local dense = table.map(table.to_chunks(sparse, 16), function(chunk)
     return bit.tohex(
@@ -72,6 +72,6 @@ function M:solve2(max)
   self.solution:add("2", table.concat(dense))
 end
 
-M:run({ 5, 256 }, { 256, 256 })
+M:run()
 
 return M

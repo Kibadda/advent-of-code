@@ -32,7 +32,8 @@ function M:parse_input(file)
   end
 end
 
-function M:solve1(y)
+function M:solve1()
+  local y = self.test and 10 or 2000000
   local count = 0
   for x = min_x, max_x do
     if table.find(self.input.B, { x = x, y = y }) == nil then
@@ -48,7 +49,8 @@ function M:solve1(y)
   self.solution:add("1", count)
 end
 
-function M:solve2(bound)
+function M:solve2()
+  local bound = self.test and 20 or 4000000
   local found = false
   for _, sensor in ipairs(self.input.S) do
     local points = {}
@@ -94,6 +96,6 @@ function M:solve2(bound)
   end
 end
 
-M:run({ 10, 2000000 }, { 20, 4000000 })
+M:run()
 
 return M

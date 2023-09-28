@@ -11,9 +11,8 @@ local Timing = require "advent-of-code.Timing"
 ---@field solve1 (fun(self: AOCDay, input: any)) solves first problem
 ---@field solve2 (fun(self: AOCDay, input: any)) solves second problem
 ---@field solver (fun(self: AOCDay, ...): any) placeholder function
----@field solve (fun(self: AOCDay, use_test_input: boolean, input1: any, input2: any): Solution) solves all problems
 ---@field new (fun(self: AOCDay, year: string, day: string): AOCDay) create new AOCDay
----@field run (fun(self: AOCDay, input1: any, input2: any)) run
+---@field run (fun(self: AOCDay)) run
 ---@field __super AOCDay
 local AOCDay = {
   year = "",
@@ -28,59 +27,30 @@ local AOCDay = {
   end,
   solve1 = function(_) end,
   solve2 = function(_) end,
-  solve = function(self, use_test_input, input1, input2)
+  run = function(self)
     local start = Timing.time()
 
-    local file_name = use_test_input and "test.txt" or "input.txt"
-    local dir = debug.getinfo(2, "S").source:sub(2, 2) == "." and "" or "/lua"
-    local path = (".%s/advent-of-code/%s/%s/%s"):format(dir, self.year, self.day, file_name)
+    local file_name = self.test and "test.txt" or "input.txt"
+    local path = ("./advent-of-code/%s/%s/%s"):format(self.year, self.day, file_name)
     local file = io.open(path, "r")
 
     if file then
       self:parse_input(file)
       local parsing = Timing.time()
 
-      if input1 then
-        if #input1 > 1 then
-          if use_test_input then
-            input1 = input1[1]
-          else
-            input1 = input1[2]
-          end
-        else
-          input1 = input1[1]
-        end
-      end
-
-      if input2 then
-        if #input2 > 1 then
-          if use_test_input then
-            input2 = input2[1]
-          else
-            input2 = input2[2]
-          end
-        else
-          input2 = input2[1]
-        end
-      else
-        input2 = type(input1) == "table" and table.deepcopy(input1) or input1
-      end
-
-      self:solve1(input1)
+      self:solve1()
       local one = Timing.time()
-      self:solve2(input2)
+      self:solve2()
       local two = Timing.time()
 
       self.solution.took = Timing:new(start, parsing, one, two)
-
-      return self.solution
+      self.solution:print()
+    else
+      local error = Solution:new()
+      error:add("1", "file error")
+      error:add("2", "file error")
+      error:print()
     end
-
-    local error = Solution:new()
-    error:add("1", "file error")
-    error:add("2", "file error")
-
-    return error
   end,
   solver = function(_, ...) end,
   new = function(self, year, day)
@@ -94,9 +64,6 @@ local AOCDay = {
     }, {
       __index = self,
     })
-  end,
-  run = function(self, input1, input2)
-    self:solve(self.test, input1, input2):print()
   end,
 }
 

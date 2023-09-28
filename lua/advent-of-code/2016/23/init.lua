@@ -14,7 +14,8 @@ function M:parse_input(file)
   end
 end
 
-function M:solver(registers)
+function M:solver(a)
+  local registers = { a = a, b = 0, c = 0, d = 0 }
   local instructions = table.deepcopy(self.input)
   local i = 1
   while true do
@@ -69,14 +70,14 @@ function M:solver(registers)
   return registers
 end
 
-function M:solve1(registers)
-  self.solution:add("1", self:solver(registers).a)
+function M:solve1()
+  self.solution:add("1", self:solver(self.test and 0 or 7).a)
 end
 
-function M:solve2(registers)
-  self.solution:add("2", self:solver(registers).a)
+function M:solve2()
+  self.solution:add("2", self:solver(self.test and 0 or 12).a)
 end
 
-M:run({ { a = 0 }, { a = 7, b = 0, c = 0, d = 0 } }, { { a = 0 }, { a = 12, b = 0, c = 0, d = 0 } })
+M:run()
 
 return M

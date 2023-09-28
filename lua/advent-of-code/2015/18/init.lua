@@ -65,18 +65,18 @@ function M:solver(steps, corners_broken)
   end)
 end
 
-function M:solve1(steps)
-  self.solution:add("1", self:solver(steps, false))
+function M:solve1()
+  self.solution:add("1", self:solver(self.test and 4 or 100, false))
 end
 
-function M:solve2(steps)
+function M:solve2()
   self.input[1][1] = "#"
   self.input[1][#self.input[1]] = "#"
   self.input[#self.input][1] = "#"
   self.input[#self.input][#self.input[#self.input]] = "#"
-  self.solution:add("2", self:solver(steps, true))
+  self.solution:add("2", self:solver(self.test and 5 or 100, true))
 end
 
-M:run({ 4, 100 }, { 5, 100 })
+M:run()
 
 return M

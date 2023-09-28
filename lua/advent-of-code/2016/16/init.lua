@@ -33,14 +33,14 @@ function M:solver(length)
   return checksum
 end
 
-function M:solve1(length)
-  self.solution:add("1", self:solver(length))
+function M:solve1()
+  self.solution:add("1", self:solver(self.test and 20 or 272))
 end
 
-function M:solve2(length)
-  self.solution:add("2", self:solver(length))
+function M:solve2()
+  self.solution:add("2", self:solver(self.test and 20 or 35651584))
 end
 
-M:run({ 20, 272 }, { 20, 35651584 })
+M:run()
 
 return M
