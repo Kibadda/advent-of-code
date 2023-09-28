@@ -4,7 +4,7 @@
 local AOC = {
   reload = function()
     for _, p in ipairs {
-      "advent-of-code.Timing",
+      "advent-of-code.Timer",
       "advent-of-code.Solution",
       "advent-of-code.AOCDay",
       "advent-of-code.helpers.functions",
