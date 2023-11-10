@@ -39,7 +39,7 @@ function M:parse_input(file)
 end
 
 ---@class GeodeState
----@field next (fun(self: GeodeState): table)
+---@field next (fun(self: GeodeState): GeodeState[])
 ---@field new (fun(self: GeodeState, time: number, blueprint: table): GeodeState)
 ---@field robots table
 ---@field resources table

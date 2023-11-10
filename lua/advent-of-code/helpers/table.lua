@@ -47,6 +47,9 @@ function table.count_uniques(t)
   return table.count(tmp)
 end
 
+---@generic T
+---@param t T
+---@return T
 function table.deepcopy(t)
   local orig_type = type(t)
   local copy
@@ -86,8 +89,8 @@ end
 
 ---@generic K, V, T
 ---@param t table<K, V>
----@param func fun(carry: T, v: V, k: K): T
 ---@param start_value T
+---@param func fun(carry: T, v: V, k: K): T
 ---@param iter? function
 ---@return T
 function table.reduce(t, start_value, func, iter)
@@ -105,7 +108,7 @@ end
 ---@param t table<K, V>
 ---@param func fun(v: V, k: K): T
 ---@param iter? function
----@return T[]
+---@return table<K, T>
 function table.map(t, func, iter)
   iter = iter or ipairs
 
@@ -165,6 +168,11 @@ function table.map_to_groups(t, func, iter)
   return tmp
 end
 
+---@generic K, V, H
+---@param t table<K, V>
+---@param func fun(v: V, k: K): { [1]: H, [2]: any }
+---@param iter? function
+---@return table<H, integer>
 function table.frequencies(t, func, iter)
   return table.map(table.map_to_groups(t, func, iter or ipairs), function(s)
     return table.count(s)
