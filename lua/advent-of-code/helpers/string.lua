@@ -65,3 +65,11 @@ end
 function string.at(str, pos)
   return pos <= #str and str:sub(pos, pos) or nil
 end
+
+---@param s string
+---@param pattern string
+---@param init? integer
+---@param plain? boolean
+function string.reversefind(s, pattern, init, plain)
+  return string.find(s:reverse(), pattern:reverse(), init, plain)
+end
