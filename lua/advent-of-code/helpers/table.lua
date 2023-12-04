@@ -94,7 +94,7 @@ end
 ---@param iter? function
 ---@return T
 function table.reduce(t, start_value, func, iter)
-  local current = start_value or 0
+  local current = start_value
   iter = iter or ipairs
 
   for k, v in iter(t) do
@@ -209,4 +209,14 @@ function table.to_chunks(t, size)
   end
 
   return tmp
+end
+
+---@generic V: integer|string|boolean
+---@param t V[]
+---@param item V
+---@return boolean
+function table.contains(t, item)
+  return table.reduce(t, false, function(carry, i)
+    return carry or i == item
+  end)
 end
