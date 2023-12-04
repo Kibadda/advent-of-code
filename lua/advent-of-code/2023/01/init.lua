@@ -4,34 +4,22 @@ AOC.reload()
 local M = AOC.create("2023", "01")
 
 function M:solver(first, last)
-  local sum = 0
-
-  for _, value in ipairs(self.input) do
-    sum = sum + 10 * first(value) + last(value)
-  end
-
-  return sum
+  return table.reduce(self.input, 0, function(sum, value)
+    return sum + 10 * first(value) + last(value)
+  end)
 end
 
 function M:solve1()
   self.solution:add(
     "1",
     self:solver(function(value)
-      for i = 1, #value do
-        if tonumber(value:at(i)) then
-          return tonumber(value:at(i))
-        end
-      end
-
-      return 0
+      return table.reduce(value:to_list(), nil, function(number, character)
+        return number or tonumber(character)
+      end) or 0
     end, function(value)
-      for i = #value, 1, -1 do
-        if tonumber(value:at(i)) then
-          return tonumber(value:at(i))
-        end
-      end
-
-      return 0
+      return table.reduce(value:reverse():to_list(), nil, function(number, character)
+        return number or tonumber(character)
+      end) or 0
     end)
   )
 end
@@ -63,13 +51,9 @@ function M:solve2()
   self.solution:add(
     "2",
     self:solver(function(value)
-      local s = math.huge
-      for i = 1, #value do
-        if tonumber(value:at(i)) then
-          s = i
-          break
-        end
-      end
+      local s = table.reduce(value:to_list(), nil, function(index, character, i)
+        return (not index and tonumber(character)) and i or index
+      end) or math.huge
 
       local f = get_string_number(value, false)
       if s < f[1] then
@@ -78,18 +62,13 @@ function M:solve2()
         return f[2]
       end
     end, function(value)
-      local rev = value:reverse()
-      local e = math.huge
-      for i = 1, #rev do
-        if tonumber(rev:at(i)) then
-          e = i
-          break
-        end
-      end
+      local e = table.reduce(value:reverse():to_list(), nil, function(index, character, i)
+        return (not index and tonumber(character)) and i or index
+      end) or math.huge
 
       local f = get_string_number(value, true)
       if e < f[1] then
-        return tonumber(rev:at(e))
+        return tonumber(value:reverse():at(e))
       else
         return f[2]
       end

@@ -4,8 +4,6 @@ AOC.reload()
 local M = AOC.create("2023", "02")
 
 function M:parse_input(file)
-  self.input = {}
-
   for line in file:lines() do
     local hands = line:split(":")[2]:split ";"
 
@@ -30,48 +28,34 @@ function M:parse_input(file)
 end
 
 function M:solve1()
-  local sum = 0
-
-  for i, game in ipairs(self.input) do
-    local possible = true
-
-    for _, hand in ipairs(game) do
-      if (hand.red and hand.red > 12) or (hand.green and hand.green > 13) or (hand.blue and hand.blue > 14) then
-        possible = false
-        break
-      end
-    end
-
-    if possible then
-      sum = sum + i
-    end
-  end
-
-  self.solution:add("1", sum)
+  self.solution:add(
+    "1",
+    table.reduce(self.input, 0, function(sum, game, i)
+      return table.reduce(game, true, function(possible, hand)
+        return possible
+          and (not hand.red or hand.red <= 12)
+          and (not hand.green or hand.green <= 13)
+          and (not hand.blue or hand.blue <= 14)
+      end) and sum + i or sum
+    end)
+  )
 end
 
 function M:solve2()
-  local power = 0
+  self.solution:add(
+    "2",
+    table.reduce(self.input, 0, function(power, game)
+      local min = table.reduce(game, { red = 0, green = 0, blue = 0 }, function(max, hand)
+        return {
+          red = math.max(max.red, hand.red or 0),
+          green = math.max(max.green, hand.green or 0),
+          blue = math.max(max.blue, hand.blue or 0),
+        }
+      end)
 
-  for _, game in ipairs(self.input) do
-    local min = {
-      red = 0,
-      green = 0,
-      blue = 0,
-    }
-
-    for _, hand in ipairs(game) do
-      min = {
-        red = math.max(min.red, hand.red or 0),
-        green = math.max(min.green, hand.green or 0),
-        blue = math.max(min.blue, hand.blue or 0),
-      }
-    end
-
-    power = power + (min.red * min.green * min.blue)
-  end
-
-  self.solution:add("2", power)
+      return power + (min.red * min.green * min.blue)
+    end)
+  )
 end
 
 M:run()
