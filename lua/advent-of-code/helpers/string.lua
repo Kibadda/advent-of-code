@@ -70,3 +70,9 @@ end
 function string.reversefind(s, pattern, init, plain)
   return string.find(s:reverse(), pattern:reverse(), init, plain)
 end
+
+---@param s string
+---@param prefix string
+function string.startswith(s, prefix)
+  return s:sub(1, #prefix) == prefix
+end
