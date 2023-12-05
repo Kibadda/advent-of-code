@@ -5,7 +5,7 @@ local M = AOC.create("2015", "15")
 
 function M:parse_input(file)
   for line in file:lines() do
-    local ints = line:only_ints(true)
+    local ints = line:only_ints "-?%d+"
     table.insert(self.input, {
       capacity = ints[1],
       durability = ints[2],

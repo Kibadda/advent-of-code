@@ -38,13 +38,10 @@ function string.to_list(str, func)
 end
 
 ---@param str string
----@param with_negatives boolean
-function string.only_ints(str, with_negatives)
+---@param pattern? string
+function string.only_ints(str, pattern)
   local t = {}
-  local pattern = "%d+"
-  if with_negatives then
-    pattern = "-?%d+"
-  end
+  pattern = pattern or "%d+"
   for num in str:gmatch(pattern) do
     table.insert(t, tonumber(num))
   end

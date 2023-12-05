@@ -14,7 +14,7 @@ end
 function M:solve1()
   self.solution:add(
     "1",
-    table.reduce(self.input:only_ints(true), 0, function(carry, num)
+    table.reduce(self.input:only_ints "-?%d+", 0, function(carry, num)
       return carry + num
     end)
   )
