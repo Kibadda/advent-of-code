@@ -15,18 +15,18 @@ function M:parse_input(file)
   end
 end
 
+function M:solver(func)
+  return table.reduce(self.input, 0, function(total, card, i)
+    return total + func(card, i)
+  end)
+end
+
 function M:solve1()
   self.solution:add(
     "1",
-    table.reduce(self.input, 0, function(total, card)
-      return total
-        + table.reduce(card.own, 0, function(points, number)
-          if table.contains(card.winning, number) then
-            points = points == 0 and 1 or points * 2
-          end
-
-          return points
-        end)
+    self:solver(function(card)
+      local count = #table.intersection(card.own, card.winning)
+      return count == 0 and 0 or math.pow(2, count - 1)
     end)
   )
 end
@@ -34,12 +34,12 @@ end
 function M:solve2()
   self.solution:add(
     "2",
-    table.reduce(self.input, 0, function(cards, card, i)
+    self:solver(function(card, i)
       for j = i + 1, i + #table.intersection(card.own, card.winning) do
         self.input[j].count = self.input[j].count + card.count
       end
 
-      return cards + card.count
+      return card.count
     end)
   )
 end
