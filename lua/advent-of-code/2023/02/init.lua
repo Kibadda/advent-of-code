@@ -1,6 +1,8 @@
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
+---@class AOCDay202302: AOCDay
+---@field input { red?: integer, green?: integer, blue?: integer }[][]
 local M = AOC.create("2023", "02")
 
 function M:parse_input(file)

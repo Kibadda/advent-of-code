@@ -1,6 +1,8 @@
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
+---@class AOCDay202306: AOCDay
+---@field input { times: integer[], records: integer[] }
 local M = AOC.create("2023", "06")
 
 function M:parse_input(file)
@@ -13,6 +15,8 @@ function M:parse_input(file)
   end
 end
 
+---@param time integer
+---@param record integer
 function M:solver(time, record)
   return table.reduce(table.range(time, 0), 0, function(count, i)
     return count + (i * (time - i) > record and 1 or 0)

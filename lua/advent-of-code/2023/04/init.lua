@@ -1,6 +1,10 @@
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
+---@alias scratchcard { count: integer, winning: integer[], own: integer[] }
+
+---@class AOC202304: AOCDay
+---@field input scratchcard[]
 local M = AOC.create("2023", "04")
 
 function M:parse_input(file)
@@ -15,6 +19,7 @@ function M:parse_input(file)
   end
 end
 
+---@param func fun(card: scratchcard, i: integer): integer
 function M:solver(func)
   return table.reduce(self.input, 0, function(total, card, i)
     return total + func(card, i)

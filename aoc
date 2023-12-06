@@ -17,6 +17,8 @@ create_directory() {
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
+---@class AOCDay$YEAR$DAY: AOCDay
+---@field input string[]
 local M = AOC.create("$YEAR", "$DAY")
 
 function M:parse_input(file)
