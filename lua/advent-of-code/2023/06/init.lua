@@ -30,7 +30,7 @@ function M:solve1()
 end
 
 function M:solve2()
-  return self:solver(tonumber(table.concat(self.input.times)), tonumber(table.concat(self.input.records)))
+  return self:solver(tonumber(table.concat(self.input.times)) or 0, tonumber(table.concat(self.input.records)) or 0)
 end
 
 M:run()
