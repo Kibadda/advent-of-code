@@ -7,8 +7,8 @@ local Solution = require "advent-of-code.Solution"
 ---@field solution Solution
 ---@field test boolean
 ---@field parse_input (fun(self: AOCDay, file: file*)) parses input
----@field solve1 (fun(self: AOCDay, input: any)) solves first problem
----@field solve2 (fun(self: AOCDay, input: any)) solves second problem
+---@field solve1 (fun(self: AOCDay): any) solves first problem
+---@field solve2 (fun(self: AOCDay): any) solves second problem
 ---@field solver (fun(self: AOCDay, ...): any) placeholder function
 ---@field new (fun(self: AOCDay, year: string, day: string): AOCDay) create new AOCDay
 ---@field run (fun(self: AOCDay)) run
@@ -37,10 +37,16 @@ local AOCDay = {
       self:parse_input(file)
       self.solution.timer:parse()
 
-      self:solve1()
+      local one = self:solve1()
+      if one then
+        self.solution:add("1", one)
+      end
       self.solution.timer:one()
 
-      self:solve2()
+      local two = self:solve2()
+      if two then
+        self.solution:add("2", two)
+      end
       self.solution.timer:two()
 
       self.solution:print()
