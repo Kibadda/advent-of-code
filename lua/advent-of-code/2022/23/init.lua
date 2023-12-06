@@ -75,18 +75,13 @@ function M:solver(stop_func)
   local input = table.deepcopy(self.input)
   while true do
     i = i + 1
-    local proposals = table.frequencies(
-      table.reduce(input, {}, function(carry, v)
-        local p = propose(v, directions, input)
-        if p then
-          table.insert(carry, p)
-        end
-        return carry
-      end),
-      function(s)
-        return { ("%d|%d"):format(s.x, s.y), s }
+    local proposals = table.frequencies(table.reduce(input, {}, function(carry, v)
+      local p = propose(v, directions, input)
+      if p then
+        table.insert(carry, ("%d|%d"):format(p.x, p.y))
       end
-    )
+      return carry
+    end))
     local next_input = {}
     local moved = false
     for _, elf in ipairs(input) do

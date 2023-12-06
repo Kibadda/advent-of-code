@@ -10,11 +10,7 @@ function M:solve1()
   for _, word in ipairs(self.input) do
     local two_changed = false
     local three_changed = false
-    for _, i in
-      pairs(table.frequencies(word:to_list(), function(s)
-        return { s, s }
-      end))
-    do
+    for _, i in pairs(table.frequencies(word:to_list())) do
       if not two_changed and i == 2 then
         two_changed = true
         twos = twos + 1
