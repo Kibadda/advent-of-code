@@ -168,15 +168,19 @@ function table.map_to_groups(t, func, iter)
   return tmp
 end
 
----@generic K, V, H
----@param t table<K, V>
----@param func fun(v: V, k: K): { [1]: H, [2]: any }
+---@generic V
+---@param t table<any, V>
 ---@param iter? function
----@return table<H, integer>
-function table.frequencies(t, func, iter)
-  return table.map(table.map_to_groups(t, func, iter or ipairs), function(s)
-    return table.count(s)
-  end, pairs)
+---@return table<V, integer>
+function table.frequencies(t, iter)
+  iter = iter or ipairs
+
+  local tmp = {}
+  for _, v in iter(t) do
+    tmp[v] = (tmp[v] or 0) + 1
+  end
+
+  return tmp
 end
 
 ---@generic K, V
