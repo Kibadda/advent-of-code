@@ -27,26 +27,20 @@ function M:solver(func)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(function(card)
-      local count = #table.intersection(card.own, card.winning)
-      return count == 0 and 0 or math.pow(2, count - 1)
-    end)
-  )
+  return self:solver(function(card)
+    local count = #table.intersection(card.own, card.winning)
+    return count == 0 and 0 or math.pow(2, count - 1)
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(function(card, i)
-      for j = i + 1, i + #table.intersection(card.own, card.winning) do
-        self.input[j].count = self.input[j].count + card.count
-      end
+  return self:solver(function(card, i)
+    for j = i + 1, i + #table.intersection(card.own, card.winning) do
+      self.input[j].count = self.input[j].count + card.count
+    end
 
-      return card.count
-    end)
-  )
+    return card.count
+  end)
 end
 
 M:run()

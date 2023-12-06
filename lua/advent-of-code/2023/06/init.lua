@@ -24,19 +24,13 @@ function M:solver(time, record)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    table.reduce(self.input.times, 1, function(margin, time, i)
-      return margin * self:solver(time, self.input.records[i])
-    end)
-  )
+  return table.reduce(self.input.times, 1, function(margin, time, i)
+    return margin * self:solver(time, self.input.records[i])
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(tonumber(table.concat(self.input.times)), tonumber(table.concat(self.input.records)))
-  )
+  return self:solver(tonumber(table.concat(self.input.times)), tonumber(table.concat(self.input.records)))
 end
 
 M:run()

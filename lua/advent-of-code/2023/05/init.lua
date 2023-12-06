@@ -71,12 +71,9 @@ function M:solve1()
     key = next_map(key)
   end
 
-  self.solution:add(
-    "1",
-    table.reduce(ids, math.huge, function(min, id)
-      return math.min(min, id)
-    end)
-  )
+  return table.reduce(ids, math.huge, function(min, id)
+    return math.min(min, id)
+  end)
 end
 
 function M:solve2()
@@ -125,17 +122,14 @@ function M:solve2()
     key = next_map(key)
   end
 
-  self.solution:add(
-    "2",
-    table.reduce(ids, math.huge, function(min, ranges)
-      return math.min(
-        min,
-        table.reduce(ranges, math.huge, function(range_min, range)
-          return math.min(range_min, range.s)
-        end)
-      )
-    end)
-  )
+  return table.reduce(ids, math.huge, function(min, ranges)
+    return math.min(
+      min,
+      table.reduce(ranges, math.huge, function(range_min, range)
+        return math.min(range_min, range.s)
+      end)
+    )
+  end)
 end
 
 M:run()

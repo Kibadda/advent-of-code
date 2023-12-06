@@ -30,34 +30,28 @@ function M:parse_input(file)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    table.reduce(self.input, 0, function(sum, game, i)
-      return table.reduce(game, true, function(possible, hand)
-        return possible
-          and (not hand.red or hand.red <= 12)
-          and (not hand.green or hand.green <= 13)
-          and (not hand.blue or hand.blue <= 14)
-      end) and sum + i or sum
-    end)
-  )
+  return table.reduce(self.input, 0, function(sum, game, i)
+    return table.reduce(game, true, function(possible, hand)
+      return possible
+        and (not hand.red or hand.red <= 12)
+        and (not hand.green or hand.green <= 13)
+        and (not hand.blue or hand.blue <= 14)
+    end) and sum + i or sum
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    table.reduce(self.input, 0, function(power, game)
-      local min = table.reduce(game, { red = 0, green = 0, blue = 0 }, function(max, hand)
-        return {
-          red = math.max(max.red, hand.red or 0),
-          green = math.max(max.green, hand.green or 0),
-          blue = math.max(max.blue, hand.blue or 0),
-        }
-      end)
-
-      return power + (min.red * min.green * min.blue)
+  return table.reduce(self.input, 0, function(power, game)
+    local min = table.reduce(game, { red = 0, green = 0, blue = 0 }, function(max, hand)
+      return {
+        red = math.max(max.red, hand.red or 0),
+        green = math.max(max.green, hand.green or 0),
+        blue = math.max(max.blue, hand.blue or 0),
+      }
     end)
-  )
+
+    return power + (min.red * min.green * min.blue)
+  end)
 end
 
 M:run()
