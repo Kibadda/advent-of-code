@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2016", "12")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     local split = line:split()
     table.insert(self.input, {

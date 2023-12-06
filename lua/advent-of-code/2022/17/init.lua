@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2022", "17")
 
-function M:parse_input(file)
+function M:parse(file)
   self.input = {
     drift = file:read(),
     shapes = table.map(("####|.#.,###,.#.|..#,..#,###|#,#,#,#|##,##"):split "|", function(shape)

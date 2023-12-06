@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2022", "22")
 
-function M:parse_input(file)
+function M:parse(file)
   self.input = {
     grid = {},
     path = {},

@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2015", "09")
 
-function M:parse_input(file)
+function M:parse(file)
   local city_map = {}
   for line in file:lines() do
     local split = line:split()

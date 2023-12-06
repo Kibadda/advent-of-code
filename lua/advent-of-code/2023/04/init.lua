@@ -7,7 +7,7 @@ AOC.reload()
 ---@field input scratchcard[]
 local M = AOC.create("2023", "04")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     local ints = line:only_ints()
 

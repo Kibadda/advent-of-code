@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2022", "01")
 
-function M:parse_input(file)
+function M:parse(file)
   table.insert(self.input, 0)
 
   local current_pos = 1

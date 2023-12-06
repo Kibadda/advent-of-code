@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2016", "04")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     local split = line:split "-"
     local last = table.remove(split, #split)

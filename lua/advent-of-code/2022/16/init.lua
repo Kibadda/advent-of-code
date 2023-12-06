@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2022", "16")
 
-function M:parse_input(file)
+function M:parse(file)
   self.input = {
     names = {},
     flows = {},

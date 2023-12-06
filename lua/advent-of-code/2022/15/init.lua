@@ -6,7 +6,7 @@ local M = AOC.create("2022", "15")
 local min_x = math.huge
 local max_x = 0
 
-function M:parse_input(file)
+function M:parse(file)
   self.input = {
     S = {},
     B = {},

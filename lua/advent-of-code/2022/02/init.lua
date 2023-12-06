@@ -23,8 +23,8 @@ local function shape_to_result(str, win)
   end
 end
 
-function M:parse_input(file)
-  self.__super.parse_input(self, file)
+function M:parse(file)
+  self.__super.parse(self, file)
 end
 
 function M:solve1()

@@ -6,7 +6,7 @@ local Solution = require "advent-of-code.Solution"
 ---@field input any
 ---@field solution Solution
 ---@field test boolean
----@field parse_input (fun(self: AOCDay, file: file*)) parses input
+---@field parse (fun(self: AOCDay, file: file*)) parses input
 ---@field solve1 (fun(self: AOCDay): any) solves first problem
 ---@field solve2 (fun(self: AOCDay): any) solves second problem
 ---@field solver (fun(self: AOCDay, ...): any) placeholder function
@@ -19,7 +19,7 @@ local AOCDay = {
   input = {},
   solution = {},
   test = false,
-  parse_input = function(self, file)
+  parse = function(self, file)
     for line in file:lines() do
       table.insert(self.input, line)
     end
@@ -34,7 +34,7 @@ local AOCDay = {
     if file then
       self.solution.timer:start()
 
-      self:parse_input(file)
+      self:parse(file)
       self.solution.timer:parse()
 
       local one = self:solve1()

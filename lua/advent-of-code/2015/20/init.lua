@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2015", "20")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     self.input.gifts = tonumber(line)
   end

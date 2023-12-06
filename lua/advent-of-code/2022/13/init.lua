@@ -5,7 +5,7 @@ local AOCDay = require "advent-of-code.AOCDay"
 
 local M = AOCDay:new("2022", "13")
 
-function M:parse_input(file)
+function M:parse(file)
   local function to_table(str)
     local t = {}
     if str:sub(1, 1) ~= "[" then

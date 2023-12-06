@@ -13,7 +13,7 @@ local M = AOC.create("2015", "07")
 -- y: 456
 local max = 65535
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     local split = line:split()
     if #split == 3 then

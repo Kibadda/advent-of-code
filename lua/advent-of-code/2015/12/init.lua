@@ -5,7 +5,7 @@ local json = require "advent-of-code.helpers.json"
 
 local M = AOC.create("2015", "12")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     self.input = line
   end
