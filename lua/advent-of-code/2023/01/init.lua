@@ -1,8 +1,11 @@
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
+---@class AOCDay202301: AOCDay
+---@field input string[]
 local M = AOC.create("2023", "01")
 
+---@param func fun(value: string): integer[]
 function M:solver(func)
   return table.reduce(self.input, 0, function(sum, value)
     local numbers = func(value)

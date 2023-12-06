@@ -1,8 +1,12 @@
 local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
+---@class AOCDay202305: AOCDay
+---@field input { [1]: integer[], [string]: { dest: integer[], source: integer[], range: integer[], [integer]: integer } }
 local M = AOC.create("2023", "05")
 
+---@param key string
+---@return string
 local function next_map(key)
   return match(key) {
     seeds = "seed_to_soil",
@@ -29,7 +33,7 @@ function M:parse_input(file)
   }
 
   self.input = {
-    seeds = {},
+    {},
     seed_to_soil = setmetatable({ dest = {}, source = {}, range = {} }, mt),
     soil_to_fertilizer = setmetatable({ dest = {}, source = {}, range = {} }, mt),
     fertilizer_to_water = setmetatable({ dest = {}, source = {}, range = {} }, mt),
@@ -42,7 +46,7 @@ function M:parse_input(file)
   local key = "seeds"
   for line in file:lines() do
     if line:match "seeds:" then
-      self.input.seeds = line:only_ints()
+      self.input[1] = line:only_ints()
     elseif line == "" then
       key = next_map(key)
     else
@@ -58,7 +62,7 @@ end
 function M:solve1()
   local key = "seed_to_soil"
 
-  local ids = table.deepcopy(self.input.seeds)
+  local ids = table.deepcopy(self.input[1])
 
   while key do
     ids = table.map(ids, function(id)
@@ -76,10 +80,11 @@ function M:solve1()
 end
 
 function M:solve2()
+  local seeds = self.input[1]
   local ids = {}
-  for i = 1, #self.input.seeds, 2 do
+  for i = 1, #seeds, 2 do
     ids[#ids + 1] = {
-      { s = self.input.seeds[i], e = self.input.seeds[i] + self.input.seeds[i + 1], used = false },
+      { s = seeds[i], e = seeds[i] + seeds[i + 1], used = false },
     }
   end
 
