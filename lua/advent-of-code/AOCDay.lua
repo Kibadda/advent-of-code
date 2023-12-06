@@ -9,7 +9,6 @@ local Solution = require "advent-of-code.Solution"
 ---@field parse (fun(self: AOCDay, file: file*)) parses input
 ---@field solve1 (fun(self: AOCDay): any) solves first problem
 ---@field solve2 (fun(self: AOCDay): any) solves second problem
----@field solver (fun(self: AOCDay, ...): any) placeholder function
 ---@field new (fun(self: AOCDay, year: string, day: string): AOCDay) create new AOCDay
 ---@field run (fun(self: AOCDay)) run
 ---@field __super AOCDay
@@ -24,8 +23,6 @@ local AOCDay = {
       table.insert(self.input, line)
     end
   end,
-  solve1 = function(_) end,
-  solve2 = function(_) end,
   run = function(self)
     local file_name = self.test and "test.txt" or "input.txt"
     local path = ("./advent-of-code/%s/%s/%s"):format(self.year, self.day, file_name)
@@ -57,7 +54,6 @@ local AOCDay = {
       error:print()
     end
   end,
-  solver = function(_, ...) end,
   new = function(self, year, day)
     return setmetatable({
       year = year,
