@@ -19,7 +19,7 @@ local function next_map(key)
   }
 end
 
-function M:parse_input(file)
+function M:parse(file)
   local mt = {
     __index = function(t, key)
       for i = 1, #t.source do

@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2016", "03")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     table.insert(self.input, line:only_ints())
   end

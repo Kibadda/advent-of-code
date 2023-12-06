@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2016", "10")
 
-function M:parse_input(file)
+function M:parse(file)
   self.input = {
     bots = {},
     instructions = {},

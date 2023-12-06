@@ -6,7 +6,7 @@ local M = AOC.create("2022", "18")
 local min_x, min_y, min_z = math.huge, math.huge, math.huge
 local max_x, max_y, max_z = -math.huge, -math.huge, -math.huge
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     local split = line:only_ints()
     local x = split[1]

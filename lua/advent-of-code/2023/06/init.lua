@@ -5,7 +5,7 @@ AOC.reload()
 ---@field input { times: integer[], records: integer[] }
 local M = AOC.create("2023", "06")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     if not self.input.times then
       self.input.times = line:only_ints()

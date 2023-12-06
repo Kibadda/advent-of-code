@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2015", "11")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     self.input.password = line
   end

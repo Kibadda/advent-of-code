@@ -5,7 +5,7 @@ local M = AOC.create("2022", "14")
 
 local min, max = math.huge, 0
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     local split = line:split()
     for i = 3, #split, 2 do

@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2022", "05")
 
-function M:parse_input(file)
+function M:parse(file)
   local crates = {}
   local procedures = {}
 

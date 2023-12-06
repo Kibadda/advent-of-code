@@ -5,7 +5,7 @@ local md5 = require "advent-of-code.helpers.md5"
 
 local M = AOC.create("2016", "17")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     self.input = line
   end

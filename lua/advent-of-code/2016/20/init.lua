@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2016", "20")
 
-function M:parse_input(file)
+function M:parse(file)
   local i = 0
   for line in file:lines() do
     i = i + 1

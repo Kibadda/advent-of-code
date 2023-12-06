@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2017", "16")
 
-function M:parse_input(file)
+function M:parse(file)
   self.input = {}
   for _, dance in ipairs(file:read("a"):split ",") do
     self.input[#self.input + 1] = match(dance:at(1)) {

@@ -5,7 +5,7 @@ AOC.reload()
 ---@field input { red?: integer, green?: integer, blue?: integer }[][]
 local M = AOC.create("2023", "02")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     local hands = line:split(":")[2]:split ";"
 

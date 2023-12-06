@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2016", "01")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     self.input = line:gsub(",", ""):gsub("L", "L "):gsub("R", "R "):split()
   end

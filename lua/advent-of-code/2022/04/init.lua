@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2022", "04")
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     local parsed_section = {}
     for _, elf_sections in ipairs(line:split ",") do

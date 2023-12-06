@@ -36,7 +36,7 @@ local function to_snafu(num)
   end
 end
 
-function M:parse_input(file)
+function M:parse(file)
   for line in file:lines() do
     self.input[line] = from_snafu(line)
   end

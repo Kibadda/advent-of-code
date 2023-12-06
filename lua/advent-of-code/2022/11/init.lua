@@ -3,7 +3,7 @@ AOC.reload()
 
 local M = AOC.create("2022", "11")
 
-function M:parse_input(file)
+function M:parse(file)
   local monkey = { inspections = 0 }
   for line in file:lines() do
     if line == "" then

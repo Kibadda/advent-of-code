@@ -5,7 +5,7 @@ AOC.reload()
 ---@field input { numbers: { num: integer, line: integer, s: integer, e: integer }[], grid: string[] }
 local M = AOC.create("2023", "03")
 
-function M:parse_input(file)
+function M:parse(file)
   self.input = {
     numbers = {},
     grid = {},
