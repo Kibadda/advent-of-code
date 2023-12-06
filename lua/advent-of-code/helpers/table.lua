@@ -220,3 +220,16 @@ function table.contains(t, item)
     return carry or i == item
   end)
 end
+
+---@param length integer
+---@param start? integer
+function table.range(length, start)
+  start = start or 1
+
+  local t = {}
+  for i = start, length do
+    t[#t + 1] = i
+  end
+
+  return t
+end
