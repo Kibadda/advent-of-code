@@ -32,27 +32,14 @@ function M:solve1()
 end
 
 function M:solve2()
-  for i, card in ipairs(self.input) do
-    local matches = 0
-
-    for _, number in pairs(card.own) do
-      for _, winner in ipairs(card.winning) do
-        if number == winner then
-          matches = matches + 1
-          break
-        end
-      end
-    end
-
-    for j = i + 1, i + matches do
-      self.input[j].count = self.input[j].count + card.count
-    end
-  end
-
   self.solution:add(
     "2",
-    table.reduce(self.input, 0, function(carry, card)
-      return carry + card.count
+    table.reduce(self.input, 0, function(cards, card, i)
+      for j = i + 1, i + #table.intersection(card.own, card.winning) do
+        self.input[j].count = self.input[j].count + card.count
+      end
+
+      return cards + card.count
     end)
   )
 end

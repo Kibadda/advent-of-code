@@ -237,3 +237,19 @@ function table.range(length, start)
 
   return t
 end
+
+---@generic V
+---@param t1 V[]
+---@param t2 V[]
+---@return V[]
+function table.intersection(t1, t2)
+  local t = {}
+
+  for _, v in pairs(t1) do
+    if table.contains(t2, v) then
+      t[#t + 1] = v
+    end
+  end
+
+  return t
+end
