@@ -2,9 +2,11 @@
 ---@return integer
 function table.count(t)
   local count = 0
+
   for _ in pairs(t) do
     count = count + 1
   end
+
   return count
 end
 
@@ -41,9 +43,11 @@ end
 ---@param t table
 function table.count_uniques(t)
   local tmp = {}
+
   for _, v in ipairs(t) do
     tmp[v] = true
   end
+
   return table.count(tmp)
 end
 
@@ -84,6 +88,7 @@ function table.filter(t, func, keep_index, iter)
       end
     end
   end
+
   return tmp
 end
 
@@ -220,9 +225,13 @@ end
 ---@param item V
 ---@return boolean
 function table.contains(t, item)
-  return table.reduce(t, false, function(carry, i)
-    return carry or i == item
-  end)
+  for _, v in ipairs(t) do
+    if v == item then
+      return true
+    end
+  end
+
+  return false
 end
 
 ---@param length integer
