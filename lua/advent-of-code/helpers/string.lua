@@ -76,3 +76,22 @@ end
 function string.startswith(s, prefix)
   return s:sub(1, #prefix) == prefix
 end
+
+---@param s string
+---@param pattern string
+function string.count(s, pattern)
+  local count = 0
+
+  ---@type integer?
+  local index = 0
+
+  while true do
+    index = s:find(pattern, index + 1)
+    if not index then
+      break
+    end
+    count = count + 1
+  end
+
+  return count
+end
