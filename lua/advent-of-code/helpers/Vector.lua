@@ -2,6 +2,7 @@
 ---@field new (fun(self: Vector, x: number, y: number): Vector)
 ---@field distance (fun(self: Vector, v?: Vector): number)
 ---@field adjacent fun(self: Vector, type?: 4|5|8|9): Vector[]
+---@field string fun(self: Vector): string
 ---@field x number
 ---@field y number
 local Vector = {}
@@ -81,6 +82,10 @@ Vector = {
     end
 
     return r
+  end,
+  ---@param self Vector
+  string = function(self)
+    return ("%d|%d"):format(self.x, self.y)
   end,
 }
 

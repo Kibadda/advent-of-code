@@ -47,12 +47,14 @@ end
 ---@param t T
 ---@return (fun(table: V[], i?: integer): integer, V), T, integer
 function _G.cycle(t)
+  local length = table.count(t)
+
   local function iter(ta, i)
     i = i + 1
-    local v = ta[(i - 1) % table.count(ta) + 1]
-    if v then
-      return i, v
+    if i > length then
+      i = 1
     end
+    return i, ta[i]
   end
 
   return iter, t, 0
