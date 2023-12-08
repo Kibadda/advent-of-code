@@ -2,165 +2,115 @@ local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
 ---@class AOCDay202305: AOCDay
----@field input { [1]: integer[], [string]: { dest: integer[], source: integer[], range: integer[], [integer]: integer } }
+---@field input { seeds: integer[], functions: Function[] }
 local M = AOC.create("2023", "05")
 
----@param key string
----@return string
-local function next_map(key)
-  return match(key) {
-    seeds = "seed_to_soil",
-    seed_to_soil = "soil_to_fertilizer",
-    soil_to_fertilizer = "fertilizer_to_water",
-    fertilizer_to_water = "water_to_light",
-    water_to_light = "light_to_temperature",
-    light_to_temperature = "temperature_to_humidity",
-    temperature_to_humidity = "humidity_to_location",
-  }
-end
+---@class Function
+---@field mappings integer[][]
+---@field new fun(self: Function, mappings: integer[][]): Function
+---@field one fun(self: Function, v: integer): integer
+---@field range fun(self: Function, v: integer[][]): integer[][]
+local Function = {
+  new = function(self, mappings)
+    return setmetatable({ mappings = mappings }, {
+      __index = self,
+    })
+  end,
+  one = function(self, v)
+    for i = 1, #self.mappings do
+      local destination, source, range = unpack(self.mappings[i])
 
-function M:parse(file)
-  local mt = {
-    __index = function(t, key)
-      for i = 1, #t.source do
-        if key >= t.source[i] and key <= t.source[i] + t.range[i] then
-          return t.dest[i] + key - t.source[i]
+      if source <= v and v < source + range then
+        return v + destination - source
+      end
+    end
+
+    return v
+  end,
+  range = function(self, v)
+    local ranges = {}
+    for i = 1, #self.mappings do
+      local destination, source, range = unpack(self.mappings[i])
+
+      local new_ranges = {}
+      while #v > 0 do
+        local r = table.remove(v, 1)
+
+        local before = { r[1], math.min(r[2], source) }
+        local inter = { math.max(r[1], source), math.min(source + range, r[2]) }
+        local after = { math.max(source + range, r[1]), r[2] }
+
+        if before[1] < before[2] then
+          table.insert(new_ranges, before)
+        end
+        if inter[1] < inter[2] then
+          table.insert(ranges, { inter[1] - source + destination, inter[2] - source + destination })
+        end
+        if after[1] < after[2] then
+          table.insert(new_ranges, after)
         end
       end
 
-      return key
-    end,
-  }
+      v = new_ranges
+    end
+
+    for _, r in ipairs(v) do
+      table.insert(ranges, r)
+    end
+
+    return ranges
+  end,
+}
+
+---@param file file*
+function M:parse(file)
+  ---@type string[]
+  local lines = file:read("*a"):split "\n"
 
   self.input = {
-    {},
-    seed_to_soil = setmetatable({ dest = {}, source = {}, range = {} }, mt),
-    soil_to_fertilizer = setmetatable({ dest = {}, source = {}, range = {} }, mt),
-    fertilizer_to_water = setmetatable({ dest = {}, source = {}, range = {} }, mt),
-    water_to_light = setmetatable({ dest = {}, source = {}, range = {} }, mt),
-    light_to_temperature = setmetatable({ dest = {}, source = {}, range = {} }, mt),
-    temperature_to_humidity = setmetatable({ dest = {}, source = {}, range = {} }, mt),
-    humidity_to_location = setmetatable({ dest = {}, source = {}, range = {} }, mt),
+    seeds = lines[1]:only_ints(),
+    functions = {},
   }
 
-  local key = "seeds"
-  for line in file:lines() do
-    if line:match "seeds:" then
-      self.input[1] = line:only_ints()
-    elseif line == "" then
-      key = next_map(key)
+  local mappings = {}
+  for i = 3, #lines do
+    local ints = lines[i]:only_ints()
+    if #ints == 0 then
+      table.insert(self.input.functions, Function:new(mappings))
+      mappings = {}
     else
-      local dest_start, source_start, range = unpack(line:only_ints())
-
-      table.insert(self.input[key].dest, dest_start)
-      table.insert(self.input[key].source, source_start)
-      table.insert(self.input[key].range, range)
+      table.insert(mappings, ints)
     end
   end
+
+  table.insert(self.input.functions, Function:new(mappings))
 end
 
 function M:solve1()
-  local key = "seed_to_soil"
-
-  local ids = table.deepcopy(self.input[1])
-
-  while key do
-    ids = table.map(ids, function(id)
-      return self.input[key][id]
-    end)
-    key = next_map(key)
-  end
-
-  return table.reduce(ids, math.huge, function(min, id)
-    return math.min(min, id)
+  return table.reduce(self.input.seeds, math.huge, function(min, seed)
+    return math.min(
+      min,
+      table.reduce(self.input.functions, seed, function(s, fun)
+        return fun:one(s)
+      end)
+    )
   end)
 end
 
 function M:solve2()
-  ---@type { [1]: integer, [2]: integer }[]
-  local ranges = {}
-
-  for i = 1, #self.input[1], 2 do
-    table.insert(ranges, {
-      self.input[1][i],
-      self.input[1][i] + self.input[1][i + 1] - 1,
-    })
-  end
-
-  local key = "seed_to_soil"
-
-  while key do
-    local new_ranges = {}
-
-    local i = 1
-    while ranges[i] do
-      local range = ranges[i]
-      local map = self.input[key]
-      local insert = true
-
-      for j = 1, #map.source do
-        local s = map.source[j]
-        local e = map.source[j] + map.range[j] - 1
-
-        if s <= range[1] and e >= range[2] then
-          table.insert(new_ranges, {
-            map[range[1]],
-            map[range[2]],
-          })
-
-          insert = false
-          break
-        elseif s > range[1] and s <= range[2] and e >= range[2] then
-          table.insert(new_ranges, {
-            map.dest[j],
-            map[range[2]],
-          })
-
-          range = {
-            range[1],
-            s - 1,
-          }
-        elseif e >= range[1] and e < range[2] and s <= range[1] then
-          table.insert(new_ranges, {
-            map[range[1]],
-            map.dest[j] + map.range[j] - 1,
-          })
-
-          range = {
-            e + 1,
-            range[2],
-          }
-        elseif s > range[1] and s < range[2] and e > range[1] and e < range[1] then
-          table.insert(new_ranges, {
-            map.dest[j],
-            map.dest[j] + map.range[j] - 1,
-          })
-
-          range = {
-            range[1],
-            s - 1,
-          }
-
-          table.insert(ranges, {
-            e + 1,
-            range[2],
-          })
+  return table.reduce(table.to_chunks(self.input.seeds, 2), math.huge, function(min, seed_range)
+    return math.min(
+      min,
+      table.reduce(
+        table.reduce(self.input.functions, { { seed_range[1], seed_range[2] + seed_range[1] } }, function(sr, fun)
+          return fun:range(sr)
+        end),
+        math.huge,
+        function(rm, range)
+          return math.min(rm, range[1])
         end
-      end
-
-      if insert then
-        table.insert(new_ranges, range)
-      end
-
-      i = i + 1
-    end
-
-    ranges = new_ranges
-    key = next_map(key)
-  end
-
-  return table.reduce(ranges, math.huge, function(min, range)
-    return math.min(min, range[1])
+      )
+    )
   end)
 end
 
