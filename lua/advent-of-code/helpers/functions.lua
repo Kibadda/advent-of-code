@@ -43,6 +43,9 @@ function _G.lcm(a, b)
   return a * b / gcd(a, b)
 end
 
+---@generic T: table, V
+---@param t T
+---@return (fun(table: V[], i?: integer): integer, V), T, integer
 function _G.cycle(t)
   local function iter(ta, i)
     i = i + 1
