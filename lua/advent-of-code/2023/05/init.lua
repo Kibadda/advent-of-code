@@ -77,58 +77,90 @@ function M:solve1()
 end
 
 function M:solve2()
-  local seeds = self.input[1]
-  local ids = {}
-  for i = 1, #seeds, 2 do
-    ids[#ids + 1] = {
-      { s = seeds[i], e = seeds[i] + seeds[i + 1], used = false },
-    }
+  ---@type { [1]: integer, [2]: integer }[]
+  local ranges = {}
+
+  for i = 1, #self.input[1], 2 do
+    table.insert(ranges, {
+      self.input[1][i],
+      self.input[1][i] + self.input[1][i + 1] - 1,
+    })
   end
 
   local key = "seed_to_soil"
 
   while key do
-    ids = table.map(ids, function(ranges)
-      local length = #ranges
-      for j = 1, length do
-        for i = 1, #self.input[key].source do
-          local map = self.input[key]
+    local new_ranges = {}
 
-          if map.source[i] <= ranges[j].e and map.source[i] + map.range[i] - 1 >= ranges[j].s then
-            if map.source[i] > ranges[j].s then
-              table.insert(ranges, { s = ranges[j].s, e = map.source[i] - 1, used = true })
-              ranges[j].s = map.source[i]
-            end
+    local i = 1
+    while ranges[i] do
+      local range = ranges[i]
+      local map = self.input[key]
+      local insert = true
 
-            if map.source[i] + map.range[i] - 1 < ranges[j].e then
-              table.insert(ranges, { s = map.source[i] + map.range[i], e = ranges[j].e, used = true })
-              ranges[j].e = map.source[i] + map.range[i] - 1
-            end
+      for j = 1, #map.source do
+        local s = map.source[j]
+        local e = map.source[j] + map.range[j] - 1
 
-            ranges[j] = { s = map[ranges[j].s], e = map[ranges[j].e], used = true }
-          end
+        if s <= range[1] and e >= range[2] then
+          table.insert(new_ranges, {
+            map[range[1]],
+            map[range[2]],
+          })
 
-          if ranges[j].used then
-            break
-          end
+          insert = false
+          break
+        elseif s > range[1] and s <= range[2] and e >= range[2] then
+          table.insert(new_ranges, {
+            map.dest[j],
+            map[range[2]],
+          })
+
+          range = {
+            range[1],
+            s - 1,
+          }
+        elseif e >= range[1] and e < range[2] and s <= range[1] then
+          table.insert(new_ranges, {
+            map[range[1]],
+            map.dest[j] + map.range[j] - 1,
+          })
+
+          range = {
+            e + 1,
+            range[2],
+          }
+        elseif s > range[1] and s < range[2] and e > range[1] and e < range[1] then
+          table.insert(new_ranges, {
+            map.dest[j],
+            map.dest[j] + map.range[j] - 1,
+          })
+
+          range = {
+            range[1],
+            s - 1,
+          }
+
+          table.insert(ranges, {
+            e + 1,
+            range[2],
+          })
         end
       end
 
-      return table.map(ranges, function(range)
-        return { s = range.s, e = range.e, used = false }
-      end)
-    end)
+      if insert then
+        table.insert(new_ranges, range)
+      end
 
+      i = i + 1
+    end
+
+    ranges = new_ranges
     key = next_map(key)
   end
 
-  return table.reduce(ids, math.huge, function(min, ranges)
-    return math.min(
-      min,
-      table.reduce(ranges, math.huge, function(range_min, range)
-        return math.min(range_min, range.s)
-      end)
-    )
+  return table.reduce(ranges, math.huge, function(min, range)
+    return math.min(min, range[1])
   end)
 end
 
