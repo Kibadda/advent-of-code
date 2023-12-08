@@ -3,27 +3,37 @@ AOC.reload()
 
 local md5 = require "advent-of-code.helpers.md5"
 
+---@class AOCDay201504: AOCDay
+---@field input string[]
 local M = AOC.create("2015", "04")
 
-function M:solver(ending)
-  local secret = self.input[1]
+---@param file file*
+function M:parse(file)
+  self.input = file:read()
+end
+
+---@param prefix string
+function M:solver(prefix)
   local hash
+  local i = 0
 
-  local i = -1
-  repeat
+  while true do
+    hash = md5.sumhexa(self.input .. i)
+
+    if hash:startswith(prefix) then
+      return i
+    end
+
     i = i + 1
-    hash = md5.sumhexa(secret .. i)
-  until hash:sub(1, 5) == ending
-
-  return i
+  end
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver "00000")
+  return self:solver "00000"
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver "000000")
+  return self:solver "000000"
 end
 
 M:run()
