@@ -49,7 +49,7 @@ function M:solve2()
   end)
 
   return table.reduce(counts, counts[1], function(total, count)
-    return lcm(total, count)
+    return math.lcm(total, count)
   end)
 end
 

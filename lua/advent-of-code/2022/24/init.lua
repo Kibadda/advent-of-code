@@ -48,7 +48,7 @@ function M:parse(file)
 
   local rows = #self.input.grid - 2
   local cols = #self.input.grid[1] - 2
-  self.input.minutes = rows * cols / gcd(rows, cols)
+  self.input.minutes = rows * cols / math.gcd(rows, cols)
   for i = 0, self.input.minutes - 1 do
     self.input.winds[i] = {
       up = {},
