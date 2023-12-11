@@ -2,19 +2,26 @@ local AOC = require "advent-of-code.AOC"
 AOC.reload()
 
 ---@class AOCDay202310: AOCDay
----@field input { grid: string[], start: Vector }
+---@field input { grid: string[], start: Vector, path: Vector[] }
 local M = AOC.create("2023", "10")
 
 ---@param file file*
 function M:parse(file)
   self.input = {
     grid = {},
+    path = setmetatable({}, {
+      __index = function(t, key)
+        t[key] = {}
+        return t[key]
+      end,
+    }),
   }
 
   local i = 1
   for line in file:lines() do
-    if string.match(line, "S") then
-      self.input.start = V(i, string.find(line, "S"))
+    local s = string.find(line, "S")
+    if s then
+      self.input.start = V(i, s)
     end
     table.insert(self.input.grid, line)
     i = i + 1
@@ -23,7 +30,7 @@ end
 
 function M:solve1()
   local current = self.input.start
-  local path = { current }
+  self.input.path[current.x][current.y] = true
   local last_dir = nil
 
   repeat
@@ -62,15 +69,38 @@ function M:solve1()
       end
     end
 
-    table.insert(path, current)
+    self.input.path[current.x][current.y] = true
   until current == self.input.start
 
-  return math.floor(#path / 2)
+  return (table.reduce(self.input.path, 0, function(count, row)
+    return count + table.count(row)
+  end, pairs)) / 2
 end
 
 function M:solve2()
-  -- 461 to low
-  return nil
+  local in_bounds = 0
+
+  for i = 1, #self.input.grid do
+    for j = 1, #self.input.grid[i] do
+      if not self.input.path[i][j] then
+        local count = 0
+
+        for k = 1, j - 1 do
+          if
+            self.input.path[i][k] and table.contains({ "|", "J", "L", "S" }, self.input.grid[i]:at(k) --[[@as string]])
+          then
+            count = count + 1
+          end
+        end
+
+        if count % 2 == 1 then
+          in_bounds = in_bounds + 1
+        end
+      end
+    end
+  end
+
+  return in_bounds
 end
 
 M:run()
