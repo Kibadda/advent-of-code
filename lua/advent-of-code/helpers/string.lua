@@ -27,6 +27,7 @@ end
 
 ---@param str string
 ---@param func? fun(c: string): boolean
+---@return string[]
 function string.to_list(str, func)
   local t = {}
   for c in str:gmatch "." do
