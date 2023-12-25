@@ -5,6 +5,8 @@
 ---@field string fun(self: Vector): string
 ---@field x number
 ---@field y number
+---@operator add(Vector): Vector
+---@operator mul(string|number): Vector
 local Vector = {}
 
 local mt = {
