@@ -1,4 +1,8 @@
+.direnv/
+aoc.session
+
 input.txt
+puzzle.md
 
 lua/advent-of-code/2015/13/
 lua/advent-of-code/2015/21/
