@@ -1,6 +1,7 @@
 .direnv/
 input.txt
 puzzle.md
+aoc.session
 
 lua/advent-of-code/2015/13/
 lua/advent-of-code/2015/21/
