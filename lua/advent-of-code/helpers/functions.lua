@@ -44,3 +44,54 @@ function _G.cycle(t)
 
   return iter, t, 0
 end
+
+function _G.spairs(t)
+  local keys = {}
+  for k in pairs(t) do
+    table.insert(keys, k)
+  end
+  table.sort(keys)
+
+  local i = 0
+  local function iter()
+    i = i + 1
+    if keys[i] then
+      return keys[i], t[keys[i]]
+    end
+  end
+
+  return iter, t, 0
+end
+
+--- @class TreesearchOpts
+--- @field start any
+--- @field bound any
+--- @field depth boolean
+--- @field exit fun(current): boolean
+--- @field step fun(current, solution): table
+--- @field compare fun(solution, current): any
+
+--- @param opts TreesearchOpts
+function _G.treesearch(opts)
+  local queue = { opts.start }
+
+  local solution = opts.bound
+
+  while #queue > 0 do
+    local current = table.remove(queue, not opts.depth and 1 or nil)
+
+    if opts.exit(current) then
+      if not opts.depth then
+        return current
+      else
+        solution = opts.compare(solution, current)
+      end
+    else
+      for _, s in ipairs(opts.step(current, solution)) do
+        table.insert(queue, s)
+      end
+    end
+  end
+
+  return solution
+end
