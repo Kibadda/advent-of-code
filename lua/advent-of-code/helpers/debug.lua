@@ -14,7 +14,7 @@ function table.to_string(t, level)
 
   local s = "{\n"
   local test = {}
-  for k, v in pairs(t) do
+  for k, v in spairs(t) do
     local test_string = (" "):rep(level * 2)
     test_string = test_string .. k .. " = "
     if type(v) == "table" then
