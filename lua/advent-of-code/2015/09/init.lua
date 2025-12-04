@@ -1,47 +1,57 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201509: AOCDay
+--- @field input table<string, table<string, number>>
+local M = require("advent-of-code.AOC").create("2015", "09")
 
-local M = AOC.create("2015", "09")
-
+--- @param file file*
 function M:parse(file)
-  local city_map = {}
   for line in file:lines() do
-    local split = line:split()
-    if city_map[split[1]] == nil then
-      city_map[split[1]] = table.count(city_map) + 1
-    end
-    if city_map[split[3]] == nil then
-      city_map[split[3]] = table.count(city_map) + 1
-    end
-    if self.input[city_map[split[1]]] == nil then
-      self.input[city_map[split[1]]] = {}
-      self.input[city_map[split[1]]][city_map[split[1]]] = math.huge
-    end
-    if self.input[city_map[split[3]]] == nil then
-      self.input[city_map[split[3]]] = {}
-      self.input[city_map[split[3]]][city_map[split[3]]] = math.huge
-    end
+    local words = string.split(line, " ")
 
-    self.input[city_map[split[1]]][city_map[split[3]]] = tonumber(split[5])
-    self.input[city_map[split[3]]][city_map[split[1]]] = tonumber(split[5])
+    self.input[words[1]] = self.input[words[1]] or {}
+    self.input[words[3]] = self.input[words[3]] or {}
+
+    self.input[words[1]][words[3]] = tonumber(words[5])
+    self.input[words[3]][words[1]] = tonumber(words[5])
   end
+end
 
-  for i = 1, #self.input do
-    for j = 1, #self.input do
-      for k = 1, #self.input do
-        self.input[j][k] = math.min(self.input[j][k], self.input[j][i] + self.input[i][k])
+function M:solver(compare, bound)
+  local count = table.count(self.input)
+  local start = { available = table.keys(self.input), route = {} }
+
+  return treesearch {
+    start = start,
+    depth = true,
+    bound = bound,
+    exit = function(current)
+      return #current.route == count
+    end,
+    step = function(current)
+      local n = {}
+      for i, name in ipairs(current.available) do
+        local copy = table.deepcopy(current)
+        table.remove(copy.available, i)
+        table.insert(copy.route, name)
+        table.insert(n, copy)
       end
-    end
-  end
+      return n
+    end,
+    compare = function(s, c)
+      local distance = 0
+      for i = 1, count - 1 do
+        distance = distance + self.input[c.route[i]][c.route[i + 1]]
+      end
+      return compare(s, distance)
+    end,
+  }
 end
 
 function M:solve1()
-  print(self.input)
-  self.solution:add("1", nil)
+  return self:solver(math.min, math.huge)
 end
 
 function M:solve2()
-  self.solution:add("2", nil)
+  return self:solver(math.max, -math.huge)
 end
 
 M:run()
