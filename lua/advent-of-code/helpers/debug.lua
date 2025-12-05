@@ -2,6 +2,8 @@ local old_tostring = tostring
 function _G.tostring(v)
   if type(v) == "table" then
     return old_tostring(table.to_string(v))
+  elseif type(v) == "number" then
+    return old_tostring(string.format("%d", v))
   else
     return old_tostring(v)
   end
