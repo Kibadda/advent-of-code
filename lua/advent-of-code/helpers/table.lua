@@ -262,3 +262,19 @@ function table.intersection(t1, t2)
 
   return t
 end
+
+---@param t table
+---@return number
+function table.sum(t)
+  return table.reduce(t, 0, function(carry, number)
+    return carry + number
+  end)
+end
+
+---@param t table
+---@return number
+function table.prod(t)
+  return table.reduce(t, 1, function(carry, number)
+    return carry * number
+  end)
+end
