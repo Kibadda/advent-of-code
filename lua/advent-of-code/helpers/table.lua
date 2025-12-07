@@ -264,17 +264,23 @@ function table.intersection(t1, t2)
 end
 
 ---@param t table
+---@param iter? function
 ---@return number
-function table.sum(t)
+function table.sum(t, iter)
+  iter = iter or ipairs
+
   return table.reduce(t, 0, function(carry, number)
     return carry + number
-  end)
+  end, iter)
 end
 
 ---@param t table
+---@param iter? function
 ---@return number
-function table.prod(t)
+function table.prod(t, iter)
+  iter = iter or ipairs
+
   return table.reduce(t, 1, function(carry, number)
     return carry * number
-  end)
+  end, iter)
 end
