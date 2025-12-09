@@ -13,6 +13,7 @@ local AOC = {
       "advent-of-code.helpers.string",
       "advent-of-code.helpers.math",
       "advent-of-code.helpers.Vector",
+      "advent-of-code.helpers.Vector3",
     } do
       package.loaded[p] = nil
     end
@@ -24,6 +25,7 @@ local AOC = {
     require "advent-of-code.helpers.string"
     require "advent-of-code.helpers.math"
     require "advent-of-code.helpers.Vector"
+    require "advent-of-code.helpers.Vector3"
     return require("advent-of-code.AOCDay"):new(year, day)
   end,
 }
