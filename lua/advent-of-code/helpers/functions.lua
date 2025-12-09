@@ -70,6 +70,7 @@ end
 --- @field exit fun(current): boolean
 --- @field step fun(current, solution): table
 --- @field compare fun(solution, current): any
+--- @field memoize? fun(current): string
 
 --- @param opts TreesearchOpts
 function _G.treesearch(opts)
@@ -77,18 +78,33 @@ function _G.treesearch(opts)
 
   local solution = opts.bound
 
+  local hash = {}
+
   while #queue > 0 do
     local current = table.remove(queue, not opts.depth and 1 or nil)
 
-    if opts.exit(current) then
-      if not opts.depth then
-        return current
+    local skip = false
+    if opts.memoize then
+      local key = opts.memoize(current)
+
+      if hash[key] then
+        skip = true
       else
-        solution = opts.compare(solution, current)
+        hash[key] = true
       end
-    else
-      for _, s in ipairs(opts.step(current, solution)) do
-        table.insert(queue, s)
+    end
+
+    if not skip then
+      if opts.exit(current) then
+        if not opts.depth then
+          return current
+        else
+          solution = opts.compare(solution, current)
+        end
+      else
+        for _, s in ipairs(opts.step(current, solution)) do
+          table.insert(queue, s)
+        end
       end
     end
   end
