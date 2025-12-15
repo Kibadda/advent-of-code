@@ -11,7 +11,7 @@ if not pcall(ffi.typeof, "struct timeval") then
 end
 
 local function format(diff)
-  return ("%.3fs"):format(diff / 1000000)
+  return ("%.4fs"):format(diff / 1000000)
 end
 
 local function time()
