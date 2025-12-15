@@ -46,7 +46,12 @@ local AOCDay = {
       end
       self.solution.timer:two()
 
-      self.solution:print()
+      if os.getenv "TIMINGS" then
+        local json = require "advent-of-code.helpers.json"
+        print(json.stringify(self.solution.timer.timings))
+      else
+        self.solution:print()
+      end
     else
       local error = Solution:new()
       error:add("1", "file error")
