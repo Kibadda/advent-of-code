@@ -72,8 +72,8 @@ end
 --- @field depth boolean
 --- @field exit fun(current): boolean
 --- @field step fun(current, solution): table
---- @field compare fun(solution, current): any
---- @field memoize? fun(current): string
+--- @field compare? fun(solution, current): any
+--- @field memoize? fun(current): string, any
 
 --- @param opts TreesearchOpts
 function _G.treesearch(opts)
@@ -88,12 +88,20 @@ function _G.treesearch(opts)
 
     local skip = false
     if opts.memoize then
-      local key = opts.memoize(current)
+      local key, value = opts.memoize(current)
 
-      if hash[key] then
-        skip = true
+      if value then
+        if hash[key] and hash[key] <= value then
+          skip = true
+        else
+          hash[key] = value
+        end
       else
-        hash[key] = true
+        if hash[key] then
+          skip = true
+        else
+          hash[key] = true
+        end
       end
     end
 
