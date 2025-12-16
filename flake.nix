@@ -3,15 +3,18 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs }: let
-    system = "x86_64-linux";
-  in {
-    devShells.${system}.default = let
-      pkgs = import nixpkgs { inherit system; };
-    in pkgs.mkShell {
-      name = "advent-of-code";
-      buildInputs = [
-        (pkgs.writeShellApplication {
+  outputs =
+    { self, nixpkgs }:
+    let
+      system = "x86_64-linux";
+    in
+    {
+      devShells.${system}.default = let
+        pkgs = import nixpkgs { inherit system; };
+      in pkgs.mkShell {
+        name = "advent-of-code";
+        buildInputs = [
+          (pkgs.writeShellApplication {
             name = "aoc";
             runtimeInputs = with pkgs; [
               aoc-cli
@@ -37,9 +40,8 @@
                   if [ "$#" -eq 4 ]; then
                     test=$4
                   fi
-                  pushd ./lua
+                  cd ./lua
                   luajit "advent-of-code/$2/$3/init.lua" "$test"
-                  popd
                   ;;
                 s)
                   if [ "$#" -lt 5 ]; then
@@ -51,7 +53,7 @@
                   if [ "$#" -lt 3 ]; then
                     exit 1
                   fi
-                  wrapper d -y "$2" -d "$3" -p "lua/advent-of-code/$2/$3/puzzle.md" -i "lua/advent-of-code/$2/$3/input.txt" -o
+                  wrapper d -y "$2" -d "$3" -I -i "lua/advent-of-code/$2/$3/input.txt" -o
                   ;;
                 n)
                   if [ "$#" -lt 3 ]; then
@@ -62,7 +64,7 @@
                     echo "$DIR already exists; exiting"
                   else
                     mkdir -p "$DIR"
-                    wrapper d -i "$DIR/input.txt" -p "$DIR/puzzle.md" -y "$2" -d "$3"
+                    wrapper d -I -i "$DIR/input.txt" -y "$2" -d "$3"
                     touch "$DIR/test.txt"
                     cp "lua/advent-of-code/day_template.lua" "$DIR/init.lua"
                     sed -i "s/YEAR/$2/g; s/DAY/$3/g" "$DIR/init.lua"
@@ -79,7 +81,7 @@
                   sum_two=0
                   runtime=0
                   count=0
-                  pushd ./lua
+                  cd ./lua
                   while true
                   do
                     count=$((count + 1))
@@ -112,15 +114,14 @@
                   echo "  parse:  $avg_parse"
                   echo "  one:    $avg_one"
                   echo "  two:    $avg_two"
-                  popd
                   ;;
                 *)
                   wrapper "$@"
                   ;;
               esac
             '';
-        })
-      ];
-    };
+          })
+        ];
+      };
   };
 }
