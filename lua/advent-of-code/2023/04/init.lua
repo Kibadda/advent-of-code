@@ -1,14 +1,12 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @alias AOCDay202304Scratchcard { count: integer, winning: integer[], own: integer[] }
 
----@alias scratchcard { count: integer, winning: integer[], own: integer[] }
+--- @class AOC202304: AOCDay
+--- @field input AOCDay202304Scratchcard[]
+local M = require("advent-of-code.AOCDay"):new("2023", "04")
 
----@class AOC202304: AOCDay
----@field input scratchcard[]
-local M = AOC.create("2023", "04")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local ints = line:only_ints()
 
     table.insert(self.input, {
@@ -19,7 +17,7 @@ function M:parse(file)
   end
 end
 
----@param func fun(card: scratchcard, i: integer): integer
+--- @param func fun(card: AOCDay202304Scratchcard, i: integer): integer
 function M:solver(func)
   return table.reduce(self.input, 0, function(total, card, i)
     return total + func(card, i)
@@ -44,5 +42,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

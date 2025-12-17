@@ -1,9 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
----@class AOCDay202317: AOCDay
----@field input string[]
-local M = AOC.create("2023", "17")
+--- @class AOCDay202317: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2023", "17")
 
 function M:solver(valid)
   local queue = {
@@ -29,7 +26,7 @@ function M:solver(valid)
     return nil
   end
 
-  ---@type { loss: integer, pos: Vector, dir: Vector, consecutive: integer }?
+  --- @type { loss: integer, pos: Vector, dir: Vector, consecutive: integer }?
   local current = find()
   while current do
     local key = ("%d|%d|%d|%d|%d"):format(
@@ -100,5 +97,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

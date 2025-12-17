@@ -1,9 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
----@class AOCDay202307: AOCDay
----@field input { hand: string, bid: integer, type: integer }[]
-local M = AOC.create("2023", "07")
+--- @class AOCDay202307: AOCDay
+--- @field input { hand: string, bid: integer, type: integer }[]
+local M = require("advent-of-code.AOCDay"):new("2023", "07")
 
 local MAPPING = {
   A = 1,
@@ -31,9 +28,9 @@ local TYPE = {
   HIGH = 7,
 }
 
----@param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split()
     table.insert(self.input, {
       hand = split[1],
@@ -43,8 +40,8 @@ function M:parse(file)
   end
 end
 
----@param func fun(hand: string): integer
----@return integer
+--- @param func fun(hand: string): integer
+--- @return integer
 function M:solver(func)
   for _, card in ipairs(self.input) do
     card.type = func(card.hand)
@@ -167,5 +164,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

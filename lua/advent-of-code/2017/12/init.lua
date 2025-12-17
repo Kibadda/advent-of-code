@@ -1,11 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201712: AOCDay
+--- @field input boolean[][]
+local M = require("advent-of-code.AOCDay"):new("2017", "12")
 
-local M = AOC.create("2017", "12")
-
-function M:parse(file)
-  self.input = {}
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:only_ints()
     self.input[split[1]] = {}
     for i = 2, #split do
@@ -30,7 +29,7 @@ function M:solver(id)
 end
 
 function M:solve1()
-  self.solution:add("1", table.count(self:solver(0)))
+  return table.count(self:solver(0))
 end
 
 function M:solve2()
@@ -47,9 +46,8 @@ function M:solve2()
       groups[#groups + 1] = self:solver(id)
     end
   end
-  self.solution:add("2", #groups)
+
+  return #groups
 end
 
 M:run()
-
-return M

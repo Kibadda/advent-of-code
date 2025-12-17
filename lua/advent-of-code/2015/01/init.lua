@@ -1,11 +1,8 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201501: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2015", "01")
 
----@class AOCDay201501: AOCDay
----@field input string[]
-local M = AOC.create("2015", "01")
-
----@param func? fun(floor: integer): boolean
+--- @param func? fun(floor: integer): boolean
 function M:solver(func)
   local floor = 0
 
@@ -34,5 +31,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

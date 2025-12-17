@@ -1,12 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201620: AOCDay
+--- @field input { s: number, e: number }[]
+local M = require("advent-of-code.AOCDay"):new("2016", "20")
 
-local M = AOC.create("2016", "20")
-
-function M:parse(file)
-  local i = 0
-  for line in file:lines() do
-    i = i + 1
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split "-"
     table.insert(self.input, {
       s = tonumber(split[1]),
@@ -33,7 +31,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("1", lowest)
+  return lowest
 end
 
 function M:solve2()
@@ -56,9 +54,7 @@ function M:solve2()
       lowest = lowest + 1
     end
   end
-  self.solution:add("2", #ips)
+  return #ips
 end
 
 M:run()
-
-return M

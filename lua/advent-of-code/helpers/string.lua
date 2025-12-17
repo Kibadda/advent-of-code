@@ -1,6 +1,6 @@
----@param str string
----@param sep string
----@return string[]
+--- @param str string
+--- @param sep? string
+--- @return string[]
 function string.split(str, sep)
   sep = sep or "%s"
   local t = {}
@@ -10,14 +10,14 @@ function string.split(str, sep)
   return t
 end
 
----@param str string
+--- @param str string
 function string.trim(str)
   str = str:gsub("^%s+", ""):gsub("%s+$", "")
   return str
 end
 
----@param str string
----@param length integer
+--- @param str string
+--- @param length integer
 function string.to_chunks(str, length)
   local t = {}
   for c in str:gmatch(("."):rep(length)) do
@@ -26,9 +26,9 @@ function string.to_chunks(str, length)
   return t
 end
 
----@param str string
----@param func? fun(c: string): boolean
----@return string[]
+--- @param str string
+--- @param func? fun(c: string): boolean
+--- @return string[]
 function string.to_list(str, func)
   local t = {}
   for c in str:gmatch "." do
@@ -39,8 +39,8 @@ function string.to_list(str, func)
   return t
 end
 
----@param str string
----@param pattern? string
+--- @param str string
+--- @param pattern? string
 function string.only_ints(str, pattern)
   local t = {}
   pattern = pattern or "%d+"
@@ -50,8 +50,8 @@ function string.only_ints(str, pattern)
   return t
 end
 
----@param str string
----@param n integer
+--- @param str string
+--- @param n integer
 function string.fill(str, n)
   while #str < n do
     str = " " .. str
@@ -59,32 +59,32 @@ function string.fill(str, n)
   return str
 end
 
----@param str string
----@param pos integer
+--- @param str string
+--- @param pos integer
 function string.at(str, pos)
   return pos <= #str and str:sub(pos, pos) or nil
 end
 
----@param s string
----@param pattern string
----@param init? integer
----@param plain? boolean
+--- @param s string
+--- @param pattern string
+--- @param init? integer
+--- @param plain? boolean
 function string.reversefind(s, pattern, init, plain)
   return string.find(s:reverse(), pattern:reverse(), init, plain)
 end
 
----@param s string
----@param prefix string
+--- @param s string
+--- @param prefix string
 function string.startswith(s, prefix)
   return s:sub(1, #prefix) == prefix
 end
 
----@param s string
----@param pattern string
+--- @param s string
+--- @param pattern string
 function string.count(s, pattern)
   local count = 0
 
-  ---@type integer?
+  --- @type integer?
   local index = 0
 
   while true do
@@ -98,9 +98,9 @@ function string.count(s, pattern)
   return count
 end
 
----@param str1 string
----@param str2 string
----@return integer
+--- @param str1 string
+--- @param str2 string
+--- @return integer
 function string.levenshtein(str1, str2)
   local len1 = string.len(str1)
   local len2 = string.len(str2)

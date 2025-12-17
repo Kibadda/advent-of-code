@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2022", "25")
+--- @class AOCDay202225: AOCDay
+--- @field input table<string, string>
+local M = require("advent-of-code.AOCDay"):new("2022", "25")
 
 local function from_snafu(str)
   local i = 0
@@ -36,8 +35,9 @@ local function to_snafu(num)
   end
 end
 
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     self.input[line] = from_snafu(line)
   end
 end
@@ -46,13 +46,9 @@ function M:solve1()
   local sum = table.reduce(self.input, 0, function(carry, v)
     return carry + v
   end, pairs)
-  self.solution:add("1", to_snafu(sum))
+  return to_snafu(sum)
 end
 
-function M:solve2()
-  self.solution:add("2", nil)
-end
+function M:solve2() end
 
 M:run()
-
-return M

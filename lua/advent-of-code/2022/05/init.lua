@@ -1,15 +1,15 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202205: AOCDay
+--- @field input { stacks: table, procedures: { move: number, from: number, to: number }[] }
+local M = require("advent-of-code.AOCDay"):new("2022", "05")
 
-local M = AOC.create("2022", "05")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   local crates = {}
   local procedures = {}
 
   local fill_crates = true
 
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     if line == "" then
       fill_crates = false
     else
@@ -61,28 +61,20 @@ function M:solver(fun)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(function(procedure, stacks)
-      for _ = 1, procedure.move do
-        table.insert(stacks[procedure.to], table.remove(stacks[procedure.from]))
-      end
-    end)
-  )
+  return self:solver(function(procedure, stacks)
+    for _ = 1, procedure.move do
+      table.insert(stacks[procedure.to], table.remove(stacks[procedure.from]))
+    end
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(function(procedure, stacks)
-      local pos = #stacks[procedure.from] - procedure.move + 1
-      for _ = 1, procedure.move do
-        table.insert(stacks[procedure.to], table.remove(stacks[procedure.from], pos))
-      end
-    end)
-  )
+  return self:solver(function(procedure, stacks)
+    local pos = #stacks[procedure.from] - procedure.move + 1
+    for _ = 1, procedure.move do
+      table.insert(stacks[procedure.to], table.remove(stacks[procedure.from], pos))
+    end
+  end)
 end
 
 M:run()
-
-return M

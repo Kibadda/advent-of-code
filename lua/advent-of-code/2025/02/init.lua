@@ -1,9 +1,10 @@
 --- @class AOCDay202502: AOCDay
 --- @field input string[]
-local M = require("advent-of-code.AOC").create("2025", "02")
+local M = require("advent-of-code.AOCDay"):new("2025", "02")
 
-function M:parse(file)
-  for _, range in ipairs(file:lines()():split ",") do
+--- @param lines string[]
+function M:parse(lines)
+  for _, range in ipairs(lines[1]:split ",") do
     local r = range:split "-"
     table.insert(self.input, { tonumber(r[1]), tonumber(r[2]) })
   end

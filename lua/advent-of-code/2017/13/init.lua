@@ -1,12 +1,11 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201713: AOCDay
+--- @field input { [integer]: { range: integer, dir: number, pos: integer }, last: integer }
+local M = require("advent-of-code.AOCDay"):new("2017", "13")
 
-local M = AOC.create("2017", "13")
-
-function M:parse(file)
-  self.input = {}
+--- @param lines string[]
+function M:parse(lines)
   local last = 0
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     local split = line:only_ints()
     self.input[split[1]] = {
       range = split[2],
@@ -66,7 +65,7 @@ function M:solver(puzzle, input)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(1))
+  return self:solver(1)
 end
 
 function M:solve2()
@@ -75,13 +74,10 @@ function M:solve2()
   while true do
     input = self:solver(2, input)
     if not input then
-      break
+      return i
     end
     i = i + 1
   end
-  self.solution:add("2", i)
 end
 
 M:run()
-
-return M

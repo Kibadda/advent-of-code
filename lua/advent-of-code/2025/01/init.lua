@@ -1,6 +1,6 @@
 --- @class AOCDay202501: AOCDay
 --- @field input string[]
-local M = require("advent-of-code.AOC").create("2025", "01")
+local M = require("advent-of-code.AOCDay"):new("2025", "01")
 
 function M:solve1()
   local pointer = 50

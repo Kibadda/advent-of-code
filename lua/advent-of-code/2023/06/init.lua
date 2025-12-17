@@ -1,22 +1,17 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202306: AOCDay
+--- @field input { times: integer[], records: integer[] }
+local M = require("advent-of-code.AOCDay"):new("2023", "06")
 
----@class AOCDay202306: AOCDay
----@field input { times: integer[], records: integer[] }
-local M = AOC.create("2023", "06")
-
-function M:parse(file)
-  for line in file:lines() do
-    if not self.input.times then
-      self.input.times = line:only_ints()
-    else
-      self.input.records = line:only_ints()
-    end
-  end
+--- @param lines string[]
+function M:parse(lines)
+  self.input = {
+    times = lines[1]:only_ints(),
+    records = lines[1]:only_ints(),
+  }
 end
 
----@param time integer
----@param record integer
+--- @param time integer
+--- @param record integer
 function M:solver(time, record)
   return table.reduce(table.range(time, 0), 0, function(count, i)
     return count + (i * (time - i) > record and 1 or 0)
@@ -34,5 +29,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

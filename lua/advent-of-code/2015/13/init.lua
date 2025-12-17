@@ -1,10 +1,10 @@
 --- @class AOCDay201513: AOCDay
 --- @field input table<string, table<string, number>>
-local M = require("advent-of-code.AOC").create("2015", "13")
+local M = require("advent-of-code.AOCDay"):new("2015", "13")
 
---- @param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local words = string.split(line, " ")
 
     self.input[words[1]] = self.input[words[1]] or {}

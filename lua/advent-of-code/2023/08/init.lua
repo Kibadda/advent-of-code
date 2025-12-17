@@ -1,21 +1,20 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202308: AOCDay
+--- @field input { directions: ("L"|"R")[], nodes: table<string, { L: string, R: string }> }
+local M = require("advent-of-code.AOCDay"):new("2023", "08")
 
----@class AOCDay202308: AOCDay
----@field input { directions: ("L"|"R")[], nodes: table<string, { L: string, R: string }> }
-local M = AOC.create("2023", "08")
+--- @param lines string[]
+function M:parse(lines)
+  self.input = {
+    directions = lines[1]:to_list(),
+    nodes = {},
+  }
 
----@param file file*
-function M:parse(file)
-  self.input.directions = file:read():to_list()
-
-  self.input.nodes = {}
-  for line in file:lines() do
-    self.input.nodes[line:sub(1, 3)] = { L = line:sub(8, 10), R = line:sub(13, 15) }
+  for i = 3, #lines do
+    self.input.nodes[lines[i]:sub(1, 3)] = { L = lines[i]:sub(8, 10), R = lines[i]:sub(13, 15) }
   end
 end
 
----@param start string
+--- @param start string
 function M:solver(start)
   local current = start
 
@@ -54,5 +53,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

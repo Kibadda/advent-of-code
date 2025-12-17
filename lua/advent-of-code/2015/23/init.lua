@@ -1,9 +1,9 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201523: AOCDay
+--- @field input { registers: { a: number, b: number }, instructions: { instruction: string, offset?: number, register?: string }[] }
+local M = require("advent-of-code.AOCDay"):new("2015", "23")
 
-local M = AOC.create("2015", "23")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     registers = {
       a = 0,
@@ -11,7 +11,7 @@ function M:parse(file)
     },
     instructions = {},
   }
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     local split = line:gsub(",", ""):split()
     if #split == 2 then
       if split[1] == "jmp" then
@@ -75,13 +75,11 @@ function M:solver(registers)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver({ a = 0, b = 0 }).b)
+  return self:solver({ a = 0, b = 0 }).b
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver({ a = 1, b = 0 }).b)
+  return self:solver({ a = 1, b = 0 }).b
 end
 
 M:run()
-
-return M

@@ -1,13 +1,13 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2022", "18")
+--- @class AOCDay202218: AOCDay
+--- @field input boolean[][][]
+local M = require("advent-of-code.AOCDay"):new("2022", "18")
 
 local min_x, min_y, min_z = math.huge, math.huge, math.huge
 local max_x, max_y, max_z = -math.huge, -math.huge, -math.huge
 
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:only_ints()
     local x = split[1]
     local y = split[2]
@@ -95,7 +95,7 @@ function M:solver()
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver())
+  return self:solver()
 end
 
 function M:solve2()
@@ -231,9 +231,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("2", sides)
+  return sides
 end
 
 M:run()
-
-return M

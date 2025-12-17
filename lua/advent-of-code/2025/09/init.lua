@@ -1,10 +1,10 @@
 --- @class AOCDay202509: AOCDay
 --- @field input Vector[]
-local M = require("advent-of-code.AOC").create("2025", "09")
+local M = require("advent-of-code.AOCDay"):new("2025", "09")
 
---- @param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local ints = line:only_ints()
     table.insert(self.input, V(ints[2], ints[1]))
   end

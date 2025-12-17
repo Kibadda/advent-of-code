@@ -1,14 +1,13 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201708: AOCDay
+--- @field input { register: string, offset: number, check: function }[]
+local M = require("advent-of-code.AOCDay"):new("2017", "08")
 
-local M = AOC.create("2017", "08")
-
-function M:parse(file)
-  self.input = {}
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split()
 
-    self.input[#self.input + 1] = {
+    table.insert(self.input, {
       register = split[1],
       offset = (split[2] == "inc" and 1 or -1) * tonumber(split[3]),
       check = function(registers)
@@ -23,7 +22,7 @@ function M:parse(file)
           ["!="] = registers[split[5]] ~= tonumber(split[7]),
         }
       end,
-    }
+    })
   end
 end
 
@@ -34,12 +33,9 @@ function M:solve1()
       registers[instruction.register] = (registers[instruction.register] or 0) + instruction.offset
     end
   end
-  self.solution:add(
-    "1",
-    table.reduce(registers, -math.huge, function(carry, register)
-      return math.max(carry, register)
-    end, pairs)
-  )
+  return table.reduce(registers, -math.huge, function(carry, register)
+    return math.max(carry, register)
+  end, pairs)
 end
 
 function M:solve2()
@@ -51,9 +47,7 @@ function M:solve2()
       max = math.max(max, registers[instruction.register])
     end
   end
-  self.solution:add("2", max)
+  return max
 end
 
 M:run()
-
-return M

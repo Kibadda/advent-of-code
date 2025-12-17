@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2015", "05")
+--- @class AOCDay201505: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2015", "05")
 
 function M:solve1()
   local amount = 0
@@ -34,7 +33,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("1", amount)
+  return amount
 end
 
 function M:solve2()
@@ -63,9 +62,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("2", amount)
+  return amount
 end
 
 M:run()
-
-return M

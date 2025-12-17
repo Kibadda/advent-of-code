@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2022", "02")
+--- @class AOCDay202202: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2022", "02")
 
 local function shape_to_score(str)
   if str == "X" or str == "A" then
@@ -21,10 +20,6 @@ local function shape_to_result(str, win)
   else
     return win and "X" or "Y"
   end
-end
-
-function M:parse(file)
-  self.__super.parse(self, file)
 end
 
 function M:solve1()
@@ -48,7 +43,7 @@ function M:solve1()
     score = score + shape_to_score(split[2])
   end
 
-  self.solution:add("1", score)
+  return score
 end
 
 function M:solve2()
@@ -66,9 +61,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("2", score)
+  return score
 end
 
 M:run()
-
-return M

@@ -1,14 +1,13 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201707: AOCDay
+--- @field input { weight: number, children: table }[]
+local M = require("advent-of-code.AOCDay"):new("2017", "07")
 
-local M = AOC.create("2017", "07")
-
-function M:parse(file)
-  self.input = {}
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split()
     self.input[split[1]] = {
-      weight = tonumber(split[2]:sub(2, #split[2] - 1)),
+      weight = assert(tonumber(split[2]:sub(2, #split[2] - 1))),
       children = {},
     }
 
@@ -42,7 +41,7 @@ function M:solve1()
       root = name1
     end
   end
-  self.solution:add("1", root)
+  return root
 end
 
 function M:solve2()
@@ -86,9 +85,7 @@ function M:solve2()
       break
     end
   end
-  self.solution:add("2", change)
+  return change
 end
 
 M:run()
-
-return M

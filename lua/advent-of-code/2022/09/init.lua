@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2022", "09")
+--- @class AOCDay202209: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2022", "09")
 
 local function check_pos(head_pos, tail_pos)
   local diff_x = head_pos.x - tail_pos.x
@@ -49,7 +48,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("1", #all_tail_pos)
+  return #all_tail_pos
 end
 
 function M:solve2()
@@ -94,9 +93,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("2", #all_tail_pos)
+  return #all_tail_pos
 end
 
 M:run()
-
-return M

@@ -1,10 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202221: AOCDay
+--- @field input table<string, number|{ one: string, two: string, operation: string }>
+local M = require("advent-of-code.AOCDay"):new("2022", "21")
 
-local M = AOC.create("2022", "21")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split()
     self.input[split[1]:sub(1, #split[1] - 1)] = {}
 
@@ -44,7 +44,7 @@ end
 function M:solve1()
   local monkeys = table.deepcopy(self.input)
 
-  self.solution:add("1", evaluate(monkeys, monkeys.root))
+  return evaluate(monkeys, monkeys.root)
 end
 
 local function check_for_humn(monkeys, monkey)
@@ -99,9 +99,7 @@ function M:solve2()
     next = root_monkey.two
   end
 
-  self.solution:add("2", evaluate2(monkeys, monkeys[next], number))
+  return evaluate2(monkeys, monkeys[next], number)
 end
 
 M:run()
-
-return M

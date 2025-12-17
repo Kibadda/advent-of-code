@@ -1,6 +1,6 @@
 --- @class AOCDay202503: AOCDay
 --- @field input string[]
-local M = require("advent-of-code.AOC").create("2025", "03")
+local M = require("advent-of-code.AOCDay"):new("2025", "03")
 
 function M:solver(amount_banks)
   local joltage = 0

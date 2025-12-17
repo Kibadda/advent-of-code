@@ -1,10 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201515: AOCDay
+--- @field input { capacity: integer, durability: integer, flavor: integer, texture: integer, calories: integer }[]
+local M = require("advent-of-code.AOCDay"):new("2015", "15")
 
-local M = AOC.create("2015", "15")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local ints = line:only_ints "-?%d+"
     table.insert(self.input, {
       capacity = ints[1],
@@ -75,13 +75,11 @@ function M:solver(check_calories)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(false))
+  return self:solver(false)
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(true))
+  return self:solver(true)
 end
 
 M:run()
-
-return M

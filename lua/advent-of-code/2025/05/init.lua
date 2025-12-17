@@ -1,16 +1,16 @@
 --- @class AOCDay202505: AOCDay
 --- @field input { ranges: table, ingridients: table }
-local M = require("advent-of-code.AOC").create("2025", "05")
+local M = require("advent-of-code.AOCDay"):new("2025", "05")
 
---- @param file file*
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     ranges = {},
     ingridients = {},
   }
 
   local parsing_ranges = true
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     if line == "" then
       parsing_ranges = false
     elseif parsing_ranges then

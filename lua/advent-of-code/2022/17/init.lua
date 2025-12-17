@@ -1,11 +1,11 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202217: AOCDay
+--- @field input { drift: string, shapes: Vector[][] }
+local M = require("advent-of-code.AOCDay"):new("2022", "17")
 
-local M = AOC.create("2022", "17")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
-    drift = file:read(),
+    drift = lines[1],
     shapes = table.map(("####|.#.,###,.#.|..#,..#,###|#,#,#,#|##,##"):split "|", function(shape)
       local t = {}
       for i, line in ipairs(shape:split ",") do
@@ -113,13 +113,11 @@ function M:solver(rock_count)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(2022))
+  return self:solver(2022)
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(1000000000000))
+  return self:solver(1000000000000)
 end
 
 M:run()
-
-return M

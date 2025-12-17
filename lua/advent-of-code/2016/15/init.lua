@@ -1,10 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201615: AOCDay
+--- @field input { max_pos: integer, current_pos: integer }[]
+local M = require("advent-of-code.AOCDay"):new("2016", "15")
 
-local M = AOC.create("2016", "15")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local ints = line:only_ints()
     table.insert(self.input, {
       max_pos = ints[2],
@@ -32,14 +32,12 @@ function M:solver(discs)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(self.input))
+  return self:solver(self.input)
 end
 
 function M:solve2()
   self.input[#self.input + 1] = { max_pos = 11, current_pos = 0 }
-  self.solution:add("2", self:solver(self.input))
+  return self:solver(self.input)
 end
 
 M:run()
-
-return M

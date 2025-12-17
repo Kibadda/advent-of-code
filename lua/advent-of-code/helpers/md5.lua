@@ -424,4 +424,4 @@ function md5.sumhexa(s)
   return md5.tohex(md5.sum(s))
 end
 
-return md5
+_G.MD5 = md5

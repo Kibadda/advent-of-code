@@ -1,10 +1,10 @@
 --- @class AOCDay201721: AOCDay
 --- @field input { input: string[][], output: string[][] }[]
-local M = require("advent-of-code.AOC").create("2017", "21")
+local M = require("advent-of-code.AOCDay"):new("2017", "21")
 
---- @param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split " => "
 
     table.insert(self.input, {

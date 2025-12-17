@@ -1,6 +1,6 @@
 --- @class AOCDay201723: AOCDay
 --- @field input { cmd: string, x: number|string, y: number|string }[]
-local M = require("advent-of-code.AOC").create("2017", "23")
+local M = require("advent-of-code.AOCDay"):new("2017", "23")
 
 local function assembler(a)
   -- this loops in steps of 17 from b to c and counts the non primes

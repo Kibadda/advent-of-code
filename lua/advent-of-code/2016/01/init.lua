@@ -1,12 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201601: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2016", "01")
 
-local M = AOC.create("2016", "01")
-
-function M:parse(file)
-  for line in file:lines() do
-    self.input = line:gsub(",", ""):gsub("L", "L "):gsub("R", "R "):split()
-  end
+--- @param lines string[]
+function M:parse(lines)
+  self.input = lines[1]:gsub(",", ""):gsub("L", "L "):gsub("R", "R "):split()
 end
 
 function M:solver(fun)
@@ -35,30 +33,28 @@ function M:solver(fun)
 end
 
 function M:solve1()
-  ---@type Vector
-  local result = self:solver(function(n, current, dir)
-    return current + dir * tonumber(n)
-  end)
-  self.solution:add("1", result:distance())
+  return self
+    :solver(function(n, current, dir)
+      return current + dir * tonumber(n)
+    end)
+    :distance()
 end
 
 function M:solve2()
   local seen = {}
-  ---@type Vector
-  local result = self:solver(function(n, current, dir)
-    for _ = 1, tonumber(n) do
-      current = current + dir
-      local s = ("%d|%d"):format(current.x, current.y)
-      if seen[s] then
-        return current, true
+  return self
+    :solver(function(n, current, dir)
+      for _ = 1, tonumber(n) do
+        current = current + dir
+        local s = ("%d|%d"):format(current.x, current.y)
+        if seen[s] then
+          return current, true
+        end
+        seen[s] = true
       end
-      seen[s] = true
-    end
-    return current, false
-  end)
-  self.solution:add("2", result:distance())
+      return current, false
+    end)
+    :distance()
 end
 
 M:run()
-
-return M

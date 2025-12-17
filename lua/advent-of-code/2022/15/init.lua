@@ -1,17 +1,17 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2022", "15")
+--- @class AOCDay202215: AOCDay
+--- @field input { S: { x: number, y: number, manhattan: number }, B: { x: number, y: number } }
+local M = require("advent-of-code.AOCDay"):new("2022", "15")
 
 local min_x = math.huge
 local max_x = 0
 
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     S = {},
     B = {},
   }
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     local split = line:gsub(",", ""):split ":"
     local sensor = {
       x = tonumber(split[1]:split()[3]:split("=")[2]),
@@ -46,7 +46,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("1", count)
+  return count
 end
 
 function M:solve2()
@@ -86,8 +86,7 @@ function M:solve2()
         end
       end
       if not in_range then
-        self.solution:add("2", point.x * 4000000 + point.y)
-        break
+        return point.x * 4000000 + point.y
       end
     end
     if found then
@@ -97,5 +96,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2022", "10")
+--- @class AOCDay202210: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2022", "10")
 
 function M:solve1()
   local signal = 0
@@ -28,7 +27,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("1", signal)
+  return signal
 end
 
 function M:solve2()
@@ -82,9 +81,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("2", image)
+  return image
 end
 
 M:run()
-
-return M

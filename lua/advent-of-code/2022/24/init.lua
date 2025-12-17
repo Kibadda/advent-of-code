@@ -1,23 +1,17 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202224: AOCDay
+--- @field input { grid: string[], start_pos: Vector, end_pos: Vector, minutes: number, winds: { up: boolean[][], down: boolean[][], left: boolean[][], right: boolean[][] }[] }
+local M = require("advent-of-code.AOCDay"):new("2022", "24")
 
-local M = AOC.create("2022", "24")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
-    grid = {},
+    grid = lines,
     winds = {},
     minutes = math.huge,
-    start_pos = nil,
-    end_pos = nil,
   }
 
-  for line in file:lines() do
-    table.insert(self.input.grid, line)
-  end
-
-  self.input.start_pos = V(1, self.input.grid[1]:find "%.")
-  self.input.end_pos = V(#self.input.grid, self.input.grid[#self.input.grid]:find "%.")
+  self.input.start_pos = V(1, assert(self.input.grid[1]:find "%."))
+  self.input.end_pos = V(#self.input.grid, assert(self.input.grid[#self.input.grid]:find "%."))
 
   local up, down, right, left = {}, {}, {}, {}
 
@@ -103,7 +97,7 @@ function M:parse(file)
   })
 end
 
----@param current_position Vector
+--- @param current_position Vector
 local function next_moves(input, current_position, minute)
   local moves = {}
   for _, position in ipairs(current_position:adjacent(5)) do
@@ -175,13 +169,11 @@ function M:solver(amount)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(1))
+  return self:solver(1)
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(3))
+  return self:solver(3)
 end
 
 M:run()
-
-return M

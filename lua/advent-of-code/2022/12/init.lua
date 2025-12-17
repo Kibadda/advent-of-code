@@ -1,17 +1,15 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @alias AOCDay202212Node { x: number, y: number, c: string, parent?: AOCDay202212Node }
 
-local M = AOC.create("2022", "12")
+--- @class AOCDay202212: AOCDay
+--- @field input { nodes: AOCDay202212Node[], s: AOCDay202212Node, e: AOCDay202212Node }
+local M = require("advent-of-code.AOCDay"):new("2022", "12")
 
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     nodes = {},
-    s = nil,
-    e = nil,
   }
-  local i = 0
-  for line in file:lines() do
-    i = i + 1
+  for i, line in ipairs(lines) do
     for j, c in ipairs(line:to_list()) do
       if c == "S" then
         self.input.s = { x = i, y = j, c = "a" }
@@ -67,7 +65,7 @@ function M:solve1()
     return node.x == self.input.s.x and node.y == self.input.s.y
   end)
 
-  self.solution:add("1", count_steps(current) - 1)
+  return count_steps(current) - 1
 end
 
 function M:solve2()
@@ -75,9 +73,7 @@ function M:solve2()
     return node.c == "a"
   end)
 
-  self.solution:add("2", count_steps(current) - 1)
+  return count_steps(current) - 1
 end
 
 M:run()
-
-return M

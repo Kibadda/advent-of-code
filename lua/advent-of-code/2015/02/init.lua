@@ -1,9 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
----@class AOCDay201502: AOCDay
----@field input string[]
-local M = AOC.create("2015", "02")
+--- @class AOCDay201502: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2015", "02")
 
 function M:solve1()
   local total_square_feet = 0
@@ -38,5 +35,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

@@ -1,11 +1,11 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202211: AOCDay
+--- @field input { inspections: integer, items: string[], operation: string, test: integer, if_true: integer, if_false: integer }[]
+local M = require("advent-of-code.AOCDay"):new("2022", "11")
 
-local M = AOC.create("2022", "11")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   local monkey = { inspections = 0 }
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     if line == "" then
       table.insert(self.input, monkey)
       monkey = { inspections = 0 }
@@ -58,23 +58,15 @@ function M:solver(rounds, fun)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(20, function(op)
-      return math.floor(loadstring(op)() / 3)
-    end)
-  )
+  return self:solver(20, function(op)
+    return math.floor(loadstring(op)() / 3)
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(10000, function(op)
-      return loadstring(op)() % 9699690
-    end)
-  )
+  return self:solver(10000, function(op)
+    return loadstring(op)() % 9699690
+  end)
 end
 
 M:run()
-
-return M

@@ -1,16 +1,15 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201624: AOCDay
+--- @field input { pos: { x: integer, y: integer, number: integer }, points: {x: integer, y: integer, number: number }[], grid: string [][] }
+local M = require("advent-of-code.AOCDay"):new("2016", "24")
 
-local M = AOC.create("2016", "24")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
-    pos = nil,
     points = {},
     grid = {},
   }
   local i = 0
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     i = i + 1
     self.input.grid[i] = self.input.grid[i] or {}
     for j, c in ipairs(line:to_list()) do
@@ -18,7 +17,7 @@ function M:parse(file)
 
       if tonumber(c) then
         if tonumber(c) > 0 then
-          self.input.points[#self.input.points + 1] = { x = i, y = j, number = tonumber(c) }
+          self.input.points[#self.input.points + 1] = { x = i, y = j, number = assert(tonumber(c)) }
         else
           self.input.pos = { x = i, y = j, number = 0 }
         end
@@ -104,13 +103,11 @@ function M:solver(returning)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(false).steps)
+  return self:solver(false).steps
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(true).steps)
+  return self:solver(true).steps
 end
 
 M:run()
-
-return M

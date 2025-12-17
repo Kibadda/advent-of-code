@@ -1,10 +1,9 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201609: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2016", "09")
 
-local M = AOC.create("2016", "09")
-
----@param str string
----@param recursive boolean
+--- @param str string
+--- @param recursive boolean
 function M:solver(str, recursive)
   local size = 0
   if str:find "%(" then
@@ -37,13 +36,11 @@ function M:solver(str, recursive)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(self.input[1], false))
+  return self:solver(self.input[1], false)
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(self.input[1], true))
+  return self:solver(self.input[1], true)
 end
 
 M:run()
-
-return M

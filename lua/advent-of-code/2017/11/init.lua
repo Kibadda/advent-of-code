@@ -1,13 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2017", "11")
-
-function M:parse(file)
-  for line in file:lines() do
-    self.input = line
-  end
-end
+--- @class AOCDay201711: AOCDay
+--- @field input string
+local M = require("advent-of-code.AOCDay"):new("2017", "11")
 
 function M:solver(dirs)
   local copy = table.deepcopy(dirs)
@@ -51,7 +44,7 @@ function M:solver(dirs)
 end
 
 function M:solve1()
-  local path = self.input:split ","
+  local path = self.input[1]:split ","
 
   local dirs = { nw = 0, n = 0, ne = 0, se = 0, s = 0, sw = 0 }
 
@@ -78,11 +71,11 @@ function M:solve1()
     }
   end
 
-  self.solution:add("1", self:solver(dirs))
+  return self:solver(dirs)
 end
 
 function M:solve2()
-  local path = self.input:split ","
+  local path = self.input[1]:split ","
 
   local dirs = { nw = 0, n = 0, ne = 0, se = 0, s = 0, sw = 0 }
   local max = -math.huge
@@ -110,9 +103,7 @@ function M:solve2()
     }
     max = math.max(max, self:solver(dirs))
   end
-  self.solution:add("2", max)
+  return max
 end
 
 M:run()
-
-return M

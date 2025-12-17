@@ -1,12 +1,11 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201705: AOCDay
+--- @field input number[]
+local M = require("advent-of-code.AOCDay"):new("2017", "05")
 
-local M = AOC.create("2017", "05")
-
-function M:parse(file)
-  self.input = {}
-  for line in file:lines() do
-    self.input[#self.input + 1] = tonumber(line)
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
+    table.insert(self.input, tonumber(line))
   end
 end
 
@@ -24,23 +23,15 @@ function M:solver(fun)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(function(jump)
-      return jump + 1
-    end)
-  )
+  return self:solver(function(jump)
+    return jump + 1
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(function(jump)
-      return jump >= 3 and jump - 1 or jump + 1
-    end)
-  )
+  return self:solver(function(jump)
+    return jump >= 3 and jump - 1 or jump + 1
+  end)
 end
 
 M:run()
-
-return M

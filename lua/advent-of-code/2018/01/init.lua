@@ -1,15 +1,11 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2018", "01")
+--- @class AOCDay201801: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2018", "01")
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    table.reduce(self.input, 0, function(carry, i)
-      return carry + tonumber(i)
-    end)
-  )
+  return table.reduce(self.input, 0, function(carry, i)
+    return carry + tonumber(i)
+  end)
 end
 
 function M:solve2()
@@ -23,9 +19,7 @@ function M:solve2()
     seen[frequency] = true
   end
 
-  self.solution:add("2", frequency)
+  return frequency
 end
 
 M:run()
-
-return M

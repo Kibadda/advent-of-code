@@ -1,16 +1,13 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202315: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2023", "15")
 
----@class AOCDay202315: AOCDay
----@field input string[]
-local M = AOC.create("2023", "15")
-
----@param file file*
-function M:parse(file)
-  self.input = file:read():split ","
+--- @param lines string[]
+function M:parse(lines)
+  self.input = lines[1]:split ","
 end
 
----@param s string
+--- @param s string
 function M:solver(s)
   return table.reduce(s:to_list(), 0, function(hash, c)
     return ((hash + c:byte()) * 17) % 256
@@ -24,7 +21,7 @@ function M:solve1()
 end
 
 function M:solve2()
-  ---@type table<integer, { label: string, lens: integer }[]>
+  --- @type table<integer, { label: string, lens: integer }[]>
   local boxes = {}
 
   for _, word in ipairs(self.input) do
@@ -81,5 +78,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

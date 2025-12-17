@@ -1,15 +1,13 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201703: AOCDay
+--- @field input integer
+local M = require("advent-of-code.AOCDay"):new("2017", "03")
 
----@class AOCDay201703: AOCDay
----@field input integer
-local M = AOC.create("2017", "03")
-
-function M:parse(file)
-  self.input = tonumber(file:lines()()) or 0
+--- @param lines string[]
+function M:parse(lines)
+  self.input = assert(tonumber(lines[1]))
 end
 
----@param n integer
+--- @param n integer
 function M:solver(n)
   local x, y = 0, 0
   local direction = 0
@@ -81,5 +79,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

@@ -1,15 +1,12 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @alias AOCDay201718Instruction { cmd: string, lhs: string|integer, rhs?: string|integer }
 
----@alias instruction { cmd: string, lhs: string|integer, rhs?: string|integer }
+--- @class AOCDay201718: AOCDay
+--- @field input AOCDay201718Instruction[]
+local M = require("advent-of-code.AOCDay"):new("2017", "18")
 
----@class AOCDay201718: AOCDay
----@field input instruction[]
-local M = AOC.create("2017", "18")
-
----@param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split()
     self.input[#self.input + 1] = match(split[1]) {
       [{ "set", "add", "mul", "mod", "jgz" }] = {
@@ -25,26 +22,26 @@ function M:parse(file)
   end
 end
 
----@class Program
----@field identifier integer
----@field registers table<string, integer>
----@field pointer integer
----@field queue integer[]
----@field waiting boolean
----@field snd fun(self: Program, instruction: instruction)
----@field rcv fun(self: Program, instruction: instruction)
+--- @class AOCDay201718Program
+--- @field identifier integer
+--- @field registers table<string, integer>
+--- @field pointer integer
+--- @field queue integer[]
+--- @field waiting boolean
+--- @field snd fun(self: AOCDay201718Program, instruction: AOCDay201718Instruction)
+--- @field rcv fun(self: AOCDay201718Program, instruction: AOCDay201718Instruction)
 local Program = {
-  ---@param self Program
-  ---@param initial Program
-  ---@return Program
+  --- @param self AOCDay201718Program
+  --- @param initial AOCDay201718Program
+  --- @return AOCDay201718Program
   new = function(self, initial)
     return setmetatable(initial, {
       __index = self,
     })
   end,
-  ---@param self Program
-  ---@param value string|integer
-  ---@return integer
+  --- @param self AOCDay201718Program
+  --- @param value string|integer
+  --- @return integer
   evaluate = function(self, value)
     if type(value) == "number" then
       return value
@@ -56,8 +53,8 @@ local Program = {
 
     return self.registers[value]
   end,
-  ---@param self Program
-  ---@param instructions instruction[]
+  --- @param self AOCDay201718Program
+  --- @param instructions AOCDay201718Instruction[]
   advance = function(self, instructions)
     local instruction = instructions[self.pointer]
 
@@ -69,37 +66,37 @@ local Program = {
 
     return true
   end,
-  ---@param self Program
-  ---@return boolean
+  --- @param self AOCDay201718Program
+  --- @return boolean
   running = function(self)
     return not self.waiting or #self.queue > 0
   end,
-  ---@param self Program
-  ---@param instruction instruction
+  --- @param self AOCDay201718Program
+  --- @param instruction AOCDay201718Instruction
   set = function(self, instruction)
     self.registers[instruction.lhs] = self:evaluate(instruction.rhs)
     self.pointer = self.pointer + 1
   end,
-  ---@param self Program
-  ---@param instruction instruction
+  --- @param self AOCDay201718Program
+  --- @param instruction AOCDay201718Instruction
   add = function(self, instruction)
     self.registers[instruction.lhs] = self:evaluate(instruction.lhs) + self:evaluate(instruction.rhs)
     self.pointer = self.pointer + 1
   end,
-  ---@param self Program
-  ---@param instruction instruction
+  --- @param self AOCDay201718Program
+  --- @param instruction AOCDay201718Instruction
   mul = function(self, instruction)
     self.registers[instruction.lhs] = self:evaluate(instruction.lhs) * self:evaluate(instruction.rhs)
     self.pointer = self.pointer + 1
   end,
-  ---@param self Program
-  ---@param instruction instruction
+  --- @param self AOCDay201718Program
+  --- @param instruction AOCDay201718Instruction
   mod = function(self, instruction)
     self.registers[instruction.lhs] = self:evaluate(instruction.lhs) % self:evaluate(instruction.rhs)
     self.pointer = self.pointer + 1
   end,
-  ---@param self Program
-  ---@param instruction instruction
+  --- @param self AOCDay201718Program
+  --- @param instruction AOCDay201718Instruction
   jgz = function(self, instruction)
     if self:evaluate(instruction.lhs) > 0 then
       self.pointer = self.pointer + self:evaluate(instruction.rhs)
@@ -116,14 +113,14 @@ function M:solve1()
   local program = Program:new {
     registers = {},
     pointer = 1,
-    ---@param pro Program
-    ---@param instruction instruction
+    --- @param pro AOCDay201718Program
+    --- @param instruction AOCDay201718Instruction
     snd = function(pro, instruction)
       sound = pro:evaluate(instruction.lhs)
       pro.pointer = pro.pointer + 1
     end,
-    ---@param pro Program
-    ---@param instruction instruction
+    --- @param pro AOCDay201718Program
+    --- @param instruction AOCDay201718Instruction
     rcv = function(pro, instruction)
       if pro:evaluate(instruction.lhs) ~= 0 then
         stop = true
@@ -145,11 +142,11 @@ function M:solve1()
 end
 
 function M:solve2()
-  ---@type Program, Program
+  --- @type AOCDay201718Program, AOCDay201718Program
   local p0, p1
 
-  ---@param pro Program
-  ---@param instruction instruction
+  --- @param pro AOCDay201718Program
+  --- @param instruction AOCDay201718Instruction
   local function rcv(pro, instruction)
     if #pro.queue == 0 then
       pro.waiting = true
@@ -168,8 +165,8 @@ function M:solve2()
     registers = { p = 0 },
     waiting = false,
     queue = {},
-    ---@param pro Program
-    ---@param instruction instruction
+    --- @param pro AOCDay201718Program
+    --- @param instruction AOCDay201718Instruction
     snd = function(pro, instruction)
       table.insert(p1.queue, pro:evaluate(instruction.lhs))
       pro.pointer = pro.pointer + 1
@@ -183,8 +180,8 @@ function M:solve2()
     registers = { p = 1 },
     waiting = false,
     queue = {},
-    ---@param pro Program
-    ---@param instruction instruction
+    --- @param pro AOCDay201718Program
+    --- @param instruction AOCDay201718Instruction
     snd = function(pro, instruction)
       sent = sent + 1
 
@@ -207,5 +204,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

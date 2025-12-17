@@ -1,12 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202302: AOCDay
+--- @field input { red?: integer, green?: integer, blue?: integer }[][]
+local M = require("advent-of-code.AOCDay"):new("2023", "02")
 
----@class AOCDay202302: AOCDay
----@field input { red?: integer, green?: integer, blue?: integer }[][]
-local M = AOC.create("2023", "02")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local hands = line:split(":")[2]:split ";"
 
     local game = {}
@@ -55,5 +53,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

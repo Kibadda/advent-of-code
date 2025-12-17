@@ -1,14 +1,11 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202310: AOCDay
+--- @field input { grid: string[], start: Vector, path: Vector[] }
+local M = require("advent-of-code.AOCDay"):new("2023", "10")
 
----@class AOCDay202310: AOCDay
----@field input { grid: string[], start: Vector, path: Vector[] }
-local M = AOC.create("2023", "10")
-
----@param file file*
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
-    grid = {},
+    grid = lines,
     path = setmetatable({}, {
       __index = function(t, key)
         t[key] = {}
@@ -17,14 +14,11 @@ function M:parse(file)
     }),
   }
 
-  local i = 1
-  for line in file:lines() do
+  for i, line in ipairs(lines) do
     local s = string.find(line, "S")
     if s then
       self.input.start = V(i, s)
     end
-    table.insert(self.input.grid, line)
-    i = i + 1
   end
 end
 
@@ -104,5 +98,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

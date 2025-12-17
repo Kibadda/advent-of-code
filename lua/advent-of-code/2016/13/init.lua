@@ -1,15 +1,13 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201613: AOCDay
+--- @field input number
+local M = require("advent-of-code.AOCDay"):new("2016", "13")
 
-local M = AOC.create("2016", "13")
-
-function M:parse(file)
-  for line in file:lines() do
-    self.input = tonumber(line)
-  end
+--- @param lines string[]
+function M:parse(lines)
+  self.input = assert(tonumber(lines[1]))
 end
 
----@param num number
+--- @param num number
 local function to_binary(num)
   local t = {}
   while num > 0 do
@@ -20,7 +18,7 @@ local function to_binary(num)
   return table.concat(t, "")
 end
 
----@param vector Vector
+--- @param vector Vector
 local function is_wall(vector, input)
   local _, ones = to_binary(
     vector.y * vector.y + 3 * vector.y + 2 * vector.y * vector.x + vector.x + vector.x * vector.x + input
@@ -28,7 +26,7 @@ local function is_wall(vector, input)
   return ones % 2 == 1
 end
 
----@param vector Vector
+--- @param vector Vector
 local function neighbors(vector)
   local positions = {
     V(vector.x + 1, vector.y),
@@ -74,23 +72,15 @@ function M:solver(end_func)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(function(current)
-      return current.pos == (self.test and V(4, 7) or V(39, 31))
-    end).current.length
-  )
+  return self:solver(function(current)
+    return current.pos == (self.test and V(4, 7) or V(39, 31))
+  end).current.length
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    table.count(self:solver(function(current)
-      return current.length == 50
-    end).seen)
-  )
+  return table.count(self:solver(function(current)
+    return current.length == 50
+  end).seen)
 end
 
 M:run()
-
-return M

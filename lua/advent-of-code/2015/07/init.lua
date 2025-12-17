@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2015", "07")
+--- @class AOCDay201507: AOCDay
+--- @field input table<string, number|{ operation: string, one: number|string, two?: number|string }>
+local M = require("advent-of-code.AOCDay"):new("2015", "07")
 
 -- d: 72
 -- e: 507
@@ -13,8 +12,9 @@ local M = AOC.create("2015", "07")
 -- y: 456
 local max = 65535
 
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split()
     if #split == 3 then
       self.input[split[3]] = tonumber(split[1]) or {
@@ -67,16 +67,14 @@ end
 
 function M:solve1()
   local wires = table.deepcopy(self.input)
-  self.solution:add("1", self:solver(wires, "a"))
+  return self:solver(wires, "a")
 end
 
 function M:solve2()
   local wires = table.deepcopy(self.input)
   wires.b = 956
 
-  self.solution:add("2", self:solver(wires, "a"))
+  return self:solver(wires, "a")
 end
 
 M:run()
-
-return M

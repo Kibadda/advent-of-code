@@ -1,10 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201514: AOCDay
+--- @field input { speed: integer, duration: integer, rest: integer, distance: integer, flying: integer, resting: integer, points: integer }[]
+local M = require("advent-of-code.AOCDay"):new("2015", "14")
 
-local M = AOC.create("2015", "14")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local ints = line:only_ints()
     table.insert(self.input, {
       speed = ints[1],
@@ -55,13 +55,11 @@ function M:solver(field)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver "distance")
+  return self:solver "distance"
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver "points")
+  return self:solver "points"
 end
 
 M:run()
-
-return M

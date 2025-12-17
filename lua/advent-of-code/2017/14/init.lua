@@ -1,14 +1,11 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201714: AOCDay
+--- @field input { used: boolean, group: integer }[][]
+local M = require("advent-of-code.AOCDay"):new("2017", "14")
 
----@class AOCDay201714: AOCDay
----@field input { used: boolean, group: integer }[][]
-local M = AOC.create("2017", "14")
-
----@param file file*
-function M:parse(file)
-  ---@param input string
-  ---@return string
+--- @param lines string[]
+function M:parse(lines)
+  --- @param input string
+  --- @return string
   local function knot_hash(input)
     local chain = {}
     for i = 1, 256 do
@@ -62,9 +59,7 @@ function M:parse(file)
     return table.concat(dense)
   end
 
-  self.input = {}
-
-  local key = file:read()
+  local key = lines[1]
 
   for i = 1, 128 do
     local hash = knot_hash(key .. "-" .. i - 1)
@@ -143,5 +138,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

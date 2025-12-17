@@ -1,9 +1,10 @@
 --- @class AOCDay201717: AOCDay
 --- @field input number
-local M = require("advent-of-code.AOC").create("2017", "17")
+local M = require("advent-of-code.AOCDay"):new("2017", "17")
 
-function M:parse(file)
-  self.input = assert(tonumber(file:lines()()))
+--- @param lines string[]
+function M:parse(lines)
+  self.input = assert(tonumber(lines[1]))
 end
 
 function M:solve1()

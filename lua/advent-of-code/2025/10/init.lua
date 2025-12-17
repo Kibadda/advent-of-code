@@ -1,12 +1,12 @@
 --- @class AOCDay202510: AOCDay
 --- @field input { lights: string, buttons: number[][], joltage: number[] }[]
-local M = require("advent-of-code.AOC").create("2025", "10")
+local M = require("advent-of-code.AOCDay"):new("2025", "10")
 
 -- THANK YOU TO: https://www.reddit.com/r/adventofcode/comments/1pk87hl/2025_day_10_part_2_bifurcate_your_way_to_victory/
 
---- @param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split " "
 
     local machine = {

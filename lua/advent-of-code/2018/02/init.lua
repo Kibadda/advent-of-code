@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2018", "02")
+--- @class AOCDay201802: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2018", "02")
 
 function M:solve1()
   local twos = 0
@@ -22,7 +21,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("1", twos * threes)
+  return twos * threes
 end
 
 function M:solve2()
@@ -37,13 +36,10 @@ function M:solve2()
         end
       end
       if diffs == 1 then
-        self.solution:add("2", self.input[i]:sub(1, index - 1) .. self.input[i]:sub(index + 1))
-        break
+        return self.input[i]:sub(1, index - 1) .. self.input[i]:sub(index + 1)
       end
     end
   end
 end
 
 M:run()
-
-return M

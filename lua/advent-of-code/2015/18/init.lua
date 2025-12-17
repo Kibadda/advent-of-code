@@ -1,15 +1,11 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201518: AOCDay
+--- @field input string[][]
+local M = require("advent-of-code.AOCDay"):new("2015", "18")
 
-local M = AOC.create("2015", "18")
-
-function M:parse(file)
-  for line in file:lines() do
-    local row = {}
-    for c in line:gmatch "." do
-      table.insert(row, c)
-    end
-    table.insert(self.input, row)
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
+    table.insert(self.input, line:to_list())
   end
 end
 
@@ -66,7 +62,7 @@ function M:solver(steps, corners_broken)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(self.test and 4 or 100, false))
+  return self:solver(self.test and 4 or 100, false)
 end
 
 function M:solve2()
@@ -74,9 +70,7 @@ function M:solve2()
   self.input[1][#self.input[1]] = "#"
   self.input[#self.input][1] = "#"
   self.input[#self.input][#self.input[#self.input]] = "#"
-  self.solution:add("2", self:solver(self.test and 5 or 100, true))
+  return self:solver(self.test and 5 or 100, true)
 end
 
 M:run()
-
-return M

@@ -1,8 +1,12 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202207: AOCDay
+--- @field input AOCDay202207Directory
+local M = require("advent-of-code.AOCDay"):new("2022", "07")
 
-local M = AOC.create("2022", "07")
-
+--- @class AOCDay202207Directory
+--- @field parent AOCDay202207Directory
+--- @field children AOCDay202207Directory[]
+--- @field size number
+--- @field is_dir boolean
 local Directory = {
   new = function(self, name, size, parent, is_dir)
     return setmetatable({
@@ -41,11 +45,12 @@ local Directory = {
   end,
 }
 
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = Directory:new("/", 0, nil, true)
   local current_directory = self.input
 
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     if line ~= "$ cd /" then
       local split = line:split()
       if split[1] == "$" then
@@ -83,7 +88,7 @@ function M:solve1()
     return size
   end
 
-  self.solution:add("1", traverse(self.input.children))
+  return traverse(self.input.children)
 end
 
 function M:solve2()
@@ -107,9 +112,7 @@ function M:solve2()
 
   traverse(self.input.children)
 
-  self.solution:add("2", minimum)
+  return minimum
 end
 
 M:run()
-
-return M

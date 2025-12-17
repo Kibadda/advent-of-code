@@ -1,10 +1,10 @@
 --- @class AOCDay201622: AOCDay
 --- @field input { size: number, used: number, avail: number, use: number }[][]
-local M = require("advent-of-code.AOC").create("2016", "22")
+local M = require("advent-of-code.AOCDay"):new("2016", "22")
 
---- @param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local ints = line:only_ints()
 
     if #ints > 0 then

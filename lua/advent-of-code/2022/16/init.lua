@@ -1,9 +1,9 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202216: AOCDay
+--- @field input { start: number, names: string[], flows: number[], dist: integer[][], conns: string[][] }
+local M = require("advent-of-code.AOCDay"):new("2022", "16")
 
-local M = AOC.create("2022", "16")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     names = {},
     flows = {},
@@ -11,7 +11,7 @@ function M:parse(file)
     dist = {},
   }
 
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     local split = line:gsub(";", ""):gsub(",", ""):split()
     table.insert(self.input.names, split[2])
     table.insert(self.input.flows, tonumber(split[5]:split("=")[2]))
@@ -49,7 +49,7 @@ function M:parse(file)
     end
   end
 
-  self.input.start = table.find(self.input.names, "AA")
+  self.input.start = assert(table.find(self.input.names, "AA"))
 end
 
 function M:solver(puzzle, current, rest, time)
@@ -68,13 +68,11 @@ function M:solver(puzzle, current, rest, time)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(1, self.input.start, self.input.flows, 30))
+  return self:solver(1, self.input.start, self.input.flows, 30)
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(2, self.input.start, self.input.flows, 26))
+  return self:solver(2, self.input.start, self.input.flows, 26)
 end
 
 M:run()
-
-return M

@@ -1,12 +1,12 @@
 local Timer = require "advent-of-code.Timer"
 
----@class Solution
----@field new (fun(self: Solution): Solution)
----@field add (fun(self: Solution, part: string, solution: any))
----@field print (fun(self: Solution))
----@field ["1"] any solution of first problem
----@field ["2"] any solution of second problem
----@field timer Timer
+--- @class Solution
+--- @field new (fun(self: Solution): Solution)
+--- @field add (fun(self: Solution, part: string, solution: any))
+--- @field print (fun(self: Solution))
+--- @field ["1"] any solution of first problem
+--- @field ["2"] any solution of second problem
+--- @field timer Timer
 local Solution = {
   new = function(self)
     return setmetatable({

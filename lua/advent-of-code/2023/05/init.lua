@@ -1,15 +1,12 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202305: AOCDay
+--- @field input { seeds: integer[], functions: AOCDay202305Function[] }
+local M = require("advent-of-code.AOCDay"):new("2023", "05")
 
----@class AOCDay202305: AOCDay
----@field input { seeds: integer[], functions: Function[] }
-local M = AOC.create("2023", "05")
-
----@class Function
----@field mappings integer[][]
----@field new fun(self: Function, mappings: integer[][]): Function
----@field one fun(self: Function, v: integer): integer
----@field range fun(self: Function, v: integer[][]): integer[][]
+--- @class AOCDay202305Function
+--- @field mappings integer[][]
+--- @field new fun(self: AOCDay202305Function, mappings: integer[][]): AOCDay202305Function
+--- @field one fun(self: AOCDay202305Function, v: integer): integer
+--- @field range fun(self: AOCDay202305Function, v: integer[][]): integer[][]
 local Function = {
   new = function(self, mappings)
     return setmetatable({ mappings = mappings }, {
@@ -62,11 +59,8 @@ local Function = {
   end,
 }
 
----@param file file*
-function M:parse(file)
-  ---@type string[]
-  local lines = file:read("*a"):split "\n"
-
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     seeds = lines[1]:only_ints(),
     functions = {},
@@ -115,5 +109,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

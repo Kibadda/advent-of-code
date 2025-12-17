@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2016", "06")
+--- @class AOCDay201606: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2016", "06")
 
 function M:solver(last_or_first)
   local frequencies = {}
@@ -26,13 +25,11 @@ function M:solver(last_or_first)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver "last")
+  return self:solver "last"
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver "first")
+  return self:solver "first"
 end
 
 M:run()
-
-return M

@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2015", "08")
+--- @class AOCDay201508: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2015", "08")
 
 function M:solve1()
   local total_chars_in_string = 0
@@ -9,19 +8,19 @@ function M:solve1()
 
   for _, line in ipairs(self.input) do
     local skip = 0
-    line = line:to_list()
-    for i = 1, #line do
+    local list = line:to_list()
+    for i = 1, #list do
       if skip > 0 then
         skip = skip - 1
       else
-        if line[i] == [[\]] then
+        if list[i] == [[\]] then
           total_chars_in_memory = total_chars_in_memory + 1
-          if line[i + 1] == '"' or line[i + 1] == [[\]] then
+          if list[i + 1] == '"' or list[i + 1] == [[\]] then
             skip = 1
           else
             skip = 3
           end
-        elseif line[i] ~= '"' then
+        elseif list[i] ~= '"' then
           total_chars_in_memory = total_chars_in_memory + 1
         end
       end
@@ -30,7 +29,7 @@ function M:solve1()
     total_chars_in_string = total_chars_in_string + #line
   end
 
-  self.solution:add("1", total_chars_in_string - total_chars_in_memory)
+  return total_chars_in_string - total_chars_in_memory
 end
 
 function M:solve2()
@@ -38,21 +37,21 @@ function M:solve2()
 
   for _, line in ipairs(self.input) do
     local skip = 0
-    line = line:to_list()
+    local list = line:to_list()
     local extra = 0
-    for i = 1, #line do
+    for i = 1, #list do
       if skip > 0 then
         skip = skip - 1
       else
-        if line[i] == [[\]] then
+        if list[i] == [[\]] then
           extra = extra + 1
-          if line[i + 1] == '"' or line[i + 1] == [[\]] then
+          if list[i + 1] == '"' or list[i + 1] == [[\]] then
             extra = extra + 1
             skip = 1
           else
             skip = 3
           end
-        elseif line[i] == '"' then
+        elseif list[i] == '"' then
           extra = extra + 1
         end
       end
@@ -60,9 +59,7 @@ function M:solve2()
     diff = diff + 2 + extra
   end
 
-  self.solution:add("2", diff)
+  return diff
 end
 
 M:run()
-
-return M

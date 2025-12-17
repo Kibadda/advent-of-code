@@ -1,12 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202223: AOCDay
+--- @field input Vector[]
+local M = require("advent-of-code.AOCDay"):new("2022", "23")
 
-local M = AOC.create("2022", "23")
-
-function M:parse(file)
-  local i = 0
-  for line in file:lines() do
-    i = i + 1
+--- @param lines string[]
+function M:parse(lines)
+  for i, line in ipairs(lines) do
     local j = 0
     for c in line:gmatch "." do
       j = j + 1
@@ -113,23 +111,15 @@ function M:solver(stop_func)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(function(i)
-      return i == 10
-    end).rectangle
-  )
+  return self:solver(function(i)
+    return i == 10
+  end).rectangle
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(function(_, moved)
-      return not moved
-    end).i
-  )
+  return self:solver(function(_, moved)
+    return not moved
+  end).i
 end
 
 M:run()
-
-return M

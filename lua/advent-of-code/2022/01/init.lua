@@ -1,13 +1,13 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202201: AOCDay
+--- @field input number[]
+local M = require("advent-of-code.AOCDay"):new("2022", "01")
 
-local M = AOC.create("2022", "01")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   table.insert(self.input, 0)
 
   local current_pos = 1
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     local number = tonumber(line)
     if number == nil then
       table.insert(self.input, 0)
@@ -23,13 +23,11 @@ function M:parse(file)
 end
 
 function M:solve1()
-  self.solution:add("1", self.input[1])
+  return self.input[1]
 end
 
 function M:solve2()
-  self.solution:add("2", self.input[1] + self.input[2] + self.input[3])
+  return self.input[1] + self.input[2] + self.input[3]
 end
 
 M:run()
-
-return M

@@ -1,10 +1,10 @@
 --- @class AOCDay202512: AOCDay
 --- @field input { area: number, quantities: number[] }[]
-local M = require("advent-of-code.AOC").create("2025", "12")
+local M = require("advent-of-code.AOCDay"):new("2025", "12")
 
---- @param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     if line:find "%d+x%d+:" ~= nil then
       local ints = line:only_ints()
       table.insert(self.input, {

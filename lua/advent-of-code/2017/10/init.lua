@@ -1,13 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2017", "10")
-
-function M:parse(file)
-  for line in file:lines() do
-    self.input = line
-  end
-end
+--- @class AOCDay201710: AOCDay
+--- @field input string
+local M = require("advent-of-code.AOCDay"):new("2017", "10")
 
 function M:solver(max, lengths, rounds)
   local chain = {}
@@ -45,13 +38,13 @@ function M:solver(max, lengths, rounds)
 end
 
 function M:solve1()
-  local chain = self:solver(self.test and 5 or 256, self.input:only_ints(), 1)
-  self.solution:add("1", chain[1] * chain[2])
+  local chain = self:solver(self.test and 5 or 256, self.input[1]:only_ints(), 1)
+  return chain[1] * chain[2]
 end
 
 function M:solve2()
   local lengths = {}
-  for i, c in ipairs(self.input:to_list()) do
+  for i, c in ipairs(self.input[1]:to_list()) do
     lengths[i] = string.byte(c)
   end
   for _, c in ipairs { 17, 31, 73, 47, 23 } do
@@ -69,9 +62,7 @@ function M:solve2()
     )
   end)
 
-  self.solution:add("2", table.concat(dense))
+  return table.concat(dense)
 end
 
 M:run()
-
-return M

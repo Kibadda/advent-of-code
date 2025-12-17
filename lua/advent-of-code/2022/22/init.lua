@@ -1,16 +1,16 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202222: AOCDay
+--- @field input { grid: string[], path: number[] }
+local M = require("advent-of-code.AOCDay"):new("2022", "22")
 
-local M = AOC.create("2022", "22")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     grid = {},
     path = {},
   }
 
   local parse_grid = true
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     if line == "" then
       parse_grid = false
     end
@@ -57,7 +57,7 @@ function M:wrap(next, dir, version)
     else
       -- horizontal wrap
       if dir.y > 0 then
-        next = V(next.x, self.input.grid[next.x]:find "%S")
+        next = V(next.x, assert(self.input.grid[next.x]:find "%S"))
       else
         next = V(next.x, #self.input.grid[next.x] - self.input.grid[next.x]:reverse():find "%S" + 1)
       end
@@ -230,7 +230,7 @@ function M:wrap(next, dir, version)
 end
 
 function M:solver(version)
-  local pos = V(1, self.input.grid[1]:find "[^%s#]")
+  local pos = V(1, assert(self.input.grid[1]:find "[^%s#]"))
   local dir = V(0, 1)
 
   for _, instruction in ipairs(self.input.path) do
@@ -266,13 +266,9 @@ function M:solver(version)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver "map")
+  return self:solver "map"
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver "cube")
+  return self:solver "cube"
 end
-
-M:run()
-
-return M

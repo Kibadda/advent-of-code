@@ -1,13 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201722: AOCDay
+--- @field input string[][]
+local M = require("advent-of-code.AOCDay"):new("2017", "22")
 
-local M = AOC.create("2017", "22")
-
-function M:parse(file)
-  self.input = {}
-  local i = 0
-  for line in file:lines() do
-    i = i + 1
+--- @param lines string[]
+function M:parse(lines)
+  for i, line in ipairs(lines) do
     self.input[i] = {}
     for j, c in ipairs(line:to_list()) do
       self.input[i][j] = c
@@ -15,9 +12,9 @@ function M:parse(file)
   end
 end
 
----@param rounds integer
----@param burst fun(grid: table, pos: Vector, direction: Vector, infections: integer): Vector, integer
----@return integer
+--- @param rounds integer
+--- @param burst fun(grid: table, pos: Vector, direction: Vector, infections: integer): Vector, integer
+--- @return integer
 function M:solver(rounds, burst)
   local grid = table.deepcopy(self.input)
   local pos = V(math.ceil(#self.input / 2), math.ceil(#self.input[1] / 2))
@@ -38,54 +35,46 @@ function M:solver(rounds, burst)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(10000, function(grid, pos, direction, infections)
-      match(grid[pos.x][pos.y]) {
-        ["."] = function()
-          grid[pos.x][pos.y] = "#"
-          direction = direction * "L"
-          infections = infections + 1
-        end,
-        ["#"] = function()
-          grid[pos.x][pos.y] = "."
-          direction = direction * "R"
-        end,
-      }
+  return self:solver(10000, function(grid, pos, direction, infections)
+    match(grid[pos.x][pos.y]) {
+      ["."] = function()
+        grid[pos.x][pos.y] = "#"
+        direction = direction * "L"
+        infections = infections + 1
+      end,
+      ["#"] = function()
+        grid[pos.x][pos.y] = "."
+        direction = direction * "R"
+      end,
+    }
 
-      return direction, infections
-    end)
-  )
+    return direction, infections
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(10000000, function(grid, pos, direction, infections)
-      match(grid[pos.x][pos.y]) {
-        ["."] = function()
-          grid[pos.x][pos.y] = "W"
-          direction = direction * "L"
-        end,
-        ["W"] = function()
-          grid[pos.x][pos.y] = "#"
-          infections = infections + 1
-        end,
-        ["#"] = function()
-          grid[pos.x][pos.y] = "F"
-          direction = direction * "R"
-        end,
-        ["F"] = function()
-          grid[pos.x][pos.y] = "."
-          direction = V(direction.x * -1, direction.y * -1)
-        end,
-      }
+  return self:solver(10000000, function(grid, pos, direction, infections)
+    match(grid[pos.x][pos.y]) {
+      ["."] = function()
+        grid[pos.x][pos.y] = "W"
+        direction = direction * "L"
+      end,
+      ["W"] = function()
+        grid[pos.x][pos.y] = "#"
+        infections = infections + 1
+      end,
+      ["#"] = function()
+        grid[pos.x][pos.y] = "F"
+        direction = direction * "R"
+      end,
+      ["F"] = function()
+        grid[pos.x][pos.y] = "."
+        direction = V(direction.x * -1, direction.y * -1)
+      end,
+    }
 
-      return direction, infections
-    end)
-  )
+    return direction, infections
+  end)
 end
 
 M:run()
-
-return M

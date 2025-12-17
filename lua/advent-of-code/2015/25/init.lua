@@ -1,10 +1,10 @@
 --- @class AOCDay201525: AOCDay
 --- @field input { row: number, col: number }
-local M = require("advent-of-code.AOC").create("2015", "25")
+local M = require("advent-of-code.AOCDay"):new("2015", "25")
 
---- @param file file*
-function M:parse(file)
-  local ints = file:lines()():only_ints()
+--- @param lines string[]
+function M:parse(lines)
+  local ints = lines[1]:only_ints()
   self.input = { row = ints[1], col = ints[2] }
 end
 

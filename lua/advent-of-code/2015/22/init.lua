@@ -1,9 +1,9 @@
 --- @class AOCDay201522: AOCDay
 --- @field input { player: table, boss: table, effects: table, spent_mana: number, turn: number }
-local M = require("advent-of-code.AOC").create("2015", "22")
+local M = require("advent-of-code.AOCDay"):new("2015", "22")
 
---- @param file file*
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     player = {
       hp = 50,
@@ -19,7 +19,6 @@ function M:parse(file)
     turn = 0,
   }
 
-  local lines = file:read("*a"):split "\n"
   self.input.boss.hp = lines[1]:only_ints()[1]
   self.input.boss.damage = lines[2]:only_ints()[1]
 end

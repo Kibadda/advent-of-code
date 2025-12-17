@@ -1,5 +1,5 @@
----@param t table
----@return integer
+--- @param t table
+--- @return integer
 function table.count(t)
   local count = 0
 
@@ -10,11 +10,11 @@ function table.count(t)
   return count
 end
 
----@generic T
----@param t T[]
----@param needle T
----@param keys? table
----@return T?
+--- @generic T
+--- @param t T[]
+--- @param needle T
+--- @param keys? table
+--- @return integer?
 function table.find(t, needle, keys)
   keys = keys or { "x", "y" }
   if type(keys) ~= "table" then
@@ -40,7 +40,7 @@ function table.find(t, needle, keys)
   return nil
 end
 
----@param t table
+--- @param t table
 function table.count_uniques(t)
   local tmp = {}
 
@@ -51,9 +51,9 @@ function table.count_uniques(t)
   return table.count(tmp)
 end
 
----@generic T
----@param t T
----@return T
+--- @generic T
+--- @param t T
+--- @return T
 function table.deepcopy(t)
   local orig_type = type(t)
   local copy
@@ -69,12 +69,12 @@ function table.deepcopy(t)
   return copy
 end
 
----@generic K
----@generic V
----@param t table<K, V>
----@param func fun(v: V, k: K): boolean
----@param keep_index? boolean
----@param iter? function
+--- @generic K
+--- @generic V
+--- @param t table<K, V>
+--- @param func fun(v: V, k: K): boolean
+--- @param keep_index? boolean
+--- @param iter? function
 function table.filter(t, func, keep_index, iter)
   local tmp = {}
   iter = iter or ipairs
@@ -92,12 +92,12 @@ function table.filter(t, func, keep_index, iter)
   return tmp
 end
 
----@generic K, V, T
----@param t table<K, V>
----@param start_value T
----@param func fun(carry: T, v: V, k: K): T
----@param iter? function
----@return T
+--- @generic K, V, T
+--- @param t table<K, V>
+--- @param start_value T
+--- @param func fun(carry: T, v: V, k: K): T
+--- @param iter? function
+--- @return T
 function table.reduce(t, start_value, func, iter)
   local current = start_value
   iter = iter or ipairs
@@ -109,11 +109,11 @@ function table.reduce(t, start_value, func, iter)
   return current
 end
 
----@generic K, V, T
----@param t table<K, V>
----@param func fun(v: V, k: K): T
----@param iter? function
----@return table<K, T>
+--- @generic K, V, T
+--- @param t table<K, V>
+--- @param func fun(v: V, k: K): T
+--- @param iter? function
+--- @return table<K, T>
 function table.map(t, func, iter)
   iter = iter or ipairs
 
@@ -125,10 +125,10 @@ function table.map(t, func, iter)
   return tmp
 end
 
----@generic K
----@param t table<K, any>
----@param iter? function
----@return K[]
+--- @generic K
+--- @param t table<K, any>
+--- @param iter? function
+--- @return K[]
 function table.keys(t, iter)
   iter = iter or pairs
 
@@ -140,10 +140,10 @@ function table.keys(t, iter)
   return tmp
 end
 
----@generic V
----@param t V[]
----@param iter? function
----@return V[]
+--- @generic V
+--- @param t V[]
+--- @param iter? function
+--- @return V[]
 function table.values(t, iter)
   iter = iter or pairs
 
@@ -155,11 +155,11 @@ function table.values(t, iter)
   return tmp
 end
 
----@generic K, V, H, J
----@param t table<K, V>
----@param func fun(v: V, k: K): { [1]: H, [2]: J }
----@param iter? function
----@return table<H, J>
+--- @generic K, V, H, J
+--- @param t table<K, V>
+--- @param func fun(v: V, k: K): { [1]: H, [2]: J }
+--- @param iter? function
+--- @return table<H, J>
 function table.map_to_groups(t, func, iter)
   iter = iter or ipairs
 
@@ -173,10 +173,10 @@ function table.map_to_groups(t, func, iter)
   return tmp
 end
 
----@generic V
----@param t table<any, V>
----@param iter? function
----@return table<V, integer>
+--- @generic V
+--- @param t table<any, V>
+--- @param iter? function
+--- @return table<V, integer>
 function table.frequencies(t, iter)
   iter = iter or ipairs
 
@@ -188,9 +188,9 @@ function table.frequencies(t, iter)
   return tmp
 end
 
----@generic K, V
----@param t table<K, V>
----@return table<K, V>
+--- @generic K, V
+--- @param t table<K, V>
+--- @return table<K, V>
 function table.reverse(t)
   local tmp = {}
 
@@ -201,10 +201,10 @@ function table.reverse(t)
   return tmp
 end
 
----@generic V
----@param t V[]
----@param size integer
----@return V[][]
+--- @generic V
+--- @param t V[]
+--- @param size integer
+--- @return V[][]
 function table.to_chunks(t, size)
   local tmp = {}
   local chunk = {}
@@ -220,10 +220,10 @@ function table.to_chunks(t, size)
   return tmp
 end
 
----@generic V: integer|string|boolean
----@param t V[]
----@param item V
----@return boolean
+--- @generic V: integer|string|boolean
+--- @param t V[]
+--- @param item V
+--- @return boolean
 function table.contains(t, item)
   for _, v in ipairs(t) do
     if v == item then
@@ -234,8 +234,8 @@ function table.contains(t, item)
   return false
 end
 
----@param length integer
----@param start? integer
+--- @param length integer
+--- @param start? integer
 function table.range(length, start)
   start = start or 1
 
@@ -247,10 +247,10 @@ function table.range(length, start)
   return t
 end
 
----@generic V
----@param t1 V[]
----@param t2 V[]
----@return V[]
+--- @generic V
+--- @param t1 V[]
+--- @param t2 V[]
+--- @return V[]
 function table.intersection(t1, t2)
   local t = {}
 
@@ -263,9 +263,9 @@ function table.intersection(t1, t2)
   return t
 end
 
----@param t table
----@param iter? function
----@return number
+--- @param t table
+--- @param iter? function
+--- @return number
 function table.sum(t, iter)
   iter = iter or ipairs
 
@@ -274,9 +274,9 @@ function table.sum(t, iter)
   end, iter)
 end
 
----@param t table
----@param iter? function
----@return number
+--- @param t table
+--- @param iter? function
+--- @return number
 function table.prod(t, iter)
   iter = iter or ipairs
 

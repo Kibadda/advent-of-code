@@ -1,4 +1,4 @@
----@param value integer|string|boolean
+--- @param value integer|string|boolean|nil
 function _G.match(value)
   local function re(v)
     if type(v) == "function" then
@@ -28,9 +28,9 @@ function _G.match(value)
   end
 end
 
----@generic T: table, V
----@param t T
----@return (fun(table: V[], i?: integer): integer, V), T, integer
+--- @generic T: table, V
+--- @param t T
+--- @return (fun(table: V[], i?: integer): integer, V), T, integer
 function _G.cycle(t)
   local length = table.count(t)
 
@@ -45,9 +45,9 @@ function _G.cycle(t)
   return iter, t, 0
 end
 
----@generic T: table, V
----@param t T
----@return (fun(table: V[], i?: integer): integer, V), T, integer
+--- @generic T: table, V
+--- @param t T
+--- @return (fun(table: V[], i?: integer): integer, V), T, integer
 function _G.spairs(t)
   local keys = {}
   for k in pairs(t) do

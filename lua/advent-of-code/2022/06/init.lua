@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2022", "06")
+--- @class AOCDay202206: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2022", "06")
 
 function M:solver(limit)
   local buffer = {}
@@ -22,13 +21,11 @@ function M:solver(limit)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(4))
+  return self:solver(4)
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(14))
+  return self:solver(14)
 end
 
 M:run()
-
-return M

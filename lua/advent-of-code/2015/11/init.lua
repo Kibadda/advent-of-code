@@ -1,15 +1,8 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201511: AOCDay
+--- @field input string
+local M = require("advent-of-code.AOCDay"):new("2015", "11")
 
-local M = AOC.create("2015", "11")
-
-function M:parse(file)
-  for line in file:lines() do
-    self.input.password = line
-  end
-end
-
----@param str string
+--- @param str string
 local function check(str)
   local no_i_o_l = str:find "[iol]" == nil
 
@@ -74,13 +67,11 @@ function M:solver(str)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(self.input.password))
+  return self:solver(self.input[1])
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(self.solution["1"]))
+  return self:solver(self.solution["1"])
 end
 
 M:run()
-
-return M

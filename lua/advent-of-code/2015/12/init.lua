@@ -1,23 +1,11 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local json = require "advent-of-code.helpers.json"
-
-local M = AOC.create("2015", "12")
-
-function M:parse(file)
-  for line in file:lines() do
-    self.input = line
-  end
-end
+--- @class AOCDay201512: AOCDay
+--- @field input string
+local M = require("advent-of-code.AOCDay"):new("2015", "12")
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    table.reduce(self.input:only_ints "-?%d+", 0, function(carry, num)
-      return carry + num
-    end)
-  )
+  return table.reduce(self.input:only_ints "-?%d+", 0, function(carry, num)
+    return carry + num
+  end)
 end
 
 function M:solve2()
@@ -34,9 +22,7 @@ function M:solve2()
     end
     return s
   end
-  self.solution:add("2", sum(json.parse(self.input)))
+  return sum(JSON.parse(self.input))
 end
 
 M:run()
-
-return M

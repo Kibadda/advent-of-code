@@ -1,10 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202208: AOCDay
+--- @field input string[][]
+local M = require("advent-of-code.AOCDay"):new("2022", "08")
 
-local M = AOC.create("2022", "08")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     table.insert(self.input, {})
     for c in line:gmatch "." do
       table.insert(self.input[#self.input], c)
@@ -60,7 +60,7 @@ function M:solve1()
     end
   end
 
-  self.solution:add("1", visible_trees)
+  return visible_trees
 end
 
 function M:solve2()
@@ -105,9 +105,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("2", max_scenic_score)
+  return max_scenic_score
 end
 
 M:run()
-
-return M

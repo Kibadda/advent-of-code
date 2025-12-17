@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2022", "03")
+--- @class AOCDay202203: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2022", "03")
 
 local function to_priority(str)
   local byte = str:byte()
@@ -57,7 +56,7 @@ function M:solve1()
     total_priority = total_priority + to_priority(same_c)
   end
 
-  self.solution:add("1", total_priority)
+  return total_priority
 end
 
 function M:solve2()
@@ -99,9 +98,7 @@ function M:solve2()
     total_priority = total_priority + to_priority(same_c)
   end
 
-  self.solution:add("2", total_priority)
+  return total_priority
 end
 
 M:run()
-
-return M

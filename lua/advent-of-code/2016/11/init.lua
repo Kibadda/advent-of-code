@@ -1,9 +1,9 @@
 --- @class AOCDay201611: AOCDay
 --- @field input { floor: number, elements: string[], floors: { g: table<string, number>, m: table<string, number> }[], steps: number, count: number }
-local M = require("advent-of-code.AOC").create("2016", "11")
+local M = require("advent-of-code.AOCDay"):new("2016", "11")
 
---- @param file file*
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     floor = 1,
     floors = {},
@@ -11,7 +11,7 @@ function M:parse(file)
     steps = 0,
   }
 
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     local floor = { g = {}, m = {} }
     local _, e = line:find "The.*floor contains "
     line = line

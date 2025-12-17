@@ -1,10 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201516: AOCDay
+--- @field input table<string, number>[]
+local M = require("advent-of-code.AOCDay"):new("2015", "16")
 
-local M = AOC.create("2015", "16")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local dna = {}
     for _, d in ipairs(line:split ",") do
       local split = d:split ": "
@@ -31,29 +31,21 @@ function M:solver(fun)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(function(aunt)
-      return (aunt.cats == nil or aunt.cats == 7)
-        and (aunt.pomeranians == nil or aunt.pomeranians == 3)
-        and (aunt.goldfish == nil or aunt.goldfish == 5)
-        and (aunt.trees == nil or aunt.trees == 3)
-    end)
-  )
+  return self:solver(function(aunt)
+    return (aunt.cats == nil or aunt.cats == 7)
+      and (aunt.pomeranians == nil or aunt.pomeranians == 3)
+      and (aunt.goldfish == nil or aunt.goldfish == 5)
+      and (aunt.trees == nil or aunt.trees == 3)
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(function(aunt)
-      return (aunt.cats == nil or aunt.cats > 7)
-        and (aunt.pomeranians == nil or aunt.pomeranians < 3)
-        and (aunt.goldfish == nil or aunt.goldfish < 5)
-        and (aunt.trees == nil or aunt.trees > 3)
-    end)
-  )
+  return self:solver(function(aunt)
+    return (aunt.cats == nil or aunt.cats > 7)
+      and (aunt.pomeranians == nil or aunt.pomeranians < 3)
+      and (aunt.goldfish == nil or aunt.goldfish < 5)
+      and (aunt.trees == nil or aunt.trees > 3)
+  end)
 end
 
 M:run()
-
-return M

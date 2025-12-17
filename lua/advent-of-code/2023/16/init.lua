@@ -1,9 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
----@class AOCDay202316: AOCDay
----@field input string[]
-local M = AOC.create("2023", "16")
+--- @class AOCDay202316: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2023", "16")
 
 function M:solver(start)
   local queue = { start }
@@ -11,7 +8,7 @@ function M:solver(start)
   local points = {}
 
   while #queue > 0 do
-    ---@type { pos: Vector, dir: Vector }
+    --- @type { pos: Vector, dir: Vector }
     local current = table.remove(queue, 1)
 
     local key = ("%d|%d|%d|%d"):format(current.pos.x, current.pos.y, current.dir.x, current.dir.y)
@@ -126,5 +123,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

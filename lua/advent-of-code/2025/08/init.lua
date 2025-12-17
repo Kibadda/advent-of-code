@@ -1,10 +1,10 @@
 --- @class AOCDay202508: AOCDay
 --- @field input { x: number, y: number, z: number }[]
-local M = require("advent-of-code.AOC").create("2025", "08")
+local M = require("advent-of-code.AOCDay"):new("2025", "08")
 
---- @param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:only_ints()
     table.insert(self.input, {
       x = split[1],

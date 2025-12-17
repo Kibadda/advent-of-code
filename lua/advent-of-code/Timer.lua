@@ -20,14 +20,14 @@ local function time()
   return tonumber(gettimeofday_struct.tv_sec) * 1000000 + tonumber(gettimeofday_struct.tv_usec)
 end
 
----@class Timer
----@field timings table<string, number>
----@field start fun(self: Timer)
----@field parse fun(self: Timer)
----@field one fun(self: Timer)
----@field two fun(self: Timer)
----@field format fun(self: Timer): table
----@field new (fun(self: Timer): Timer)
+--- @class Timer
+--- @field timings table<string, number>
+--- @field start fun(self: Timer)
+--- @field parse fun(self: Timer)
+--- @field one fun(self: Timer)
+--- @field two fun(self: Timer)
+--- @field format fun(self: Timer): table
+--- @field new (fun(self: Timer): Timer)
 local Timer = {
   timings = {
     start = 0,

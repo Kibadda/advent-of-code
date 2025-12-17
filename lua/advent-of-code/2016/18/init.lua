@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2016", "18")
+--- @class AOCDay201618: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2016", "18")
 
 function M:solver(length)
   local rows = table.deepcopy(self.input)
@@ -35,13 +34,11 @@ function M:solver(length)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(self.test and 10 or 40))
+  return self:solver(self.test and 10 or 40)
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(self.test and 10 or 400000))
+  return self:solver(self.test and 10 or 400000)
 end
 
 M:run()
-
-return M

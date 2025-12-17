@@ -1,15 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local md5 = require "advent-of-code.helpers.md5"
-
-local M = AOC.create("2016", "17")
-
-function M:parse(file)
-  for line in file:lines() do
-    self.input = line
-  end
-end
+--- @class AOCDay201617: AOCDay
+--- @field input string
+local M = require("advent-of-code.AOCDay"):new("2016", "17")
 
 function M:solver(depth)
   local start = { pos = V(1, 1), path = "" }
@@ -33,7 +24,7 @@ function M:solver(depth)
         return current.path
       end
     else
-      local doors = md5.sumhexa(self.input .. current.path):sub(1, 4)
+      local doors = MD5.sumhexa(self.input[1] .. current.path):sub(1, 4)
       if current.pos.x > 1 and open[doors:at(1)] then
         table.insert(queue, {
           pos = V(current.pos.x - 1, current.pos.y),
@@ -65,13 +56,11 @@ function M:solver(depth)
 end
 
 function M:solve1()
-  self.solution:add("1", self:solver(false))
+  return self:solver(false)
 end
 
 function M:solve2()
-  self.solution:add("2", self:solver(true))
+  return self:solver(true)
 end
 
 M:run()
-
-return M

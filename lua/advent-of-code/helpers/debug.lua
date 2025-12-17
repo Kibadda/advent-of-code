@@ -9,8 +9,8 @@ function _G.tostring(v)
   end
 end
 
----@param t table
----@param level? integer
+--- @param t table
+--- @param level? integer
 function table.to_string(t, level)
   level = level ~= nil and level or 1
 

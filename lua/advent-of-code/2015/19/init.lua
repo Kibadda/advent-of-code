@@ -1,19 +1,16 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201519: AOCDay
+--- @field input { replacements: string[], molecule: string }
+local M = require("advent-of-code.AOCDay"):new("2015", "19")
 
----@class AOCDay201519: AOCDay
----@field input { replacements: string[], molecule: string }
-local M = AOC.create("2015", "19")
-
----@param file file*
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     replacements = {},
     molecule = "",
   }
 
   local parsing_replacements = true
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     if line == "" then
       parsing_replacements = false
     else
@@ -56,5 +53,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

@@ -1,12 +1,9 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202311: AOCDay
+--- @field input { galaxies: Vector[], empty: { rows: table<integer,boolean>, cols: table<integer,boolean> } }
+local M = require("advent-of-code.AOCDay"):new("2023", "11")
 
----@class AOCDay202311: AOCDay
----@field input { galaxies: Vector[], empty: { rows: table<integer,boolean>, cols: table<integer,boolean> } }
-local M = AOC.create("2023", "11")
-
----@param file file*
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     galaxies = {},
     empty = {
@@ -16,8 +13,7 @@ function M:parse(file)
   }
 
   local init = true
-  local i = 1
-  for line in file:lines() do
+  for i, line in ipairs(lines) do
     if init then
       for k = 1, #line do
         self.input.empty.cols[k] = true
@@ -36,14 +32,12 @@ function M:parse(file)
         self.input.empty.cols[j] = nil
       end
     end
-
-    i = i + 1
   end
 end
 
 function M:solver(apart)
-  ---@param a Vector
-  ---@param b Vector
+  --- @param a Vector
+  --- @param b Vector
   local function get_empty(a, b)
     local empty = 0
 
@@ -80,5 +74,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

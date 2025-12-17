@@ -1,10 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201604: AOCDay
+--- @field input { split: string[], id: number, checksum: string }[]
+local M = require("advent-of-code.AOCDay"):new("2016", "04")
 
-local M = AOC.create("2016", "04")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split "-"
     local last = table.remove(split, #split)
     local id = tonumber(last:match "%d*")
@@ -63,13 +63,13 @@ function M:solve1()
     sum = sum + room.id
   end
 
-  self.solution:add("1", sum)
+  return sum
 end
 
 function M:solve2()
   local id
   for _, room in ipairs(self:solver()) do
-    ---@type string[]
+    --- @type string[]
     local split = room.split
     local name = {}
     for _, word in ipairs(split) do
@@ -86,9 +86,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("2", id)
+  return id
 end
 
 M:run()
-
-return M

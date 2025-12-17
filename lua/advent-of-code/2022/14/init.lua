@@ -1,12 +1,12 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2022", "14")
+--- @class AOCDay202214: AOCDay
+--- @field input string[][]
+local M = require("advent-of-code.AOCDay"):new("2022", "14")
 
 local min, max = math.huge, 0
 
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local split = line:split()
     for i = 3, #split, 2 do
       local start_split = split[i - 2]:split ","
@@ -96,7 +96,7 @@ function M:solve1()
     current = get_rest_pos(start)
   end
 
-  self.solution:add("1", steps_till_nirvana)
+  return steps_till_nirvana
 end
 
 function M:solve2()
@@ -157,9 +157,7 @@ function M:solve2()
     current = get_rest_pos(start)
   end
 
-  self.solution:add("2", steps_till_stop + 1)
+  return steps_till_stop + 1
 end
 
 M:run()
-
-return M

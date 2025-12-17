@@ -1,15 +1,12 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202313: AOCDay
+--- @field input string[][][]
+local M = require("advent-of-code.AOCDay"):new("2023", "13")
 
----@class AOCDay202313: AOCDay
----@field input string[][][]
-local M = AOC.create("2023", "13")
-
----@param file file*
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   local mirror = {}
 
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     if line == "" then
       table.insert(self.input, mirror)
       mirror = {}
@@ -22,8 +19,8 @@ function M:parse(file)
 end
 
 function M:solver(differences)
-  ---@param mirror string[][]
-  ---@return string
+  --- @param mirror string[][]
+  --- @return string
   local function col_concat(mirror, col)
     local str = ""
 
@@ -92,5 +89,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

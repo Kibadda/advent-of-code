@@ -1,10 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202204: AOCDay
+--- @field input number[][][]
+local M = require("advent-of-code.AOCDay"):new("2022", "04")
 
-local M = AOC.create("2022", "04")
-
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local parsed_section = {}
     for _, elf_sections in ipairs(line:split ",") do
       local boundaries = elf_sections:split "-"
@@ -49,23 +49,15 @@ function M:solver(fun)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(function(turned, mergee)
-      return turned == mergee
-    end)
-  )
+  return self:solver(function(turned, mergee)
+    return turned == mergee
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(function(turned, mergee, merger)
-      return turned < mergee + merger
-    end)
-  )
+  return self:solver(function(turned, mergee, merger)
+    return turned < mergee + merger
+  end)
 end
 
 M:run()
-
-return M

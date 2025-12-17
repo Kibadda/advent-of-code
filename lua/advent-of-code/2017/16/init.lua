@@ -1,16 +1,18 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201716: AOCDay
+--- @field input { cmd: string, amount?: integer, pos?: integer[], programs?: string[] }[]
+local M = require("advent-of-code.AOCDay"):new("2017", "16")
 
-local M = AOC.create("2017", "16")
-
-function M:parse(file)
-  self.input = {}
-  for _, dance in ipairs(file:read("a"):split ",") do
-    self.input[#self.input + 1] = match(dance:at(1)) {
-      s = { cmd = "s", amount = dance:only_ints()[1] },
-      x = { cmd = "x", pos = { dance:only_ints()[1], dance:only_ints()[2] } },
-      p = { cmd = "p", programs = { dance:at(2), dance:at(4) } },
-    }
+--- @param lines string[]
+function M:parse(lines)
+  for _, dance in ipairs(lines[1]:split ",") do
+    table.insert(
+      self.input,
+      match(dance:at(1)) {
+        s = { cmd = "s", amount = dance:only_ints()[1] },
+        x = { cmd = "x", pos = { dance:only_ints()[1], dance:only_ints()[2] } },
+        p = { cmd = "p", programs = { dance:at(2), dance:at(4) } },
+      }
+    )
   end
 end
 
@@ -42,7 +44,7 @@ function M:solve1()
     programs = programs .. string.char(96 + i)
   end
 
-  self.solution:add("1", self:solver(programs, 60))
+  return self:solver(programs)
 end
 
 function M:solve2()
@@ -64,9 +66,7 @@ function M:solve2()
     end
   end
 
-  self.solution:add("2", history[1000000000 % i + 1])
+  return history[1000000000 % i + 1]
 end
 
 M:run()
-
-return M

@@ -1,10 +1,10 @@
 --- @class AOCDay201720: AOCDay
 --- @field input { p: Vector3, v: Vector3, a: Vector3, i: number }[]
-local M = require("advent-of-code.AOC").create("2017", "20")
+local M = require("advent-of-code.AOCDay"):new("2017", "20")
 
---- @param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local ints = line:only_ints "-?%d+"
     local p = V3(ints[1], ints[2], ints[3])
     local v = V3(ints[4], ints[5], ints[6])
@@ -73,10 +73,11 @@ function M:solve2()
 end
 
 --[==[
-THIS ALMOST WORKED, BUT IT WAS JUST TO GOOD TO BE TRUE
+THIS ALMOST WORKED, BUT IT WAS JUST TOO GOOD TO BE TRUE
 
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     local ints = line:only_ints "-?%d+"
     local p = V3(ints[1], ints[2], ints[3])
     local v = V3(ints[4], ints[5], ints[6])

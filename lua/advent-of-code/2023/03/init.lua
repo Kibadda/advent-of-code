@@ -1,18 +1,15 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202303: AOCDay
+--- @field input { numbers: { num: integer, line: integer, s: integer, e: integer }[], grid: string[] }
+local M = require("advent-of-code.AOCDay"):new("2023", "03")
 
----@class AOCDay202303: AOCDay
----@field input { numbers: { num: integer, line: integer, s: integer, e: integer }[], grid: string[] }
-local M = AOC.create("2023", "03")
-
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   self.input = {
     numbers = {},
     grid = {},
   }
 
-  local i = 1
-  for line in file:lines() do
+  for i, line in ipairs(lines) do
     table.insert(self.input.grid, line)
 
     local j = 1
@@ -37,8 +34,6 @@ function M:parse(file)
 
       j = j + 1
     end
-
-    i = i + 1
   end
 end
 
@@ -86,5 +81,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

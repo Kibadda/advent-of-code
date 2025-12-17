@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2016", "07")
+--- @class AOCDay201607: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2016", "07")
 
 function M:solve1()
   local valid_ips = 0
@@ -10,7 +9,7 @@ function M:solve1()
     local abba_inside = false
     local inside_brackets = false
     for i = 1, #ip - 3 do
-      ---@type string
+      --- @type string
       local str = ip:sub(i, i + 3)
       if str:find "%[" == 1 then
         inside_brackets = true
@@ -30,7 +29,7 @@ function M:solve1()
       valid_ips = valid_ips + 1
     end
   end
-  self.solution:add("1", valid_ips)
+  return valid_ips
 end
 
 function M:solve2()
@@ -40,7 +39,7 @@ function M:solve2()
     local aba = {}
     local bab = {}
     for i = 1, #ip - 2 do
-      ---@type string
+      --- @type string
       local str = ip:sub(i, i + 2)
       if str:find "%[" then
         inside_brackets = true
@@ -63,9 +62,7 @@ function M:solve2()
       end
     end
   end
-  self.solution:add("2", valid_ips)
+  return valid_ips
 end
 
 M:run()
-
-return M

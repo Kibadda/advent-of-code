@@ -1,28 +1,34 @@
 local Solution = require "advent-of-code.Solution"
 
----@class AOCDay
----@field year string
----@field day string
----@field input any
----@field solution Solution
----@field test boolean
----@field parse (fun(self: AOCDay, file: file*)) parses input
----@field solve1 (fun(self: AOCDay): any) solves first problem
----@field solve2 (fun(self: AOCDay): any) solves second problem
----@field new (fun(self: AOCDay, year: string, day: string): AOCDay) create new AOCDay
----@field run (fun(self: AOCDay)) run
----@field __super AOCDay
+--- @param file file*
+--- @return string[]
+local function parse_file(file)
+  local lines = {}
+
+  for line in file:lines() do
+    table.insert(lines, line)
+  end
+
+  return lines
+end
+
+--- @class AOCDay
+--- @field year string
+--- @field day string
+--- @field input any
+--- @field solution Solution
+--- @field test boolean
+--- @field parse? (fun(self: AOCDay, lines: string[])) parses input
+--- @field solve1 (fun(self: AOCDay): any) solves first problem
+--- @field solve2 (fun(self: AOCDay): any) solves second problem
+--- @field new (fun(self: AOCDay, year: string, day: string): AOCDay) create new AOCDay
+--- @field run (fun(self: AOCDay)) run
 local AOCDay = {
   year = "",
   day = "",
   input = {},
   solution = {},
   test = false,
-  parse = function(self, file)
-    for line in file:lines() do
-      table.insert(self.input, line)
-    end
-  end,
   run = function(self)
     local file_name = self.test and "test.txt" or "input.txt"
     local path = ("./advent-of-code/%s/%s/%s"):format(self.year, self.day, file_name)
@@ -31,24 +37,23 @@ local AOCDay = {
     if file then
       self.solution.timer:start()
 
-      self:parse(file)
+      local lines = parse_file(file)
+
+      if self.parse then
+        self:parse(lines)
+      else
+        self.input = lines
+      end
       self.solution.timer:parse()
 
-      local one = self:solve1()
-      if one then
-        self.solution:add("1", one)
-      end
+      self.solution:add("1", self:solve1())
       self.solution.timer:one()
 
-      local two = self:solve2()
-      if two then
-        self.solution:add("2", two)
-      end
+      self.solution:add("2", self:solve2())
       self.solution.timer:two()
 
       if os.getenv "TIMINGS" then
-        local json = require "advent-of-code.helpers.json"
-        print(json.stringify(self.solution.timer.timings))
+        print(JSON.stringify(self.solution.timer.timings))
       else
         self.solution:print()
       end
@@ -60,13 +65,22 @@ local AOCDay = {
     end
   end,
   new = function(self, year, day)
+    require "advent-of-code.helpers.functions"
+    require "advent-of-code.helpers.debug"
+    require "advent-of-code.helpers.table"
+    require "advent-of-code.helpers.string"
+    require "advent-of-code.helpers.math"
+    require "advent-of-code.helpers.Vector"
+    require "advent-of-code.helpers.Vector3"
+    require "advent-of-code.helpers.md5"
+    require "advent-of-code.helpers.json"
+
     return setmetatable({
       year = year,
       day = day,
       input = {},
       solution = Solution:new(),
       test = arg[1] == "1",
-      __super = self,
     }, {
       __index = self,
     })

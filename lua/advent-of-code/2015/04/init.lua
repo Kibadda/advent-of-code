@@ -1,24 +1,14 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201504: AOCDay
+--- @field input string
+local M = require("advent-of-code.AOCDay"):new("2015", "04")
 
-local md5 = require "advent-of-code.helpers.md5"
-
----@class AOCDay201504: AOCDay
----@field input string[]
-local M = AOC.create("2015", "04")
-
----@param file file*
-function M:parse(file)
-  self.input = file:read()
-end
-
----@param prefix string
+--- @param prefix string
 function M:solver(prefix)
   local hash
   local i = 0
 
   while true do
-    hash = md5.sumhexa(self.input .. i)
+    hash = MD5.sumhexa(self.input[1] .. i)
 
     if hash:startswith(prefix) then
       return i
@@ -37,5 +27,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

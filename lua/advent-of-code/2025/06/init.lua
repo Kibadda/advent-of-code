@@ -1,6 +1,6 @@
 --- @class AOCDay202506: AOCDay
 --- @field input string[]
-local M = require("advent-of-code.AOC").create("2025", "06")
+local M = require("advent-of-code.AOCDay"):new("2025", "06")
 
 function M:solver(cols)
   return table.sum(table.map(cols, function(col)

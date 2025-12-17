@@ -1,15 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local md5 = require "advent-of-code.helpers.md5"
-
-local M = AOC.create("2016", "14")
-
-function M:parse(file)
-  for line in file:lines() do
-    self.input = line
-  end
-end
+--- @class AOCDay201614: AOCDay
+--- @field input string
+local M = require("advent-of-code.AOCDay"):new("2016", "14")
 
 function M:solver(generate_hash_func)
   local keys = {}
@@ -26,7 +17,7 @@ function M:solver(generate_hash_func)
           hashes[index + i] = generate_hash_func(index + i)
         end
         if hashes[index + i]:find(char .. char .. char .. char .. char) then
-          keys[#keys + 1] = self.input .. index
+          keys[#keys + 1] = self.input[1] .. index
           break
         end
       end
@@ -40,27 +31,19 @@ function M:solver(generate_hash_func)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver(function(index)
-      return md5.sumhexa(self.input .. index)
-    end)
-  )
+  return self:solver(function(index)
+    return MD5.sumhexa(self.input[1] .. index)
+  end)
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver(function(index)
-      local hash = self.input .. index
-      for _ = 1, 2017 do
-        hash = md5.sumhexa(hash)
-      end
-      return hash
-    end)
-  )
+  return self:solver(function(index)
+    local hash = self.input[1] .. index
+    for _ = 1, 2017 do
+      hash = MD5.sumhexa(hash)
+    end
+    return hash
+  end)
 end
 
 M:run()
-
-return M

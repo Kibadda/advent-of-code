@@ -1,18 +1,10 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay201503: AOCDay
+--- @field input string
+local M = require("advent-of-code.AOCDay"):new("2015", "03")
 
----@class AOCDay201503: AOCDay
----@field input string
-local M = AOC.create("2015", "03")
-
----@param file file*
-function M:parse(file)
-  self.input = file:read()
-end
-
----@param sleighs integer
+--- @param sleighs integer
 function M:solver(sleighs)
-  ---@type Vector[]
+  --- @type Vector[]
   local pos = {}
   for _ = 1, sleighs do
     table.insert(pos, V(0, 0))
@@ -24,7 +16,7 @@ function M:solver(sleighs)
   local grid = {}
   local houses = 0
 
-  for _, c in ipairs(self.input:to_list()) do
+  for _, c in ipairs(self.input[1]:to_list()) do
     if c == "^" then
       pos[index] = pos[index] + V(1, 0)
     elseif c == "v" then
@@ -56,5 +48,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

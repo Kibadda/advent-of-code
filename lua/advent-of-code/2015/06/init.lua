@@ -1,7 +1,6 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2015", "06")
+--- @class AOCDay201506: AOCDay
+--- @field input string[]
+local M = require("advent-of-code.AOCDay"):new("2015", "06")
 
 function M:solver(functions)
   local grid = {}
@@ -53,39 +52,31 @@ function M:solver(functions)
 end
 
 function M:solve1()
-  self.solution:add(
-    "1",
-    self:solver {
-      on = function()
-        return 1
-      end,
-      off = function()
-        return 0
-      end,
-      toggle = function(val)
-        return math.abs(val - 1)
-      end,
-    }
-  )
+  return self:solver {
+    on = function()
+      return 1
+    end,
+    off = function()
+      return 0
+    end,
+    toggle = function(val)
+      return math.abs(val - 1)
+    end,
+  }
 end
 
 function M:solve2()
-  self.solution:add(
-    "2",
-    self:solver {
-      on = function(val)
-        return val + 1
-      end,
-      off = function(val)
-        return math.max(val - 1, 0)
-      end,
-      toggle = function(val)
-        return val + 2
-      end,
-    }
-  )
+  return self:solver {
+    on = function(val)
+      return val + 1
+    end,
+    off = function(val)
+      return math.max(val - 1, 0)
+    end,
+    toggle = function(val)
+      return val + 2
+    end,
+  }
 end
 
 M:run()
-
-return M

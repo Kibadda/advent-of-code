@@ -1,16 +1,9 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
-
-local M = AOC.create("2016", "19")
-
-function M:parse(file)
-  for line in file:lines() do
-    self.input = line
-  end
-end
+--- @class AOCDay201619: AOCDay
+--- @field input string
+local M = require("advent-of-code.AOCDay"):new("2016", "19")
 
 function M:solve1()
-  local length = tonumber(self.input)
+  local length = tonumber(self.input[1])
 
   local presents = {}
   for i = 1, length do
@@ -39,12 +32,12 @@ function M:solve1()
 
     current = nex(current)
   end
-  self.solution:add("1", current)
+  return current
 end
 
 function M:solve2()
   local presents = {}
-  for i = 1, tonumber(self.input) do
+  for i = 1, tonumber(self.input[1]) do
     presents[i] = i
   end
   local current = 1
@@ -65,9 +58,7 @@ function M:solve2()
       current = 1
     end
   end
-  self.solution:add("2", presents[1])
+  return presents[1]
 end
 
 M:run()
-
-return M

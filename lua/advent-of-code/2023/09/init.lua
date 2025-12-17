@@ -1,19 +1,16 @@
-local AOC = require "advent-of-code.AOC"
-AOC.reload()
+--- @class AOCDay202309: AOCDay
+--- @field input integer[][]
+local M = require("advent-of-code.AOCDay"):new("2023", "09")
 
----@class AOCDay202309: AOCDay
----@field input integer[][]
-local M = AOC.create("2023", "09")
-
----@param file file*
-function M:parse(file)
-  for line in file:lines() do
+--- @param lines string[]
+function M:parse(lines)
+  for _, line in ipairs(lines) do
     table.insert(self.input, line:only_ints "-?%d+")
   end
 end
 
----@param reverse? boolean
----@return integer
+--- @param reverse? boolean
+--- @return integer
 function M:solver(reverse)
   local total = 0
 
@@ -55,5 +52,3 @@ function M:solve2()
 end
 
 M:run()
-
-return M

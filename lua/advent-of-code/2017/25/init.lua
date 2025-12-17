@@ -1,14 +1,14 @@
 --- @class AOCDay201725: AOCDay
 --- @field input { state: string, checksum: number, states: table, tape: number[], index: number }
-local M = require("advent-of-code.AOC").create("2017", "25")
+local M = require("advent-of-code.AOCDay"):new("2017", "25")
 
---- @param file file*
-function M:parse(file)
+--- @param lines string[]
+function M:parse(lines)
   local parsing_states = false
 
   local index, value
   local state = {}
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     --- @cast line string
     if parsing_states then
       if line == "" then
