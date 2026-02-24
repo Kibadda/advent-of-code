@@ -54,6 +54,51 @@ function M:solve2()
     end),
     "\n"
   ))
+
+  local steps = 0
+  --- @type Vector
+  local pos
+
+  for i, row in ipairs(self.input) do
+    for j, cell in ipairs(row) do
+      if cell.used == 0 then
+        pos = V(i, j)
+        break
+      end
+    end
+  end
+
+  -- walk to the wall
+  while self.input[pos.x][pos.y - 1].used < 150 do
+    pos.y = pos.y - 1
+    steps = steps + 1
+  end
+
+  -- walk up the wall
+  while self.input[pos.x][pos.y - 1].used > 150 do
+    pos.x = pos.x - 1
+    steps = steps + 1
+  end
+
+  -- walk all the way to the left
+  while pos.y > 1 do
+    pos.y = pos.y - 1
+    steps = steps + 1
+  end
+
+  -- walk all the way to the bottom
+  while self.input[pos.x + 1] do
+    pos.x = pos.x + 1
+    steps = steps + 1
+  end
+
+  -- walk all the way to the top
+  while pos.x > 2 do
+    pos.x = pos.x - 1
+    steps = steps + 5
+  end
+
+  return steps
 end
 
 M:run()
