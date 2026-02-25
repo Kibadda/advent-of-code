@@ -284,3 +284,16 @@ function table.prod(t, iter)
     return carry * number
   end, iter)
 end
+
+--- @generic V
+--- @param ... V[]
+--- @return V[]
+function table.extend(...)
+  return table.reduce({ ... }, {}, function(extended, t)
+    for _, v in ipairs(t) do
+      table.insert(extended, v)
+    end
+
+    return extended
+  end)
+end
