@@ -6,6 +6,7 @@
 --- @field x number
 --- @field y number
 --- @operator add(Vector): Vector
+--- @operator sub(Vector): Vector
 --- @operator mul(string|number): Vector
 local Vector = {}
 
@@ -14,6 +15,11 @@ local mt = {
   --- @param v Vector
   __add = function(self, v)
     return V(self.x + v.x, self.y + v.y)
+  end,
+  --- @param self Vector
+  --- @param v Vector
+  __sub = function(self, v)
+    return V(self.x - v.x, self.y - v.y)
   end,
   --- @param self Vector
   --- @param v Vector
