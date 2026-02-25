@@ -297,3 +297,21 @@ function table.extend(...)
     return extended
   end)
 end
+
+--- @generic V
+--- @param t V[]
+--- @param length integer
+--- @return V[][]
+function table.windows(t, length)
+  local s = {}
+
+  for i = length, #t do
+    local window = {}
+    for j = 1, length do
+      table.insert(window, t[i - length + j])
+    end
+    table.insert(s, window)
+  end
+
+  return s
+end
