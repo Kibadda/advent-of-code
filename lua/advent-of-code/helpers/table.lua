@@ -75,6 +75,7 @@ end
 --- @param func fun(v: V, k: K): boolean
 --- @param keep_index? boolean
 --- @param iter? function
+--- @return V[]
 function table.filter(t, func, keep_index, iter)
   local tmp = {}
   iter = iter or ipairs
