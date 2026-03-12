@@ -74,6 +74,7 @@ local AOCDay = {
     require "advent-of-code.helpers.Vector3"
     require "advent-of-code.helpers.md5"
     require "advent-of-code.helpers.json"
+    require "advent-of-code.helpers.program"
 
     return setmetatable({
       year = year,
