@@ -1,0 +1,59 @@
+name: AoC Auto PR
+
+on:
+  push:
+    branches:
+      - "feat/*"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-stars:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Extract day/year
+        id: branch
+        run: |
+          BRANCH=${GITHUB_REF_NAME}
+          YEAR=$(echo $BRANCH | cut -d/ -f2 | cut -d- -f1)
+          DAY=$(echo $BRANCH | cut -d/ -f2 | cut -d- -f2)
+          echo "year=$YEAR" >> $GITHUB_OUTPUT
+          echo "day=$DAY" >> $GITHUB_OUTPUT
+
+      - name: Check stars
+        id: stars
+        env:
+          SESSION: ${{ secrets.AOC_SESSION }}
+          USER_ID: ${{ secrets.AOC_USER_ID }}
+          YEAR: ${{ steps.branch.outputs.year }}
+          DAY: ${{ steps.branch.outputs.day }}
+        run: |
+          JSON=$(curl -s --cookie "session=$SESSION" https://adventofcode.com/$YEAR/leaderboard/private/view/$USER_ID.json --user-agent "github.com/Kibadda/advent-of-code")
+          STARS=$(echo "$JSON" | jq ".members[\"$USER_ID\"].completion_day_level[\"$((10#$DAY))\"] | length")
+          echo "stars=$STARS" >> $GITHUB_OUTPUT
+
+      - name: Create PR
+        if: steps.stars.outputs.stars == '2'
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          YEAR: ${{ steps.branch.outputs.year }}
+          DAY: ${{ steps.branch.outputs.day }}
+        run: |
+          gh pr view $GITHUB_REF_NAME && exit 0
+          gh pr create --title "feat($YEAR/$DAY): add solution" --body "" --base main --head $GITHUB_REF_NAME || true
+
+      - name: Merge PR
+        if: steps.stars.outputs.stars == '2'
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          YEAR: ${{ steps.branch.outputs.year }}
+          DAY: ${{ steps.branch.outputs.day }}
+        run: |
+          PR=$(gh pr view $GITHUB_REF_NAME --json number -q .number)
+          gh pr merge $PR --auto --rebase
