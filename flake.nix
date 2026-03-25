@@ -40,6 +40,9 @@
                   if [ "$#" -eq 4 ]; then
                     test=$4
                   fi
+                  if [[ ! -e "lua/advent-of-code/$2/$3/input.txt" ]]; then
+                    "$0" d "$2" "$3"
+                  fi
                   cd ./lua
                   luajit "advent-of-code/$2/$3/init.lua" "$test"
                   ;;
@@ -59,8 +62,16 @@
                   if [ "$#" -lt 3 ]; then
                     exit 1
                   fi
+                  if [ "$(git branch --show-current)" == "main" ]; then
+                    echo "only create new days on main branch; exiting"
+                    exit 1
+                  fi
+                  BRANCH="feat/$2-$3"
                   DIR="./lua/advent-of-code/$2/$3"
-                  if [[ -d "$DIR/" ]]; then
+                  if git branch --list "$BRANCH" | grep -q .; then
+                    echo "$BRANCH already exists; switching"
+                    git switch "$BRANCH"
+                  elif [[ -d "$DIR/" ]]; then
                     echo "$DIR already exists; exiting"
                   else
                     mkdir -p "$DIR"
@@ -68,6 +79,7 @@
                     touch "$DIR/test.txt"
                     cp "lua/advent-of-code/day_template.lua" "$DIR/init.lua"
                     sed -i "s/YEAR/$2/g; s/DAY/$3/g" "$DIR/init.lua"
+                    git switch -c "$BRANCH"
                   fi
                   ;;
                 t)
