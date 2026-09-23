@@ -56,4 +56,21 @@ jobs:
           DAY: ${{ steps.branch.outputs.day }}
         run: |
           PR=$(gh pr view $GITHUB_REF_NAME --json number -q .number)
-          gh pr merge $PR --auto --rebase --delete-branch
+          gh pr merge $PR --auto --rebase
+
+      - name: Delete branch after merge
+        if: steps.stars.outputs.stars == '2'
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          PR=$(gh pr view $GITHUB_REF_NAME --json number -q .number)
+          for i in $(seq 1 60); do
+            STATE=$(gh pr view $PR --json state -q .state)
+            if [ "$STATE" = "MERGED" ]; then
+              gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$GITHUB_REF_NAME"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "PR was not merged within 5 minutes" >&2
+          exit 1
