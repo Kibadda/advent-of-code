@@ -62,7 +62,7 @@
                   if [ "$#" -lt 3 ]; then
                     exit 1
                   fi
-                  if [ "$(git branch --show-current)" == "main" ]; then
+                  if [ "$(git branch --show-current)" != "main" ]; then
                     echo "only create new days on main branch; exiting"
                     exit 1
                   fi
