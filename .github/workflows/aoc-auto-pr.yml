@@ -56,4 +56,4 @@ jobs:
           DAY: ${{ steps.branch.outputs.day }}
         run: |
           PR=$(gh pr view $GITHUB_REF_NAME --json number -q .number)
-          gh pr merge $PR --auto --rebase
+          gh pr merge $PR --auto --rebase --delete-branch
