@@ -66,16 +66,18 @@ function _G.spairs(t)
   return iter, t, 0
 end
 
---- @class TreesearchOpts
---- @field start any
---- @field bound any
+--- @class TreesearchOpts<T, S>
+--- @field start T
+--- @field bound S
 --- @field depth boolean
---- @field exit fun(current): boolean
---- @field step fun(current, solution): table
---- @field compare? fun(solution, current): any
---- @field memoize? fun(current): string, any
+--- @field exit fun(current: T): boolean
+--- @field step fun(current: T, solution: S): table
+--- @field compare? fun(solution: S, current: T): any
+--- @field memoize? fun(current: T): string, any
 
---- @param opts TreesearchOpts
+--- @generic T, S
+--- @param opts TreesearchOpts<T, S>
+--- @return T | S
 function _G.treesearch(opts)
   local queue = { opts.start }
 
