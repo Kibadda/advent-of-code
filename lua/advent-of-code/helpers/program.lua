@@ -1,5 +1,5 @@
 --- @alias ProgramOperations table<string, fun(self: Program, table)>
---- @alias ProgramHooks { pre?: fun(self: Program), post?: fun(self: Program) }
+--- @alias ProgramHooks { pre?: (fun(self: Program): boolean?), post?: (fun(self: Program): boolean?) }
 --- @alias ProgramDebug fun(self: Program): boolean
 
 --- @class Program
@@ -9,7 +9,7 @@
 --- @field hooks ProgramHooks
 --- @field debug ProgramDebug
 --- @field run fun(self: Program, instructions: table[]): table
---- @field new fun(self: Program, registers: table, operations: ProgramOperations, hooks: ProgramHooks): Program
+--- @field new fun(self: Program, registers: table, operations: ProgramOperations, hooks: ProgramHooks, debug: ProgramDebug): Program
 local Program = {}
 
 Program = {
@@ -57,13 +57,17 @@ Program = {
       end
 
       if self.hooks.pre then
-        self.hooks.pre(self)
+        if self.hooks.pre(self) then
+          break
+        end
       end
 
       operation(self, instruction)
 
       if self.hooks.post then
-        self.hooks.post(self)
+        if self.hooks.post(self) then
+          break
+        end
       end
 
       self.pointer = self.pointer + 1
