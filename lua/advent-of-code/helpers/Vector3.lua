@@ -32,7 +32,7 @@ local mt = {
     if type(n) == "number" then
       return V3(self.x * n, self.y * n, self.z * n)
     else
-      return V3(self.x * n.x, self.y * n.y, self.z * n.y)
+      return V3(self.x * n.x, self.y * n.y, self.z * n.z)
     end
   end,
   __index = Vector3,
