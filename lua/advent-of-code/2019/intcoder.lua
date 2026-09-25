@@ -26,6 +26,66 @@ local OPCODES = {
       self.program[parameters[3] + 1] = self:get(parameters[1], modes[1]) * self:get(parameters[2], modes[2])
     end,
   },
+  [3] = {
+    parameters = 1,
+    func = function(self, parameters)
+      print "input number: "
+      local number = io.read "*n"
+
+      if not number then
+        error "no number provided"
+      end
+
+      self.program[parameters[1] + 1] = number
+    end,
+  },
+  [4] = {
+    parameters = 1,
+    func = function(self, parameters, modes)
+      local p = self:get(parameters[1], modes[1])
+      table.insert(self.output, p)
+    end,
+  },
+  [5] = {
+    parameters = 2,
+    func = function(self, parameters, modes)
+      if self:get(parameters[1], modes[1]) ~= 0 then
+        self.pointer = self:get(parameters[2], modes[2]) + 1
+
+        return true
+      end
+    end,
+  },
+  [6] = {
+    parameters = 2,
+    func = function(self, parameters, modes)
+      if self:get(parameters[1], modes[1]) == 0 then
+        self.pointer = self:get(parameters[2], modes[2]) + 1
+
+        return true
+      end
+    end,
+  },
+  [7] = {
+    parameters = 3,
+    func = function(self, parameters, modes)
+      if self:get(parameters[1], modes[1]) < self:get(parameters[2], modes[2]) then
+        self.program[parameters[3] + 1] = 1
+      else
+        self.program[parameters[3] + 1] = 0
+      end
+    end,
+  },
+  [8] = {
+    parameters = 3,
+    func = function(self, parameters, modes)
+      if self:get(parameters[1], modes[1]) == self:get(parameters[2], modes[2]) then
+        self.program[parameters[3] + 1] = 1
+      else
+        self.program[parameters[3] + 1] = 0
+      end
+    end,
+  },
 }
 
 --- @type Intcoder
