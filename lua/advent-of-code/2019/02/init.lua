@@ -6,7 +6,6 @@ require "advent-of-code.2019.intcoder"
 
 function M:solve1()
   return Intcoder(self.input[1])
-    :active({ 1, 2 })
     :setup(function(intcoder)
       intcoder.program[2] = 12
       intcoder.program[3] = 2
@@ -19,7 +18,6 @@ function M:solve2()
     for verb = 0, 99 do
       if
         Intcoder(self.input[1])
-          :active({ 1, 2 })
           :setup(function(intcoder)
             intcoder.program[2] = noun
             intcoder.program[3] = verb

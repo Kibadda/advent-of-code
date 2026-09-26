@@ -25,7 +25,6 @@ local return_codes = {
 --- @field exit IntcoderExitStatus
 --- @field new fun(program: string): Intcoder
 --- @field get fun(self: Intcoder, parameter: integer, mode: 0|1): integer
---- @field active fun(self: Intcoder, opcodes: integer[]): Intcoder
 --- @field setup fun(self: Intcoder, func: fun(intcoder: Intcoder)): Intcoder
 --- @field run fun(self: Intcoder): Intcoder
 local Intcoder = {}
@@ -132,15 +131,15 @@ Intcoder = {
   get = function(self, parameter, mode)
     return mode == 0 and self.program[parameter + 1] or parameter
   end,
-  active = function(self, opcodes)
-    for _, opcode in ipairs(table.keys(self.opcodes)) do
-      if not table.contains(opcodes, opcode) then
-        self.opcodes[opcode] = nil
-      end
-    end
-
-    return self
-  end,
+  -- active = function(self, opcodes)
+  --   for _, opcode in ipairs(table.keys(self.opcodes)) do
+  --     if not table.contains(opcodes, opcode) then
+  --       self.opcodes[opcode] = nil
+  --     end
+  --   end
+  --
+  --   return self
+  -- end,
   setup = function(self, func)
     func(self)
 
