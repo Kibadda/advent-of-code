@@ -1,4 +1,20 @@
---- @alias IntcoderOpcodes { parameters: integer, func: fun(self: Intcoder, parameters: integer[], modes: 0|1[]): boolean? }
+--- @alias IntcoderOpcodes { parameters: integer, func: fun(self: Intcoder, parameters: integer[], modes: 0|1[]): IntcoderOpcodesReturnCode? }
+
+--- @enum IntcoderExitStatus
+local exit_statuses = {
+  OK = 0,
+  OPCODE_NOT_FOUND = 1,
+  BREAK = 2,
+  ERROR = 4,
+}
+
+--- @enum IntcoderOpcodesReturnCode
+local return_codes = {
+  OK = 0,
+  JUMP = 1,
+  BREAK = 2,
+  ERROR = 4,
+}
 
 --- @class Intcoder
 --- @field pointer integer
@@ -6,6 +22,7 @@
 --- @field opcodes table<integer, IntcoderOpcodes>
 --- @field output table
 --- @field input table
+--- @field exit IntcoderExitStatus
 --- @field new fun(program: string): Intcoder
 --- @field get fun(self: Intcoder, parameter: integer, mode: 0|1): integer
 --- @field active fun(self: Intcoder, opcodes: integer[]): Intcoder
@@ -40,7 +57,7 @@ local OPCODES = {
       end
 
       if not number or type(number) ~= "number" then
-        error "no number provided"
+        return return_codes.ERROR
       end
 
       self.program[parameters[1] + 1] = number
@@ -59,7 +76,7 @@ local OPCODES = {
       if self:get(parameters[1], modes[1]) ~= 0 then
         self.pointer = self:get(parameters[2], modes[2]) + 1
 
-        return true
+        return return_codes.JUMP
       end
     end,
   },
@@ -69,7 +86,7 @@ local OPCODES = {
       if self:get(parameters[1], modes[1]) == 0 then
         self.pointer = self:get(parameters[2], modes[2]) + 1
 
-        return true
+        return return_codes.JUMP
       end
     end,
   },
@@ -102,6 +119,7 @@ Intcoder = {
   output = {},
   input = {},
   opcodes = {},
+  exit = exit_statuses.OK,
   new = function(program)
     return setmetatable({
       pointer = 1,
@@ -138,7 +156,13 @@ Intcoder = {
       }
       opcode = opcode % 100
 
-      if not opcode or opcode == 99 or not self.opcodes[opcode] then
+      if opcode == 99 then
+        self.exit = exit_statuses.OK
+        break
+      end
+
+      if not opcode or not self.opcodes[opcode] then
+        self.exit = exit_statuses.OPCODE_NOT_FOUND
         break
       end
 
@@ -148,14 +172,25 @@ Intcoder = {
         table.insert(parameters, self.program[self.pointer + i])
       end
 
-      if not opc.func(self, parameters, modes) then
+      local result = opc.func(self, parameters, modes)
+
+      if not result or result == return_codes.OK then
         self.pointer = self.pointer + opc.parameters + 1
+      elseif result == return_codes.BREAK then
+        self.exit = exit_statuses.BREAK
+        break
+      elseif result == return_codes.ERROR then
+        self.exit = exit_statuses.ERROR
+        break
       end
     end
 
     return self
   end,
 }
+
+_G.IntcoderOpcodesReturnCode = return_codes
+_G.IntcoderExitStatus = exit_statuses
 
 --- @param program string
 function _G.Intcoder(program)
