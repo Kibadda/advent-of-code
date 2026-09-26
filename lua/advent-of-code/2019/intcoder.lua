@@ -5,6 +5,7 @@
 --- @field program integer[]
 --- @field opcodes table<integer, IntcoderOpcodes>
 --- @field output table
+--- @field input table
 --- @field new fun(program: string): Intcoder
 --- @field get fun(self: Intcoder, parameter: integer, mode: 0|1): integer
 --- @field active fun(self: Intcoder, opcodes: integer[]): Intcoder
@@ -29,10 +30,16 @@ local OPCODES = {
   [3] = {
     parameters = 1,
     func = function(self, parameters)
-      print "input number: "
-      local number = io.read "*n"
+      local number
 
-      if not number then
+      if #self.input > 0 then
+        number = table.remove(self.input, 1)
+      else
+        print "input number: "
+        number = io.read "*n"
+      end
+
+      if not number or type(number) ~= "number" then
         error "no number provided"
       end
 
@@ -93,6 +100,7 @@ Intcoder = {
   pointer = 1,
   program = {},
   output = {},
+  input = {},
   opcodes = {},
   new = function(program)
     return setmetatable({
@@ -100,6 +108,7 @@ Intcoder = {
       program = program:only_ints "-?%d+",
       opcodes = table.deepcopy(OPCODES),
       output = {},
+      input = {},
     }, { __index = Intcoder })
   end,
   get = function(self, parameter, mode)

@@ -5,11 +5,21 @@ local M = require("advent-of-code.AOCDay"):new("2019", "05")
 require "advent-of-code.2019.intcoder"
 
 function M:solve1()
-  return table.remove(Intcoder(self.input[1]):active({ 1, 2, 3, 4 }):run().output)
+  return table.remove(Intcoder(self.input[1])
+    :active({ 1, 2, 3, 4 })
+    :setup(function(intcoder)
+      table.insert(intcoder.input, 1)
+    end)
+    :run().output)
 end
 
 function M:solve2()
-  return table.remove(Intcoder(self.input[1]):active({ 1, 2, 3, 4, 5, 6, 7, 8 }):run().output)
+  return table.remove(Intcoder(self.input[1])
+    :active({ 1, 2, 3, 4, 5, 6, 7, 8 })
+    :setup(function(intcoder)
+      table.insert(intcoder.input, 5)
+    end)
+    :run().output)
 end
 
 M:run()
