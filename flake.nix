@@ -64,16 +64,8 @@
                     if [ "$#" -lt 3 ]; then
                       exit 1
                     fi
-                    if [ "$(git branch --show-current)" != "main" ]; then
-                      echo "only create new days on main branch; exiting"
-                      exit 1
-                    fi
-                    BRANCH="feat/$2-$3"
                     DIR="./lua/advent-of-code/$2/$3"
-                    if git branch --list "$BRANCH" | grep -q .; then
-                      echo "$BRANCH already exists; switching"
-                      git switch "$BRANCH"
-                    elif [[ -d "$DIR/" ]]; then
+                    if [[ -d "$DIR/" ]]; then
                       echo "$DIR already exists; exiting"
                     else
                       mkdir -p "$DIR"
@@ -81,7 +73,6 @@
                       touch "$DIR/test.txt"
                       cp "lua/advent-of-code/day_template.lua" "$DIR/init.lua"
                       sed -i "s/YEAR/$2/g; s/DAY/$3/g" "$DIR/init.lua"
-                      git switch -c "$BRANCH"
                     fi
                     ;;
                   t)
