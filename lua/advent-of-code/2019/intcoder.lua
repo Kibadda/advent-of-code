@@ -1,4 +1,4 @@
---- @alias IntcoderOpcodes { parameters: integer, func: fun(self: Intcoder, parameters: integer[], modes: 0|1[]): IntcoderOpcodesReturnCode? }
+--- @alias IntcoderOpcodes { parameters: integer, func: fun(self: Intcoder, parameters: integer[], modes: 0|1|2[]): IntcoderOpcodesReturnCode? }
 
 --- @enum IntcoderExitStatus
 local exit_statuses = {
@@ -22,9 +22,10 @@ local return_codes = {
 --- @field opcodes table<integer, IntcoderOpcodes>
 --- @field output table
 --- @field input table
+--- @field base integer
 --- @field exit IntcoderExitStatus
 --- @field new fun(program: string): Intcoder
---- @field get fun(self: Intcoder, parameter: integer, mode: 0|1): integer
+--- @field get fun(self: Intcoder, parameter: integer, mode: 0|1|2): integer
 --- @field setup fun(self: Intcoder, func: fun(intcoder: Intcoder)): Intcoder
 --- @field run fun(self: Intcoder): Intcoder
 local Intcoder = {}
@@ -34,18 +35,20 @@ local OPCODES = {
   [1] = {
     parameters = 3,
     func = function(self, parameters, modes)
-      self.program[parameters[3] + 1] = self:get(parameters[1], modes[1]) + self:get(parameters[2], modes[2])
+      self.program[parameters[3] + 1 + (modes[3] == 2 and self.base or 0)] = self:get(parameters[1], modes[1])
+        + self:get(parameters[2], modes[2])
     end,
   },
   [2] = {
     parameters = 3,
     func = function(self, parameters, modes)
-      self.program[parameters[3] + 1] = self:get(parameters[1], modes[1]) * self:get(parameters[2], modes[2])
+      self.program[parameters[3] + 1 + (modes[3] == 2 and self.base or 0)] = self:get(parameters[1], modes[1])
+        * self:get(parameters[2], modes[2])
     end,
   },
   [3] = {
     parameters = 1,
-    func = function(self, parameters)
+    func = function(self, parameters, modes)
       local number
 
       if #self.input > 0 then
@@ -59,7 +62,7 @@ local OPCODES = {
         return return_codes.ERROR
       end
 
-      self.program[parameters[1] + 1] = number
+      self.program[parameters[1] + 1 + (modes[1] == 2 and self.base or 0)] = number
     end,
   },
   [4] = {
@@ -93,9 +96,9 @@ local OPCODES = {
     parameters = 3,
     func = function(self, parameters, modes)
       if self:get(parameters[1], modes[1]) < self:get(parameters[2], modes[2]) then
-        self.program[parameters[3] + 1] = 1
+        self.program[parameters[3] + 1 + (modes[3] == 2 and self.base or 0)] = 1
       else
-        self.program[parameters[3] + 1] = 0
+        self.program[parameters[3] + 1 + (modes[3] == 2 and self.base or 0)] = 0
       end
     end,
   },
@@ -103,10 +106,16 @@ local OPCODES = {
     parameters = 3,
     func = function(self, parameters, modes)
       if self:get(parameters[1], modes[1]) == self:get(parameters[2], modes[2]) then
-        self.program[parameters[3] + 1] = 1
+        self.program[parameters[3] + 1 + (modes[3] == 2 and self.base or 0)] = 1
       else
-        self.program[parameters[3] + 1] = 0
+        self.program[parameters[3] + 1 + (modes[3] == 2 and self.base or 0)] = 0
       end
+    end,
+  },
+  [9] = {
+    parameters = 1,
+    func = function(self, parameters, modes)
+      self.base = self.base + self:get(parameters[1], modes[1])
     end,
   },
 }
@@ -118,6 +127,7 @@ Intcoder = {
   output = {},
   input = {},
   opcodes = {},
+  base = 0,
   exit = exit_statuses.OK,
   new = function(program)
     return setmetatable({
@@ -126,10 +136,17 @@ Intcoder = {
       opcodes = table.deepcopy(OPCODES),
       output = {},
       input = {},
+      base = 0,
     }, { __index = Intcoder })
   end,
   get = function(self, parameter, mode)
-    return mode == 0 and self.program[parameter + 1] or parameter
+    if mode == 0 then
+      return (self.program[parameter + 1] or 0)
+    elseif mode == 1 then
+      return parameter
+    else
+      return (self.program[parameter + 1 + self.base] or 0)
+    end
   end,
   -- active = function(self, opcodes)
   --   for _, opcode in ipairs(table.keys(self.opcodes)) do
