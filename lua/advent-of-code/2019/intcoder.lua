@@ -23,6 +23,7 @@ local return_codes = {
 --- @field output table
 --- @field input table
 --- @field base integer
+--- @field data table
 --- @field exit IntcoderExitStatus
 --- @field new fun(program: string): Intcoder
 --- @field get fun(self: Intcoder, parameter: integer, mode: 0|1|2): integer
@@ -128,6 +129,7 @@ Intcoder = {
   input = {},
   opcodes = {},
   base = 0,
+  data = {},
   exit = exit_statuses.OK,
   new = function(program)
     return setmetatable({
@@ -137,6 +139,7 @@ Intcoder = {
       output = {},
       input = {},
       base = 0,
+      data = {},
     }, { __index = Intcoder })
   end,
   get = function(self, parameter, mode)
