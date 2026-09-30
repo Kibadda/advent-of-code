@@ -4,8 +4,12 @@ local M = require("advent-of-code.AOCDay"):new("2019", "15")
 
 require "advent-of-code.2019.intcoder"
 
+local map = {}
+local oxygen = V(0, 0)
+
 function M:solve1()
-  local map = {}
+  local distance = 0
+
   local inti = Intcoder(self.input[1]):setup(function(intcoder)
     intcoder.data.pos = V(0, 0)
     intcoder.data.steps = 0
@@ -48,18 +52,18 @@ function M:solve1()
           map[pos.x][pos.y] = "o"
           i.data.pos = pos
           i.data.steps = i.data.steps + 1
+          distance = i.data.steps
+          oxygen = pos
         end,
       }
     end
   end):run()
 
-  --- @type Intcoder
-  local result = treesearch {
+  treesearch {
     depth = false,
     start = inti,
-    --- @param current Intcoder
-    exit = function(current)
-      return current.output[#current.output] == 2
+    exit = function()
+      return false
     end,
     --- @param current Intcoder
     memoize = function(current)
@@ -116,11 +120,51 @@ function M:solve1()
   --   print(s)
   -- end
 
-  return result.data.steps
+  return distance
 end
 
 function M:solve2()
-  --
+  local minutes = 0
+
+  treesearch {
+    depth = false,
+    start = { pos = oxygen, minutes = 0 },
+    --- @param current { pos: Vector, minutes: integer }
+    exit = function(current)
+      minutes = current.minutes
+
+      return false
+    end,
+    --- @param current { pos: Vector, minutes: integer }
+    memoize = function(current)
+      return current.pos:string()
+    end,
+    --- @param current { pos: Vector, minutes: integer }
+    step = function(current)
+      local steps = {}
+
+      for i = 1, 4 do
+        local pos = current.pos
+          + match(i) {
+            [1] = V(-1, 0),
+            [2] = V(1, 0),
+            [3] = V(0, -1),
+            [4] = V(0, 1),
+          }
+
+        if map[pos.x] and map[pos.x][pos.y] == "." then
+          table.insert(steps, {
+            pos = pos,
+            minutes = current.minutes + 1,
+          })
+        end
+      end
+
+      return steps
+    end,
+  }
+
+  return minutes
 end
 
 M:run()
