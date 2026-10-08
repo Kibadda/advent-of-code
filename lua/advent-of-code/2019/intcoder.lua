@@ -99,7 +99,7 @@ local OPCODES = {
       end
 
       if self.print and p <= 127 then
-        if p == 10 and output_buffer:sub(-1) == "\n" then
+        if p == 10 then
           print(output_buffer)
           output_buffer = ""
         else
