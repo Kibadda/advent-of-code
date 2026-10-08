@@ -1,4 +1,7 @@
 --- @alias IntcoderOpcodes { parameters: integer, func: fun(self: Intcoder, parameters: integer[], modes: 0|1|2[]): IntcoderOpcodesReturnCode? }
+--- @alias IntcoderInputHook (fun(self: Intcoder): string[]|integer[])
+--- @alias IntcoderOutputHook fun(output: integer, self: Intcoder)
+--- @alias IntcoderRunConfig { ascii?: boolean, program?: table<integer, integer>, data?: table, print?: boolean }
 
 --- @enum IntcoderExitStatus
 local exit_statuses = {
@@ -24,12 +27,18 @@ local return_codes = {
 --- @field input table
 --- @field base integer
 --- @field data table
+--- @field hooks { input: IntcoderInputHook, output: IntcoderOutputHook }
+--- @field ascii boolean
+--- @field print boolean
 --- @field exit IntcoderExitStatus
 --- @field new fun(program: string): Intcoder
 --- @field get fun(self: Intcoder, parameter: integer, mode: 0|1|2): integer
---- @field setup fun(self: Intcoder, func: fun(intcoder: Intcoder)): Intcoder
---- @field run fun(self: Intcoder): Intcoder
+--- @field on_output fun(self: Intcoder, func: IntcoderOutputHook): Intcoder
+--- @field on_input fun(self: Intcoder, func: IntcoderInputHook): Intcoder
+--- @field run fun(self: Intcoder, config?: IntcoderRunConfig): Intcoder
 local Intcoder = {}
+
+local output_buffer = ""
 
 --- @type table<integer, IntcoderOpcodes>
 local OPCODES = {
@@ -50,14 +59,27 @@ local OPCODES = {
   [3] = {
     parameters = 1,
     func = function(self, parameters, modes)
-      local number
+      if #self.input == 0 then
+        if self.hooks.input then
+          local input = self.hooks.input(self)
 
-      if #self.input > 0 then
-        number = table.remove(self.input, 1)
-      else
-        print "input number: "
-        number = io.read "*n"
+          if self.ascii then
+            for _, str in ipairs(input) do
+              --- @cast str string
+              for _, char in ipairs(str:to_list()) do
+                table.insert(self.input, string.byte(char))
+              end
+              table.insert(self.input, 10)
+            end
+          else
+            for _, num in ipairs(input) do
+              table.insert(self.input, num)
+            end
+          end
+        end
       end
+
+      local number = table.remove(self.input, 1)
 
       if not number or type(number) ~= "number" then
         return return_codes.ERROR
@@ -71,6 +93,19 @@ local OPCODES = {
     func = function(self, parameters, modes)
       local p = self:get(parameters[1], modes[1])
       table.insert(self.output, p)
+
+      if self.hooks.output then
+        self.hooks.output(p, self)
+      end
+
+      if self.print and p <= 127 then
+        if p == 10 and output_buffer:sub(-1) == "\n" then
+          print(output_buffer)
+          output_buffer = ""
+        else
+          output_buffer = output_buffer .. string.char(p)
+        end
+      end
     end,
   },
   [5] = {
@@ -125,11 +160,14 @@ local OPCODES = {
 Intcoder = {
   pointer = 1,
   program = {},
+  opcodes = {},
   output = {},
   input = {},
-  opcodes = {},
   base = 0,
   data = {},
+  hooks = {},
+  ascii = false,
+  print = false,
   exit = exit_statuses.OK,
   new = function(program)
     return setmetatable({
@@ -140,6 +178,10 @@ Intcoder = {
       input = {},
       base = 0,
       data = {},
+      hooks = {},
+      ascii = false,
+      print = false,
+      exit = exit_statuses.OK,
     }, { __index = Intcoder })
   end,
   get = function(self, parameter, mode)
@@ -151,21 +193,33 @@ Intcoder = {
       return (self.program[parameter + 1 + self.base] or 0)
     end
   end,
-  -- active = function(self, opcodes)
-  --   for _, opcode in ipairs(table.keys(self.opcodes)) do
-  --     if not table.contains(opcodes, opcode) then
-  --       self.opcodes[opcode] = nil
-  --     end
-  --   end
-  --
-  --   return self
-  -- end,
-  setup = function(self, func)
-    func(self)
+  on_output = function(self, func)
+    self.hooks.output = func
 
     return self
   end,
-  run = function(self)
+  on_input = function(self, func)
+    self.hooks.input = func
+
+    return self
+  end,
+  run = function(self, config)
+    config = config or {}
+    self.ascii = config.ascii
+    self.print = config.print
+
+    if config.data then
+      for k, v in pairs(config.data) do
+        self.data[k] = v
+      end
+    end
+
+    if config.program then
+      for k, v in pairs(config.program) do
+        self.program[k] = v
+      end
+    end
+
     while true do
       local opcode = self.program[self.pointer]
       local modes = {

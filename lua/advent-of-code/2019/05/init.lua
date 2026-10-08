@@ -6,16 +6,16 @@ require "advent-of-code.2019.intcoder"
 
 function M:solve1()
   return table.remove(Intcoder(self.input[1])
-    :setup(function(intcoder)
-      table.insert(intcoder.input, 1)
+    :on_input(function()
+      return { 1 }
     end)
     :run().output)
 end
 
 function M:solve2()
   return table.remove(Intcoder(self.input[1])
-    :setup(function(intcoder)
-      table.insert(intcoder.input, 5)
+    :on_input(function()
+      return { 5 }
     end)
     :run().output)
 end

@@ -10,24 +10,11 @@ function M:solver(start)
   local pos = V(1, 1)
   local painting = true
 
-  Intcoder(self.input[1]):setup(function(intcoder)
-    local input_opcode = intcoder.opcodes[3].func
-    intcoder.opcodes[3].func = function(...)
-      if grid[pos.x] and grid[pos.x][pos.y] == "#" then
-        table.insert(intcoder.input, 1)
-      else
-        table.insert(intcoder.input, 0)
-      end
-
-      input_opcode(...)
-    end
-
-    local output_opcode = intcoder.opcodes[4].func
-    intcoder.opcodes[4].func = function(...)
-      output_opcode(...)
-
-      local output = table.remove(intcoder.output, 1)
-
+  Intcoder(self.input[1])
+    :on_input(function()
+      return { grid[pos.x] and grid[pos.x][pos.y] == "#" and 1 or 0 }
+    end)
+    :on_output(function(output)
       if painting then
         grid[pos.x] = grid[pos.x] or {}
         grid[pos.x][pos.y] = output == 0 and "." or "#"
@@ -37,8 +24,8 @@ function M:solver(start)
         pos = pos + dir
         painting = true
       end
-    end
-  end):run()
+    end)
+    :run()
 
   return grid
 end

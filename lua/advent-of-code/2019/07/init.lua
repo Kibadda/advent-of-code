@@ -38,9 +38,8 @@ function M:solve1()
 
     for i = 1, 5 do
       result = Intcoder(self.input.program)
-        :setup(function(intcoder)
-          table.insert(intcoder.input, phases[i])
-          table.insert(intcoder.input, result)
+        :on_input(function()
+          return { phases[i], result }
         end)
         :run().output[1]
     end
@@ -59,36 +58,33 @@ function M:solve2()
     --- @type Intcoder[]
     local amplifiers = {}
     while true do
-      if not amplifiers[turn] then
-        amplifiers[turn] = Intcoder(self.input.program):setup(function(intcoder)
-          intcoder.opcodes[3].func = function(_, parameters)
-            if #intcoder.input > 0 then
-              if not intcoder.input[1] then
-                return IntcoderOpcodesReturnCode.ERROR
-              end
+      amplifiers[turn] = amplifiers[turn]
+        or Intcoder(self.input.program):on_input(function(intcoder)
+          if not intcoder.data.setup then
+            intcoder.data.setup = true
 
-              intcoder.program[parameters[1] + 1] = table.remove(intcoder.input, 1)
+            if turn == 1 then
+              return { phases[turn] + 5, 0 }
             else
-              return IntcoderOpcodesReturnCode.BREAK
-            end
-          end
+              local input = { phases[turn] + 5, unpack(amplifiers[turn - 1].output) }
+              amplifiers[turn - 1].output = {}
 
-          if turn == 1 then
-            intcoder.input = { phases[turn] + 5, 0 }
+              return input
+            end
           else
-            intcoder.input = { phases[turn] + 5, unpack(amplifiers[turn - 1].output) }
-            amplifiers[turn - 1].output = {}
+            local last = turn == 1 and 5 or turn - 1
+
+            if not amplifiers[last] then
+              return {}
+            end
+
+            local input = { unpack(amplifiers[last].output) }
+            amplifiers[last].output = {}
+
+            return input
           end
         end):run()
-      else
-        amplifiers[turn]
-          :setup(function(intcoder)
-            local last = turn == 1 and 5 or turn - 1
-            intcoder.input = { unpack(amplifiers[last].output) }
-            amplifiers[last].output = {}
-          end)
-          :run()
-      end
+      amplifiers[turn]:run()
 
       if turn == 5 and amplifiers[5].exit == IntcoderExitStatus.OK then
         break

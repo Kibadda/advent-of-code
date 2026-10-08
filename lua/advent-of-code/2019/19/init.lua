@@ -6,8 +6,8 @@ require "advent-of-code.2019.intcoder"
 
 function M:solver(i, j)
   return Intcoder(self.input[1])
-    :setup(function(intcoder)
-      intcoder.input = { i, j }
+    :on_input(function()
+      return { i, j }
     end)
     :run().output[1]
 end

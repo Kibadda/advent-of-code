@@ -10,54 +10,42 @@ local oxygen = V(0, 0)
 function M:solve1()
   local distance = 0
 
-  local inti = Intcoder(self.input[1]):setup(function(intcoder)
-    intcoder.data.pos = V(0, 0)
-    intcoder.data.steps = 0
-
-    local input_opcode = intcoder.opcodes[3].func
-    intcoder.opcodes[3].func = function(i, ...)
-      if #i.input == 0 then
-        return IntcoderOpcodesReturnCode.BREAK
-      end
-
-      input_opcode(i, ...)
-    end
-
-    local output_opcode = intcoder.opcodes[4].func
-    intcoder.opcodes[4].func = function(i, ...)
-      output_opcode(i, ...)
-
-      --- @type Vector
-      local pos = i.data.pos
-        + match(i.data.dir) {
-          [1] = V(-1, 0),
-          [2] = V(1, 0),
-          [3] = V(0, -1),
-          [4] = V(0, 1),
-        }
-
-      match(i.output[#i.output]) {
-        [0] = function()
-          map[pos.x] = map[pos.x] or {}
-          map[pos.x][pos.y] = "#"
-        end,
-        [1] = function()
-          map[pos.x] = map[pos.x] or {}
-          map[pos.x][pos.y] = "."
-          i.data.pos = pos
-          i.data.steps = i.data.steps + 1
-        end,
-        [2] = function()
-          map[pos.x] = map[pos.x] or {}
-          map[pos.x][pos.y] = "o"
-          i.data.pos = pos
-          i.data.steps = i.data.steps + 1
-          distance = i.data.steps
-          oxygen = pos
-        end,
+  local inti = Intcoder(self.input[1]):on_output(function(output, intcoder)
+    --- @type Vector
+    local pos = intcoder.data.pos
+      + match(intcoder.data.dir) {
+        [1] = V(-1, 0),
+        [2] = V(1, 0),
+        [3] = V(0, -1),
+        [4] = V(0, 1),
       }
-    end
-  end):run()
+
+    match(output) {
+      [0] = function()
+        map[pos.x] = map[pos.x] or {}
+        map[pos.x][pos.y] = "#"
+      end,
+      [1] = function()
+        map[pos.x] = map[pos.x] or {}
+        map[pos.x][pos.y] = "."
+        intcoder.data.pos = pos
+        intcoder.data.steps = intcoder.data.steps + 1
+      end,
+      [2] = function()
+        map[pos.x] = map[pos.x] or {}
+        map[pos.x][pos.y] = "o"
+        intcoder.data.pos = pos
+        intcoder.data.steps = intcoder.data.steps + 1
+        distance = intcoder.data.steps
+        oxygen = pos
+      end,
+    }
+  end):run {
+    data = {
+      pos = V(0, 0),
+      steps = 0,
+    },
+  }
 
   treesearch {
     depth = false,
