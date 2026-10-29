@@ -316,3 +316,27 @@ function table.windows(t, length)
 
   return s
 end
+
+--- @param t table
+--- @param times? integer
+--- @return table
+function table.flatten(t, times)
+  times = times or 1
+  local s = t
+
+  for _ = 1, times do
+    local tmp = {}
+    for _, st in ipairs(s) do
+      if type(st) == "table" then
+        for _, stt in ipairs(st) do
+          table.insert(tmp, stt)
+        end
+      else
+        table.insert(tmp, st)
+      end
+    end
+    s = tmp
+  end
+
+  return s
+end
